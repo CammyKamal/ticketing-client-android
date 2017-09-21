@@ -20,9 +20,11 @@ import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.BranchesModel;
 import com.chandigarhadmin.models.ChatPojoModel;
 import com.chandigarhadmin.models.CreateTicketResponse;
+import com.chandigarhadmin.models.GetTicketResponse;
 import com.chandigarhadmin.models.RequestParams;
 import com.chandigarhadmin.service.ApiServiceTask;
 import com.chandigarhadmin.service.JSONParser;
+import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,7 +46,10 @@ import ai.api.model.AIResponse;
 import ai.api.model.Result;
 
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
+import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
+import static com.chandigarhadmin.models.RequestParams.TYPE_GET_TICKET_BY;
+import static com.chandigarhadmin.service.JSONParser.GET;
 
 public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
     private AIService aiService;
@@ -57,11 +62,14 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private EditText etInputBox;
     private Button btnSearch;
     private String ticketSubject, ticketDesc, ticketid;
+    private SessionManager sessionManager;
+    private List<GetTicketResponse> ticketResponseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
+        sessionManager = new SessionManager(this);
         initializeAI();
         initializeViews();
         setChatInputs("Hi, How are you?<br/>How may i help you?", false);
@@ -177,14 +185,17 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         Gson gson = gsonBuilder.create();
-
-        if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
-            setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
-            parseBranches(result, gson);
-        } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
-            CreateTicketResponse createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
-            //    Log.d("TICKET CREATED", createTicketResponse.getCreatedAt());
-            setChatInputs("Ticket created \n" + " Refrence ID: " + createTicketResponse.getId(), false);
+        if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
+            if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
+                setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
+                parseBranches(result, gson);
+            } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
+                CreateTicketResponse createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
+                setChatInputs("Ticket created \n" + " Refrence ID: " + createTicketResponse.getId(), false);
+            } else if (type.contains(TYPE_GET_TICKET_BY)) {
+                Log.d("TICKETS OF YOURS", result);
+                parseTickets(result, gson);
+            }
         }
 
     }
@@ -206,6 +217,10 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         chatBotResponseList.add(chatPojoModel);
         mAdapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(chatBotResponseList.size() - 1);
+    }
+
+    private void parseTickets(String result, Gson gson) {
+        ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
     }
 
     @Override
@@ -254,8 +269,8 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
      * getting all tickets
      */
     private void getTickets() {
-        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
-        apiServiceTask.setRequestParams(null, JSONParser.GET);
+        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
+        apiServiceTask.setRequestParams(null, GET);
         apiServiceTask.execute(Constant.BASE + "tickets");
     }
 
