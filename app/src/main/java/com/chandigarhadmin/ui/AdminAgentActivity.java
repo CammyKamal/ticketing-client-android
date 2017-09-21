@@ -2,8 +2,12 @@ package com.chandigarhadmin.ui;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.ChatAdapter;
@@ -26,6 +32,8 @@ import com.chandigarhadmin.service.ApiServiceTask;
 import com.chandigarhadmin.service.JSONParser;
 import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
+import com.github.zagum.speechrecognitionview.RecognitionProgressView;
+import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,17 +61,17 @@ import static com.chandigarhadmin.service.JSONParser.GET;
 
 public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
     private AIService aiService;
-
+    private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
     private ArrayList<ChatPojoModel> chatBotResponseList;
 
     private RecyclerView recyclerView;
     private ChatAdapter mAdapter;
     private EditText etInputBox;
-    private Button btnSearch;
-    private String ticketSubject, ticketDesc, ticketid;
     private SessionManager sessionManager;
     private List<GetTicketResponse> ticketResponseList;
+    private ImageView keyboardicon, sendicon, micicon;
+    private RecognitionProgressView recognitionProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +101,36 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         chatBotResponseList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         etInputBox = (EditText) findViewById(R.id.querystringet);
-        btnSearch = (Button) findViewById(R.id.searchbtn);
-        btnSearch.setOnClickListener(this);
+        sendicon = (ImageView) findViewById(R.id.searchbtn);
+        keyboardicon = (ImageView) findViewById(R.id.keyboardicon);
+        micicon = (ImageView) findViewById(R.id.micicon);
+        recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
+        recognitionProgressView.setOnClickListener(this);
+        micicon.setOnClickListener(this);
+        keyboardicon.setOnClickListener(this);
+        sendicon.setOnClickListener(this);
         mAdapter = new ChatAdapter(this, chatBotResponseList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(AdminAgentActivity.this);
+        int[] colors = {
+                ContextCompat.getColor(this, R.color.colorAccent),
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                ContextCompat.getColor(this, R.color.colorPrimary)
+        };
+        recognitionProgressView.setSpeechRecognizer(speechRecognizer);
+        recognitionProgressView.setRecognitionListener(new RecognitionListenerAdapter() {
+            @Override
+            public void onResults(Bundle results) {
+                showResults(results);
+            }
+        });
+        recognitionProgressView.setColors(colors);
+        int[] heights = {20, 24, 18, 23, 16};
+        recognitionProgressView.setBarMaxHeightsInDp(heights);
+        recognitionProgressView.play();
     }
 
     //AIRequest should have query OR event
@@ -234,9 +265,51 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
                     sendRequest(input);
                 }
                 break;
+            case R.id.keyboardicon:
+                keyboardicon.setVisibility(View.GONE);
+                sendicon.setVisibility(View.VISIBLE);
+                micicon.setVisibility(View.VISIBLE);
+                recognitionProgressView.setVisibility(View.GONE);
+                etInputBox.setVisibility(View.VISIBLE);
+                break;
+            case R.id.micicon:
+                keyboardicon.setVisibility(View.VISIBLE);
+                sendicon.setVisibility(View.GONE);
+                recognitionProgressView.setVisibility(View.VISIBLE);
+                micicon.setVisibility(View.GONE);
+                etInputBox.setVisibility(View.GONE);
+                startRecognition();
+                recognitionProgressView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startRecognition();
+                    }
+                }, 50);
+                break;
+            case R.id.recognition_view:
+
+                //aiService.startListening();
+                startRecognition();
+                recognitionProgressView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startRecognition();
+                    }
+                }, 50);
+                break;
             default:
                 break;
         }
+    }
+
+    private void showResults(Bundle results) {
+        ArrayList<String> matches = results
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
+        setChatInputs(matches.get(0), true);
+        sendRequest(matches.get(0));
+        recognitionProgressView.stop();
+        recognitionProgressView.play();
     }
 
     @Override
@@ -280,5 +353,12 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         if (AIService.getService(this, aiConfiguration) != null) {
             AIService.getService(this, aiConfiguration).cancel();
         }
+    }
+
+    private void startRecognition() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizer.startListening(intent);
     }
 }

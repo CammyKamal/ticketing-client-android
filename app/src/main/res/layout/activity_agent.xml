@@ -12,22 +12,7 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/querystringet"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight=".8"
-            android:hint="enter query"
-            android:padding="10dp" />
-
-        <Button
-            android:id="@+id/searchbtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight=".3"
-            android:text="Search" />
+        <include layout="@layout/row_user_input" />
     </LinearLayout>
 
 
@@ -43,6 +28,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
+        android:layout_marginBottom="40dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/querybox"
         android:layout_below="@+id/listenButton" />
