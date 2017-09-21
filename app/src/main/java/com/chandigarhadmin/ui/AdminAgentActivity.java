@@ -73,6 +73,9 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         aiConfiguration = new AIConfiguration(Constant.AI_CONFIGURATION_TOKEN,
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.System);
+        if (aiService != null) {
+            aiService.resetContexts();
+        }
         aiService = AIService.getService(this, aiConfiguration);
         aiService.setListener(this);
     }
@@ -127,20 +130,15 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         Result result = response.getResult();
         if (result.getAction().equalsIgnoreCase("createticket")) {
 
-            if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("callDepartmentApi")) {
+            if (result.getParameters().get("department").toString().equalsIgnoreCase("[]")) {
                 new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
-            } else if ((response).getResult().getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
+            } else if (result.getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
-            } else if ((response).getResult().getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
-                ticketSubject = response.getResult().getParameters().get("ticketsubject").toString().replace("[", "").replace("]", "");
-                if (ticketSubject.contains("\"")) {
-                    ticketSubject = ticketSubject.replaceAll("\"", "");
-                }
+            } else if (result.getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
-            } else if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
-                ticketDesc = response.getResult().getParameters().get("ticketdesc").toString().replace("[", "").replace("]", "");
+            } else if (result.getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
                 setChatInputs("Creating ticket...", false);
-                createTicket();
+                createTicket(result);
                 Log.e("result", "Saved");
             }
         } else {
@@ -185,7 +183,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
             parseBranches(result, gson);
         } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
             CreateTicketResponse createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
-            Log.d("TICKET CREATED", createTicketResponse.getCreatedAt());
+            //    Log.d("TICKET CREATED", createTicketResponse.getCreatedAt());
             setChatInputs("Ticket created \n" + " Refrence ID: " + createTicketResponse.getId(), false);
         }
 
@@ -207,6 +205,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         chatPojoModel.setDepartmentResponse(branchesModels);
         chatBotResponseList.add(chatPojoModel);
         mAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(chatBotResponseList.size() - 1);
     }
 
     @Override
@@ -227,20 +226,18 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
 
     @Override
     public void onResultSelection(String id, String branchName) {
-        Log.e("id<><><>", id);
-        ticketid = id;
         sendRequest(branchName);
     }
 
     /**
      * saving ticket
      */
-    private void createTicket() {
+    private void createTicket(Result result) {
         JSONObject ticketObject = new JSONObject();
         try {
-            ticketObject.put(RequestParams.BRANCH, ticketid);
-            ticketObject.put(RequestParams.SUBJECT, ticketSubject);
-            ticketObject.put(RequestParams.DESCRIPTION, ticketDesc);
+            ticketObject.put(RequestParams.BRANCH, result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+            ticketObject.put(RequestParams.SUBJECT, result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+            ticketObject.put(RequestParams.DESCRIPTION, result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
             ticketObject.put(RequestParams.STATUS, "new");
             ticketObject.put(RequestParams.PRIORITY, "high");
             ticketObject.put(RequestParams.SOURCE, "email");
@@ -260,5 +257,13 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
         apiServiceTask.setRequestParams(null, JSONParser.GET);
         apiServiceTask.execute(Constant.BASE + "tickets");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (AIService.getService(this, aiConfiguration) != null) {
+            AIService.getService(this, aiConfiguration).cancel();
+        }
     }
 }
