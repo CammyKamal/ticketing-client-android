@@ -24,7 +24,7 @@ public class MyAccountActivity extends AppCompatActivity {
         TextView tvUserName = (TextView) findViewById(R.id.usernametv);
         tvUserName.setText(sessionManager.getUsername());
         TextView tvLang = (TextView) findViewById(R.id.langtv);
-        tvLang.setText(sessionManager.getKeyUserId());
+       // tvLang.setText(sessionManager.getLanguage());
         ((ImageView)findViewById(R.id.crossicon)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
