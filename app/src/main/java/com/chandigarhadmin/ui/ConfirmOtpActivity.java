@@ -3,7 +3,6 @@ package com.chandigarhadmin.ui;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -39,6 +38,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.chandigarhadmin.R.id.timer;
 import static com.chandigarhadmin.R.string.resend_otp;
@@ -65,23 +65,14 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_otp);
         ButterKnife.bind(this);
-        navigateToDashBoard();
         submitBtn.setEnabled(false);
 //        etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         sessionManager = new SessionManager(this);
         progressDialog = Constant.createDialog(this, null);
-        checkClickAction();
-        smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
-            @Override
-            public void onSmsCatch(String message) {
-                isOtpReceived = true;
-                progressDialog.hide();
-                String code = parseCode(message);//Parse verification code
-                etOptRecevier.setText(code);//set code in edit text
-                //then you can send verification code to server
-                saveLoginDetail();
-            }
-        });
+        if (getIntent().hasExtra("phone")) {
+            getUserByEmail(getIntent().getStringExtra("phone"));
+        }
+
         smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
             public void onSmsCatch(String message) {
@@ -108,6 +99,8 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
                 if (charSequence.length() == 4) {
                     isOtpReceived = true;
                     submitBtn.setEnabled(true);
+                    submitBtn.setText(R.string.submit);
+                    llOtp.setVisibility(View.GONE);
                 }
             }
 
@@ -116,6 +109,20 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
 
             }
         });
+    }
+    @OnClick(R.id.btn_confirm_otp)
+    void submitButton(View view) {
+        if (view.getId() == R.id.btn_confirm_otp) {
+           if(submitBtn.getText().toString().trim().equalsIgnoreCase("resend_otp")){
+               myCountDownTimer.start();
+
+           }
+           else{
+               if (!TextUtils.isEmpty(etOptRecevier.getText())) {
+                   saveLoginDetail();
+               }
+           }
+        }
     }
 
 
@@ -159,7 +166,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
 
     private void checkClickAction() {
         if (!isOtpReceived) {
-            if (!getIntent().getStringExtra("phone").trim().equalsIgnoreCase(getResources().getString(R.string.resend_otp))) {
+            if (getIntent().hasExtra("phone")) {
                 getUserByEmail(getIntent().getStringExtra("phone"));
             } else {
                 myCountDownTimer.start();
@@ -202,7 +209,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             progressDialog.show();
             ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
             task.setRequestParams(null, JSONParser.GET);
-            task.execute(Constant.BASE + "users" + "/" + email);
+            task.execute(Constant.BASE + "users" + "/" + email+"@gmail.com");
         } else {
             Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
         }
@@ -229,9 +236,8 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
 
                 if (response.has("error") && response.getString("error").equalsIgnoreCase("User not found.")) {
                     //send otp on mobile number
-                    // progressDialog.show();
-//                    isOtpReceived=true;
                     llOtp.setVisibility(View.VISIBLE);
+                    //isOtpReceived=true;
                     myCountDownTimer = new MyCountDownTimer(20000, 1000);
                     myCountDownTimer.start();
 
@@ -255,32 +261,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         finish();
     }
 
-    public void startTimer() {
-        t = new Timer();
-        task = new TimerTask() {
-
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        TextView tv1 = (TextView) findViewById(timer);
-                        tv1.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-                        tv1.setText(getString(R.string.waiting) + time + getString(R.string.second));
-                        if (time > 0)
-                            time -= 1;
-                        else if (time == 0) {
-
-                            //llOtp.setVisibility(View.GONE);
-                            //progressDialog.hide();
-                        }
-                    }
-                });
-            }
-        };
-        t.scheduleAtFixedRate(task, 0, 60 * 1000);
-    }
 
     public class MyCountDownTimer extends CountDownTimer {
 
@@ -290,12 +270,8 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
 
         @Override
         public void onTick(long millisUntilFinished) {
-
             int progress = (int) (millisUntilFinished / 1000);
-
-            // progressBar.setProgress(progressBar.getMax()-progress);
             TextView tv1 = (TextView) findViewById(timer);
-            tv1.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
             tv1.setText("waiting " + progress + "sec");
             if (progress == 0) {
                 llOtp.setVisibility(View.GONE);
@@ -307,6 +283,16 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         public void onFinish() {
             llOtp.setVisibility(View.GONE);
             submitBtn.setText(resend_otp);
+        }
+    }
+    private void getallUsers(){
+        if(Constant.isNetworkAvailable(ConfirmOtpActivity.this)) {
+            progressDialog.show();
+            ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
+            task.setRequestParams(null, JSONParser.GET);
+            task.execute(Constant.BASE + "users");
+        } else {
+            Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
         }
     }
 }
