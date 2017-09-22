@@ -96,7 +96,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         sessionManager = new SessionManager(this);
         initializeAI();
         initializeViews();
-        setChatInputs("Hi, How are you?<br/>How may i help you?", false);
+        setChatInputs("Hi, How may i Asist you ?", false);
     }
 
     public void showPopup(View v) {
@@ -442,7 +442,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             ticketObject.put(RequestParams.STATUS, "new");
             ticketObject.put(RequestParams.PRIORITY, "high");
             ticketObject.put(RequestParams.SOURCE, "email");
-            ticketObject.put(RequestParams.REPORTER, "diamante_1" );
+            ticketObject.put(RequestParams.REPORTER, "diamante_" + sessionManager.getKeyUserId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
