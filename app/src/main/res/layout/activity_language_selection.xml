@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -18,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/choose_from"
-            android:textStyle="bold"
-            android:textSize="@dimen/bold_size" />
+            android:textSize="@dimen/bold_size"
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/radio_group_languages"
@@ -30,35 +28,35 @@
                 android:id="@+id/radio_button_english"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/english"
-                android:textSize="@dimen/text_size"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:buttonTint="@android:color/white"
+                android:checked="true"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingStart="@dimen/activity_horizontal_margin"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:checked="true"
-                android:buttonTint="@android:color/white"/>
+                android:text="@string/english"
+                android:textSize="@dimen/text_size" />
 
             <RadioButton
                 android:id="@+id/radio_button_hindi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/hindi"
-                android:textSize="@dimen/text_size"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:buttonTint="@android:color/white"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingStart="@dimen/activity_horizontal_margin"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:buttonTint="@android:color/white"/>
+                android:text="@string/hindi"
+                android:textSize="@dimen/text_size" />
 
             <RadioButton
                 android:id="@+id/radio_button_punjabi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/punjabi"
-                android:textSize="@dimen/text_size"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:buttonTint="@android:color/white"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingStart="@dimen/activity_horizontal_margin"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:buttonTint="@android:color/white"/>
+                android:text="@string/punjabi"
+                android:textSize="@dimen/text_size" />
 
         </RadioGroup>
 
@@ -67,13 +65,11 @@
     <Button
         android:id="@+id/btn_continue"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fifty"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rounded_button_background"
         android:text="@string/continue_text"
-        android:textSize="@dimen/bold_size"
-        android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:background="@android:color/white"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:layout_alignParentBottom="true" />
+        android:textSize="@dimen/bold_size" />
 
 </RelativeLayout>
