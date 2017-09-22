@@ -1,5 +1,6 @@
 package com.example.theodhor.retrofit2;
 
+import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -158,14 +159,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private  void createTicket(){
+        ContentValues values=new ContentValues();
         TicketRequest ticketRequest=new TicketRequest();
-        ticketRequest.setBranch("5");
-        ticketRequest.setSubject("Android Test");
-        ticketRequest.setDescription("Please generate a ticket from android app");
-        ticketRequest.setStatus("New");
-        ticketRequest.setPriority("High");
-        ticketRequest.setReporter("haribisht3@gmail.com");
-        ticketRequest.setSource("Email");
+        values.put("branch",5);
+        values.put("subject","Android Test");
+        values.put("description","Please generate a ticket from android app");
+        values.put("status","New");
+        values.put("priority","High");
+        values.put("source","Email");
+        values.put("reporter","Harry");
     }
 
 

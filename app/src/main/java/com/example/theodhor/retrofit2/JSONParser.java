@@ -209,12 +209,6 @@ public class JSONParser {
                 out.close();
 
             }
-Log.e("values     ", urlConnection.getRequestProperties().toString()+"    "+urlConnection.getRequestMethod());
-            urlConnection.connect();
-            int code=urlConnection.getResponseCode();
-            Log.e("RESPONSE CODE", ""+code);
-          //  Log.e("RESPONSE CODE", ""+urlConnection.getRequestMethod()+"   "+urlConnection.getErrorStream().toString()+"   "+urlConnection.getHeaderFields().toString()
-           // );
             StringBuilder builder = new StringBuilder();
             try {
                     BufferedReader in1 = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
@@ -232,7 +226,7 @@ Log.e("values     ", urlConnection.getRequestProperties().toString()+"    "+urlC
             result = inputStreamToString(in);
             Log.e("ServerResponse", result);
         } catch (IOException e) {
-            Log.e("MakeServiceCall", "Error : " + e.toString());
+            Log.e("MakeServiceCall", "Error : " + e.getMessage());
         } finally {
             urlConnection.disconnect();
         }
