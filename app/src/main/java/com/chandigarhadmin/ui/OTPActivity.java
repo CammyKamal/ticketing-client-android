@@ -106,7 +106,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 4) {
-                    // TODO: 23/09/17 need to change this otp receive boolean 
+                    // TODO: 23/09/17 need to change this otp receive boolean
                     isOtpReceived=true;
                     submitBtn.setText("Submit");
                     //create user api call;

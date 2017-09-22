@@ -1,12 +1,23 @@
 package com.chandigarhadmin.models;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatPojoModel {
+public class ChatPojoModel implements Serializable{
     private List<BranchesModel> departmentModelResponse;
     private List<GetTicketResponse> getTicketResponse;
+    public CreateTicketResponse getCreateTicketResponse() {
+        return createTicketResponse;
+    }
+
+    public void setCreateTicketResponse(CreateTicketResponse createTicketResponse) {
+        this.createTicketResponse = createTicketResponse;
+    }
+
+    private CreateTicketResponse createTicketResponse;
 
     public boolean isAlignRight() {
         return alignRight;

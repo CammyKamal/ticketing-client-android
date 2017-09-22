@@ -23,10 +23,11 @@ public class CustomPagerAdapter extends PagerAdapter {
     private List<BranchesModel> dataObjectList;
     private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
-private SelectionCallbacks selectionCallbacks;
+    private SelectionCallbacks selectionCallbacks;
+
     public CustomPagerAdapter(Context context, List<BranchesModel> dataObjectList, SelectionCallbacks selectionCallbacks) {
         this.context = context;
-        this.selectionCallbacks=selectionCallbacks;
+        this.selectionCallbacks = selectionCallbacks;
         this.layoutInflater = (LayoutInflater) this.context.getSystemService(this.context.LAYOUT_INFLATER_SERVICE);
         this.dataObjectList = dataObjectList;
         imageLoader = ImageLoader.getInstance();
@@ -36,7 +37,7 @@ private SelectionCallbacks selectionCallbacks;
 
     @Override
     public float getPageWidth(final int position) {
-        return 0.70f;
+        return 0.50f;
     }
 
     @Override
@@ -60,7 +61,7 @@ private SelectionCallbacks selectionCallbacks;
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectionCallbacks.onResultSelection(dataObjectList.get(position).getId(),dataObjectList.get(position).getName());
+                selectionCallbacks.onResultSelection(dataObjectList.get(position).getId(), dataObjectList.get(position).getName());
             }
         });
         container.addView(view);

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#F5F5F5"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,18 +17,20 @@
             android:id="@+id/inputlayoutll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvuserinput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@+id/imageView"
                 android:layout_weight=".9"
                 android:background="@drawable/rounded_corner"
                 android:padding="16dp"
-                android:text="a"
+                android:text="aksndksadkjdskdasjasasdba"
                 android:textColor="#000" />
 
             <ImageView
@@ -36,8 +40,10 @@
                 android:layout_marginLeft="-15dp"
                 android:layout_marginTop="8.5dp"
                 android:layout_toLeftOf="@+id/imageView2"
+
                 android:layout_weight="000.1"
-                android:src="@drawable/arrow_bg1" />
+                android:src="@drawable/arrow_bg1"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -46,7 +52,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="0dp"
                 android:layout_weight="0.01"
-                android:src="@drawable/maleicon" />
+                android:src="@drawable/maleicon"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -55,17 +62,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/inputlayoutll"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="0dp"
                 android:layout_weight="3"
-                android:src="@drawable/femaleicon" />
+                android:src="@drawable/assistantimages" />
 
             <ImageView
                 android:id="@+id/imageView1"
@@ -76,12 +83,14 @@
                 android:layout_marginTop="8.5dp"
                 android:layout_toRightOf="@+id/imageView3"
                 android:layout_weight="1"
-                android:src="@drawable/arrow_bg2" />
+                android:src="@drawable/arrow_bg2"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvresponse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/imageView1"
                 android:layout_weight="6"
@@ -99,7 +108,89 @@
         android:id="@+id/branchesviewpager"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_marginLeft="40dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:background="#F5F5F5" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@android:color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="2sp"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ticketll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ticketicon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ticketicon" />
+
+                <TextView
+                    android:id="@+id/tvticketcreated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@+id/ticketicon"
+                    android:background="@drawable/rounded_corner1"
+                    android:padding="5dp"
+                    android:text="askdaslkndsakjdasdkjds"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/dividerview"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ticketll"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:id="@+id/viewll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dividerview"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/viewiv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/dividerview"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/viewicon" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@+id/dividerview"
+                    android:background="@drawable/rounded_corner1"
+                    android:padding="5dp"
+                    android:text="View Ticket"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

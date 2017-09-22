@@ -7,16 +7,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chandigarhadmin.R;
@@ -43,6 +46,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import ai.api.AIListener;
 import ai.api.AIServiceException;
@@ -56,6 +60,7 @@ import ai.api.model.Result;
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
+import static com.chandigarhadmin.models.RequestParams.TYPE_GET_TICKET_BY;
 import static com.chandigarhadmin.service.JSONParser.GET;
 
 public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
@@ -63,6 +68,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
     private ArrayList<ChatPojoModel> chatBotResponseList;
+    private TextToSpeech textToSpeech;
 
     private RecyclerView recyclerView;
     private ChatAdapter mAdapter;
@@ -71,6 +77,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private List<GetTicketResponse> ticketResponseList;
     private ImageView keyboardicon, sendicon, micicon;
     private RecognitionProgressView recognitionProgressView;
+    private CreateTicketResponse createTicketResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +120,31 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+        etInputBox.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    if (!etInputBox.getText().toString().equalsIgnoreCase("")) {
+                        String input = etInputBox.getText().toString();
+                        setChatInputs(input, true);
+                        etInputBox.setText("");
+                        sendRequest(input);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.UK);
+                }
+            }
+        });
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(AdminAgentActivity.this);
+
         int[] colors = {
                 ContextCompat.getColor(this, R.color.colorAccent),
                 ContextCompat.getColor(this, R.color.colorPrimaryDark),
@@ -134,6 +165,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
 
     //AIRequest should have query OR event
     private void sendRequest(String queryString) {
+        createTicketResponse = null;
         final AsyncTask<String, Void, AIResponse> task = new AsyncTask<String, Void, AIResponse>() {
             private AIError aiError;
 
@@ -222,9 +254,9 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
                 setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
                 parseBranches(result, gson);
             } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
-                CreateTicketResponse createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
-                setChatInputs("Ticket created \n" + " Refrence ID: " + createTicketResponse.getId(), false);
-            } else if (type.contains(TYPE_GET_ALL_TICKET)) {
+                createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
+                setChatInputs("Ticket created " + "with a Reference ID: " + createTicketResponse.getId(), false);
+            }  else if (type.contains(TYPE_GET_ALL_TICKET)) {
                 Log.d("TICKETS OF YOURS", result);
                 parseTickets(result, gson);
             }
@@ -237,12 +269,16 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         chatPojoModel.setAlignRight(align);
         chatPojoModel.setInput(input);
         chatPojoModel.setDepartmentResponse(null);
+        chatPojoModel.setCreateTicketResponse(createTicketResponse);
         chatBotResponseList.add(chatPojoModel);
         mAdapter.notifyDataSetChanged();
+        if (!align)
+            textToSpeech.speak(input, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     private void parseBranches(String result, Gson gson) {
         List<BranchesModel> branchesModels = Arrays.asList(gson.fromJson(result, BranchesModel[].class));
+
         ChatPojoModel chatPojoModel = new ChatPojoModel();
         chatPojoModel.setAlignRight(false);
         chatPojoModel.setDepartmentResponse(branchesModels);
@@ -273,7 +309,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
                 break;
             case R.id.keyboardicon:
                 keyboardicon.setVisibility(View.GONE);
-                sendicon.setVisibility(View.VISIBLE);
+                // sendicon.setVisibility(View.VISIBLE);
                 micicon.setVisibility(View.VISIBLE);
                 recognitionProgressView.setVisibility(View.GONE);
                 etInputBox.setVisibility(View.VISIBLE);
