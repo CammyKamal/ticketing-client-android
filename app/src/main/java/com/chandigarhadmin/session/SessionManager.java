@@ -39,12 +39,15 @@ public class SessionManager {
     /**
      * Create login session
      */
-    public void createLoginSession(String username, String phone,String email ) {
+    public void createLoginSession(String username, String phone, String email) {
         // Storing login value as TRUE
-        editor.putBoolean(IS_LOGIN, true);;
+        editor.putBoolean(IS_LOGIN, true);
+        ;
         editor.putString(KEY_USER_EMAIL, email);
-       // editor.putString(KEY_USER_ID, userDetail.getId());
+        // editor.putString(KEY_USER_ID, userDetail.getId());
         editor.putString(KEY_PHONE_NUMBER, phone);
+
+        editor.putString(KEY_USER_NAME, username);
 
         // commit changes
         editor.apply();
@@ -93,7 +96,6 @@ public class SessionManager {
     }
 
 
-
     public String getKeyUserId() {
         return pref.getString(KEY_USER_ID, null);
     }
@@ -105,7 +107,13 @@ public class SessionManager {
         editor.apply();
     }
 
+    public String getUsername() {
+        return pref.getString(KEY_USER_NAME, null);
+    }
+
+
     //getting the value based on provided key
+
     public boolean getBooleanKey(String key) {
         return pref.getBoolean(key, false);
     }
