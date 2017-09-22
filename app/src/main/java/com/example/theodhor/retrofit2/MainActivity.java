@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 //                USERNAME = usernameET.getText().toString();
 //                PASSWORD = passwordET.getText().toString();
                 // useGet(USERNAME, PASSWORD);
-                // getBranches();
-                createTicket();
+                getBranches();
+                //createTicket();
             }
         });
 
@@ -103,9 +103,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void getBranches() {
 
-        new LongOperation().execute(Constant.BASE + "branches");
+        // getting all branches
+        // new LongOperation().execute(Constant.BASE + "branches");
+
+        //getting all tickets
+        new LongOperation().execute(Constant.BASE + "tickets");
+        //getting ticket by id
+        // new LongOperation().execute(Constant.BASE + "tickets/12");
 
     }
+
+    /**
+     * creating a new ticket
+     */
 
     private void createTicket() {
 
@@ -121,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
             User user = new User();
             user.setUsername(Constant.USERNAME);
             user.setPassword(Constant.PASSWORDH);
-            JSONObject jsonObject = jsonParser.getJSONFromUrl(params[0], JSONParser.GET, null, user);
+            String jsonObject = jsonParser.getResponseString(params[0], JSONParser.GET, null, user);
 
             if (null != jsonObject) {
-                return jsonObject.toString();
+                return jsonObject;
             }
             return "Executed";
         }
@@ -132,9 +142,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             System.out.println("RESPONSE BRANCHES=" + result);
-            // txt.setText(result);
-            // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you
         }
 
         @Override
@@ -149,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     private JSONObject createTicketParams() {
         JSONObject values = new JSONObject();
         try {
-            // TODO: 22/09/17 values to be dynamic 
+            // TODO: 22/09/17 values to be dynamic and all the field are Required
             values.put(TicketRequest.BRANCH, 3);
             values.put(TicketRequest.SUBJECT, " Ticket for police");
             values.put(TicketRequest.DESCRIPTION, "Harendra Create ticket from android");
