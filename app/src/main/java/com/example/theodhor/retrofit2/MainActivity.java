@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.theodhor.retrofit2.Events.ErrorEvent;
 import com.example.theodhor.retrofit2.Events.ServerEvent;
 import com.example.theodhor.retrofit2.Utils.Constant;
+import com.example.theodhor.retrofit2.model.TicketRequest;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getBranches() {
 
-        new LongOperation().execute(Constant.BASE +"tickets");
+        new LongOperation().execute(Constant.BASE +"branches");
 
 
     }
@@ -155,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
         }
+    }
+    private  void createTicket(){
+        TicketRequest ticketRequest=new TicketRequest();
+        ticketRequest.setBranch("5");
+        ticketRequest.setSubject("Android Test");
+        ticketRequest.setDescription("Please generate a ticket from android app");
+        ticketRequest.setStatus("New");
+        ticketRequest.setPriority("High");
+        ticketRequest.setReporter("haribisht3@gmail.com");
+        ticketRequest.setSource("Email");
     }
 
 

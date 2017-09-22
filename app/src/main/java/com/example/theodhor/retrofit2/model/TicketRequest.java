@@ -9,6 +9,7 @@ public class TicketRequest {
     private String description;
     private String status;
     private String priority;
+    private String source;
     private String reporter;
     private String assignee;
     private List<String> tags;
@@ -51,6 +52,14 @@ public class TicketRequest {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getReporter() {
