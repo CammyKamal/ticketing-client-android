@@ -145,9 +145,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         aiConfiguration = new AIConfiguration(Constant.AI_CONFIGURATION_TOKEN,
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.System);
-        if (aiService != null) {
-            aiService.resetContexts();
-        }
+
         aiService = AIService.getService(this, aiConfiguration);
         aiService.setListener(this);
     }
@@ -323,6 +321,10 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         Gson gson = gsonBuilder.create();
         if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
+
+            /* if(result.){
+
+           }*/
             if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
                 setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
                 parseBranches(result, gson);
