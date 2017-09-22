@@ -191,7 +191,7 @@ public class JSONParser {
             //urlConnection.setRequestProperty("Content-Type","application/json");
             if (params != null) {
                /* Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("branch", params.get("branch").toString())
+                        .appendQueryParameter("SUBJECT", params.get("SUBJECT").toString())
                         .appendQueryParameter("subject",params.get("subject").toString())
                         .appendQueryParameter("description", params.get("description").toString())
                         .appendQueryParameter("status", params.get("status").toString())

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.theodhor.retrofit2.Events.ErrorEvent;
 import com.example.theodhor.retrofit2.Events.ServerEvent;
 import com.example.theodhor.retrofit2.Utils.Constant;
+import com.example.theodhor.retrofit2.model.TicketRequest;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 //                USERNAME = usernameET.getText().toString();
 //                PASSWORD = passwordET.getText().toString();
                 // useGet(USERNAME, PASSWORD);
-               // getBranches();
+                // getBranches();
                 createTicket();
             }
         });
@@ -100,15 +101,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void getBranches() {
 
-        new LongOperation().execute(Constant.BASE +"branches");
+        new LongOperation().execute(Constant.BASE + "branches");
 
     }
-private void createTicket() {
 
-        new CreateTicketAsync().execute(Constant.BASE +"tickets");
+    private void createTicket() {
+
+        new CreateTicketAsync().execute(Constant.BASE + "tickets");
 
     }
 
@@ -144,24 +145,25 @@ private void createTicket() {
         protected void onProgressUpdate(Void... values) {
         }
     }
-    private  JSONObject createTicketParams(){
-        JSONObject values=new JSONObject();
-       // TicketRequest ticketRequest=new TicketRequest();
+
+    private JSONObject createTicketParams() {
+        JSONObject values = new JSONObject();
         try {
             // TODO: 22/09/17 values to be dynamic 
-            values.put("branch",3);
-            values.put("subject"," Ticket for police");
-            values.put("description","Harendra Create ticket from android");
-            values.put("status","new");
-            values.put("priority","high");
-            values.put("source","email");
-            values.put("reporter","oro_2");
+            values.put(TicketRequest.BRANCH, 3);
+            values.put(TicketRequest.SUBJECT, " Ticket for police");
+            values.put(TicketRequest.DESCRIPTION, "Harendra Create ticket from android");
+            values.put(TicketRequest.STATUS, "new");
+            values.put(TicketRequest.PRIORITY, "high");
+            values.put(TicketRequest.SOURCE, "email");
+            values.put(TicketRequest.REPORTER, "oro_2");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return values;
     }
+
     private class CreateTicketAsync extends AsyncTask<String, Void, String> {
 
         @Override
@@ -170,7 +172,7 @@ private void createTicket() {
             User user = new User();
             user.setUsername(Constant.USERNAME);
             user.setPassword(Constant.PASSWORDH);
-            JSONObject jsonObject = jsonParser.getJSONFromUrl(params[0], JSONParser.POST, createTicketParams(),null, user);
+            JSONObject jsonObject = jsonParser.getJSONFromUrl(params[0], JSONParser.POST, createTicketParams(), null, user);
 
             if (null != jsonObject) {
                 return jsonObject.toString();
