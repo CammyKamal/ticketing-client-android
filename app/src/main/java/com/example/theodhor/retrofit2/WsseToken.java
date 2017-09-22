@@ -29,7 +29,7 @@ public class WsseToken {
     private byte[] nonceBytes;
 
     public WsseToken(User user) {
-        //we need the user object because we need his username
+        //we need the user object because we need his USERNAME
         this.user = user;
         this.createdAt = generateTimestamp();
         this.nonceBytes = generateNonce();

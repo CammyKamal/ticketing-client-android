@@ -18,7 +18,7 @@ public interface Interface {
     @POST("/sp/index.php")
     Call<ServerResponse> post(
             @Field("method") String method,
-            @Field("username") String username,
+            @Field("USERNAME") String username,
             @Field("password") String password
     );
 

@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
 //        loginButtonPost.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                username = usernameET.getText().toString();
-//                password = passwordET.getText().toString();
-//                usePost(username, password);
+//                USERNAME = usernameET.getText().toString();
+//                PASSWORD = passwordET.getText().toString();
+//                usePost(USERNAME, PASSWORD);
 //            }
 //        });
 
@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         loginButtonGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                username = usernameET.getText().toString();
-//                password = passwordET.getText().toString();
-                // useGet(username, password);
+//                USERNAME = usernameET.getText().toString();
+//                PASSWORD = passwordET.getText().toString();
+                // useGet(USERNAME, PASSWORD);
                 getBranches();
             }
         });
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void usePost(String username, String password) {
-//        communicator.loginPost(username, password);
+//        communicator.loginPost(USERNAME, PASSWORD);
     }
 
     private void useGet(String username, String password) {
@@ -119,20 +119,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void getBranches() {
 
-        new LongOperation().execute();
+        new LongOperation().execute(Constant.BASE +"tickets");
 
 
     }
 
-    private class LongOperation extends AsyncTask<Void, Void, String> {
+    private class LongOperation extends AsyncTask<String, Void, String> {
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
             JSONParser jsonParser = new JSONParser(MainActivity.this);
             User user = new User();
-            user.setUsername(Constant.username);
-            user.setPassword(Constant.password);
-            JSONObject jsonObject = jsonParser.getJSONFromUrl(Constant.url, JSONParser.GET, null, user);
+            user.setUsername(Constant.USERNAME);
+            user.setPassword(Constant.PASSWORD);
+            JSONObject jsonObject = jsonParser.getJSONFromUrl(params[0], JSONParser.GET, null, user);
 
             if (null != jsonObject) {
                 return jsonObject.toString();

@@ -154,7 +154,7 @@ public class JSONParser {
 
         HttpURLConnection urlConnection = null;
 
-        // String userCredentials = "username:password";
+        // String userCredentials = "USERNAME:PASSWORD";
         // String basicAuth = "Basic " + new String(new
         // Base64().encode(userCredentials.getBytes()));
 
