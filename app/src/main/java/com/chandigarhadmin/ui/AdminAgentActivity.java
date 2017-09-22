@@ -96,7 +96,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         sessionManager = new SessionManager(this);
         initializeAI();
         initializeViews();
-        setChatInputs("Hi, How may i Asist you ?", false);
+        setChatInputs("Hi, How may i Assist you ?", false);
     }
 
     public void showPopup(View v) {
