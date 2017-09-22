@@ -36,8 +36,8 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:background="@null"
             android:layout_weight=".9"
+            android:background="@null"
             android:gravity="center|left"
             android:hint="Type a message"
             android:imeOptions="actionGo"
@@ -47,7 +47,7 @@
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/searchbtn"
+            android:id="@+id/btn_chat_search"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"

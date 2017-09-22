@@ -27,13 +27,13 @@
     <string name="no_internet">ਇੰਟਰਨੈਟ ਕਨੈਕਸ਼ਨ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</string>
     <string name="logout">ਲਾੱਗ ਆਊਟ</string>
     <string name="grant_audio">ਕਿਰਪਾ ਕਰਕੇ ਔਡੀਓ ਰਿਕਾਰਡ ਕਰਨ ਦੀ ਅਨੁਮਤੀ ਦੇ ਦਿਓ</string>
-    <string name="account">Account</string>
-    <string name="settings">Settings</string>
-    <string name="what_you_do">What can you do</string>
-    <string name="help">Help</string>
-    <string name="send_feedback">Send Feedback</string>
-    <string name="enter_your_otp">Enter your OTP</string>
-    <string name="verify">Verify</string>
-    <string name="resend_otp">Resend OTP</string>
+    <string name="account">ਖਾਤਾ</string>
+    <string name="settings">ਸੈਟਿੰਗਾਂ</string>
+    <string name="what_you_do">ਤੁਸੀਂ ਕੀ ਕਰਦੇ ਹੋ</string>
+    <string name="help">ਮਦਦ</string>
+    <string name="send_feedback">ਫੀਡਬੈਕ ਭੇਜੋ</string>
+    <string name="enter_your_otp">ਆਪਣੇ OTP ਦਰਜ ਕਰੋ</string>
+    <string name="verify">ਜਾਂਚ ਕਰੋ</string>
+    <string name="resend_otp">OTP ਦੁਬਾਰਾ ਭੇਜੋ</string>
 
 </resources>

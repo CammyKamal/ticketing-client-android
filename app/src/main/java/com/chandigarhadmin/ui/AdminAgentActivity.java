@@ -20,12 +20,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.chandigarhadmin.R;
@@ -68,7 +65,6 @@ import butterknife.ButterKnife;
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
-import static com.chandigarhadmin.models.RequestParams.TYPE_GET_TICKET_BY;
 import static com.chandigarhadmin.service.JSONParser.GET;
 
 public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
@@ -79,22 +75,22 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     RecyclerView recyclerView;
     @BindView(R.id.querystringet)
     EditText etInputBox;
-    @BindView(R.id.searchbtn)
-    Button btnSearch;
+    @BindView(R.id.btn_chat_search)
+    ImageView sendicon;
+    @BindView(R.id.keyboardicon)
+    ImageView keyboardicon;
+    @BindView(R.id.micicon)
+    ImageView micicon;
+    @BindView(R.id.recognition_view)
+    RecognitionProgressView recognitionProgressView;
     private AIService aiService;
     private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
     private ArrayList<ChatPojoModel> chatBotResponseList;
-    private TextToSpeech textToSpeech;
-
-    private RecyclerView recyclerView;
-    private ChatAdapter mAdapter;
-    private EditText etInputBox;
     private SessionManager sessionManager;
     private ChatAdapter mAdapter;
+    private TextToSpeech textToSpeech;
     private List<GetTicketResponse> ticketResponseList;
-    private ImageView keyboardicon, sendicon, micicon;
-    private RecognitionProgressView recognitionProgressView;
     private CreateTicketResponse createTicketResponse;
 
     @Override
@@ -161,12 +157,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     //Method to initialize recyclerview
     private void initializeViews() {
         chatBotResponseList = new ArrayList<>();
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        etInputBox = (EditText) findViewById(R.id.querystringet);
-        sendicon = (ImageView) findViewById(R.id.searchbtn);
-        keyboardicon = (ImageView) findViewById(R.id.keyboardicon);
-        micicon = (ImageView) findViewById(R.id.micicon);
-        recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
+
         recognitionProgressView.setOnClickListener(this);
         micicon.setOnClickListener(this);
         keyboardicon.setOnClickListener(this);
@@ -375,7 +366,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.searchbtn:
+            case R.id.btn_chat_search:
                 if (!etInputBox.getText().toString().equalsIgnoreCase("")) {
                     String input = etInputBox.getText().toString();
                     setChatInputs(input, true);
