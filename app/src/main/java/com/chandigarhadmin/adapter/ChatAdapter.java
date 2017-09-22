@@ -3,7 +3,6 @@ package com.chandigarhadmin.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +21,7 @@ import com.chandigarhadmin.ui.ViewTicketActivity;
 
 import java.util.List;
 
+import static com.chandigarhadmin.utils.Constant.INPUT_CTICKET_DATA;
 import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
@@ -98,13 +98,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                 holder.viewTicketll.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (null != chatPojoModel.getGetTicketResponse().get(position)) {
-                            Intent intent = new Intent(context, ViewTicketActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable(INPUT_TICKET_DATA, chatPojoModel.getGetTicketResponse().get(position));
-                            intent.putExtras(bundle);
-                            context.startActivity(intent);
+                        Intent intent = new Intent(context, ViewTicketActivity.class);
+                       // Bundle bundle = new Bundle();
+                        if (null!=chatPojoModel.getGetTicketResponse()&&null != chatPojoModel.getGetTicketResponse().get(position)) {
+
+                            intent.putExtra(INPUT_TICKET_DATA, chatPojoModel.getGetTicketResponse().get(position));
+
                         }
+                        else if(null!=chatPojoModel.getCreateTicketResponse()){
+                            intent.putExtra(INPUT_CTICKET_DATA, chatPojoModel.getCreateTicketResponse());
+
+                        }
+                        //intent.putExtras(bundle);
+                        context.startActivity(intent);
                     }
                 });
             }else {

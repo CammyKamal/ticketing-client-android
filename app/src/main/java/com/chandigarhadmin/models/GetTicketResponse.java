@@ -1,5 +1,8 @@
 package com.chandigarhadmin.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by harendrasinghbisht on 23/09/17.
  */
 
-public class GetTicketResponse implements Serializable {
+public class GetTicketResponse implements Parcelable {
     @SerializedName("assigned_since")
     @Expose
     private String assignedSince;
@@ -56,6 +59,58 @@ public class GetTicketResponse implements Serializable {
     @SerializedName("watcher_list")
     @Expose
     private List<Object> watcherList = null;
+
+    protected GetTicketResponse(Parcel in) {
+        assignedSince = in.readString();
+        assignee = in.readString();
+        branch = in.readString();
+        createdAt = in.readString();
+        id = in.readString();
+        key = in.readString();
+        priority = in.readString();
+        reporter = in.readString();
+        reporterEmail = in.readString();
+        source = in.readString();
+        status = in.readString();
+        subject = in.readString();
+        uniqueId = in.readParcelable(UniqueId.class.getClassLoader());
+        updatedAt = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(assignedSince);
+        dest.writeString(assignee);
+        dest.writeString(branch);
+        dest.writeString(createdAt);
+        dest.writeString(id);
+        dest.writeString(key);
+        dest.writeString(priority);
+        dest.writeString(reporter);
+        dest.writeString(reporterEmail);
+        dest.writeString(source);
+        dest.writeString(status);
+        dest.writeString(subject);
+        dest.writeParcelable(uniqueId, flags);
+        dest.writeString(updatedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GetTicketResponse> CREATOR = new Creator<GetTicketResponse>() {
+        @Override
+        public GetTicketResponse createFromParcel(Parcel in) {
+            return new GetTicketResponse(in);
+        }
+
+        @Override
+        public GetTicketResponse[] newArray(int size) {
+            return new GetTicketResponse[size];
+        }
+    };
 
     public String getAssignedSince() {
         return assignedSince;

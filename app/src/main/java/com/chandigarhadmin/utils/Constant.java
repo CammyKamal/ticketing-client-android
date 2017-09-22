@@ -11,6 +11,7 @@ public class Constant {
     public static final String INPUT_USER = "username";
     public static final String INPUT_EMAIL = "email";
     public static final String INPUT_TICKET_DATA = "ticket_data";
+    public static final String INPUT_CTICKET_DATA = "cticket_data";
     public static final String SELECTED_LOCALE = "selected_locale";
     public static final String SELECTED_LOCALE_LANGUAGE = "selected_locale_language";
     public static final String BASE = "http://95.85.55.146/api/rest/latest/desk/";
