@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:float="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -21,22 +19,22 @@
             android:id="@+id/etphonenumber_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/thirty"
+            android:layout_below="@id/titletv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="@dimen/ten"
             android:layout_marginLeft="@dimen/ten"
             android:layout_marginRight="@dimen/ten"
             android:layout_marginStart="@dimen/ten"
-            android:layout_marginEnd="@dimen/ten"
-            android:layout_below="@id/titletv"
-            android:layout_centerHorizontal="true">
+            android:layout_marginTop="@dimen/thirty">
 
             <EditText
                 android:id="@+id/tvcountrycode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:text="+91"
-                android:editable="false"
                 android:background="@null"
+                android:editable="false"
+                android:text="+91"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size"/>
 
@@ -44,17 +42,17 @@
                     android:id="@+id/etphonenumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_toRightOf="@id/tvcountrycode"
+                    android:background="@null"
+                    android:gravity="center_vertical"
                     android:hint="@string/phone_number"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:gravity="center_vertical"
-                    android:layout_toRightOf="@id/tvcountrycode"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_gravity="center_vertical"
-                    android:background="@null"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"
                     android:textSize="@dimen/text_size" />
@@ -67,9 +65,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
+        android:background="@drawable/rounded_button_background"
+        android:padding="@dimen/activity_horizontal_margin"
         android:text="@string/continue_text"
-        android:textSize="@dimen/bold_size"
         android:textColor="@color/colorPrimary"
-        android:padding="@dimen/activity_horizontal_margin" />
+        android:textSize="@dimen/bold_size" />
 </RelativeLayout>

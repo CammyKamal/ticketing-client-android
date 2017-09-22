@@ -3,7 +3,6 @@ package com.chandigarhadmin.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -47,10 +46,10 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.loginscreen);
 
         ButterKnife.bind(this);
-        btnProceed.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        tvTitle.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        etEmailInput.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        etUserName.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        btnProceed.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        tvTitle.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        etEmailInput.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        etUserName.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
     }
 
     private boolean validateInputs() {
