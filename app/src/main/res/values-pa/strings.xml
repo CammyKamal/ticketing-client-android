@@ -35,5 +35,6 @@
     <string name="enter_your_otp">ਆਪਣੇ OTP ਦਰਜ ਕਰੋ</string>
     <string name="verify">ਜਾਂਚ ਕਰੋ</string>
     <string name="resend_otp">OTP ਦੁਬਾਰਾ ਭੇਜੋ</string>
+    <string name="out_of_scope">ਹੈਕਟੇਨ 2017 ਲਈ ਸਕੋਪ ਤੋਂ ਬਾਹਰ</string>
 
 </resources>
