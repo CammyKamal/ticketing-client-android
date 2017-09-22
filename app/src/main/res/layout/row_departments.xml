@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="160dp"
+    android:id="@+id/ll_mainrow"
     android:layout_height="160dp"
     android:orientation="vertical">
 

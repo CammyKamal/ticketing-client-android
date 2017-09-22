@@ -112,7 +112,9 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         switch (item.getItemId()) {
             case R.id.account:
                 startActivity(new Intent(this, MyAccountActivity.class));
-                // Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                return true;
+            case R.id.view_tickets:
+                //TODO
                 return true;
             case R.id.settings:
                 Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));

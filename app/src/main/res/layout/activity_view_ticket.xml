@@ -67,7 +67,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Created time:"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tvcreated_value"
@@ -79,7 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Status:"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -173,7 +173,7 @@
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/tvdescription"
@@ -192,7 +192,7 @@
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="italic" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

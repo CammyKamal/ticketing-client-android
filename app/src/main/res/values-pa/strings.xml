@@ -36,5 +36,6 @@
     <string name="verify">ਜਾਂਚ ਕਰੋ</string>
     <string name="resend_otp">OTP ਦੁਬਾਰਾ ਭੇਜੋ</string>
     <string name="out_of_scope">ਹੈਕਟੇਨ 2017 ਲਈ ਸਕੋਪ ਤੋਂ ਬਾਹਰ</string>
+    <string name="view_tickets">ਵੇਖੋ ਟਿਕਟ</string>
 
 </resources>
