@@ -17,7 +17,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
 
-    
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
