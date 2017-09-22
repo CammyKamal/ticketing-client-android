@@ -440,7 +440,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             ticketObject.put(RequestParams.STATUS, "new");
             ticketObject.put(RequestParams.PRIORITY, "high");
             ticketObject.put(RequestParams.SOURCE, "email");
-            ticketObject.put(RequestParams.REPORTER, "diamante_" + sessionManager.getKeyUserId());
+            ticketObject.put(RequestParams.REPORTER, "diamante_1" );
         } catch (JSONException e) {
             e.printStackTrace();
         }

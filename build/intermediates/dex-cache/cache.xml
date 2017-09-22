@@ -3,21 +3,39 @@
 
     <item
         is-multidex="false"
-        jar="/Users/harendrasinghbisht/Desktop/grievance-android/app/libs/universal-image-loader-1.9.5 (2).jar"
+        jar="C:\Users\kamal\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife-annotations\8.8.1\bc373fb6bc7bca3035041b924f158fd2b946ee8d\butterknife-annotations-8.8.1.jar"
         jumboMode="false"
         optimize="true"
         revision="26.0.1"
-        sha1="442dbfb517b9ab5cb5c6da7ebf8cc28ec5bd0375">
-        <dex dex="/Users/harendrasinghbisht/Desktop/grievance-android/app/build/intermediates/pre-dexed/debug/universal-image-loader-1.9.5 (2)_0e86fa116cf01098a817e06d4af5253ebef7faa8.jar" />
+        sha1="bc373fb6bc7bca3035041b924f158fd2b946ee8d">
+        <dex dex="E:\androidhackapppandroid\ticketing-client-android\app\build\intermediates\pre-dexed\debug\butterknife-annotations-8.8.1_e20540f0abc06831cbf4e70f03539aa678503f3d.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/Users/harendrasinghbisht/Desktop/grievance-android/splasher/build/intermediates/bundles/default/classes.jar"
+        jar="E:\androidhackapppandroid\ticketing-client-android\splasher\build\intermediates\bundles\default\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="26.0.1"
         sha1="068ac05462b81ed03a79ed5f416953e7009fdc43">
-        <dex dex="/Users/harendrasinghbisht/Desktop/grievance-android/app/build/intermediates/pre-dexed/debug/classes_f8ebc5424ee8a4b9ed88ed62486217a1cc7b3e0d.jar" />
+        <dex dex="E:\androidhackapppandroid\ticketing-client-android\app\build\intermediates\pre-dexed\debug\classes_67f7b1c3d328f973a0386c80ec82d8cbd5d350d3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\kamal\.android\build-cache\4e5028e7c07874bf77ed801955db8812dec490ec\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="6a2bcb61342d09fe9acf55c9daf63961c8866cc0">
+        <dex dex="E:\androidhackapppandroid\ticketing-client-android\app\build\intermediates\pre-dexed\debug\classes_d6074e59ec7a0b5c476f35dff16fbe93632d6657.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\androidhackapppandroid\ticketing-client-android\app\libs\universal-image-loader-1.9.5 (2).jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="442dbfb517b9ab5cb5c6da7ebf8cc28ec5bd0375">
+        <dex dex="E:\androidhackapppandroid\ticketing-client-android\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.5 (2)_d135a6db3edef522f294f952186d8cec1f878569.jar" />
     </item>
 
 </items>
