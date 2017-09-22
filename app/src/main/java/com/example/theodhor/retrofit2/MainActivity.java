@@ -1,8 +1,8 @@
 package com.example.theodhor.retrofit2;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +12,11 @@ import android.widget.Toast;
 
 import com.example.theodhor.retrofit2.Events.ErrorEvent;
 import com.example.theodhor.retrofit2.Events.ServerEvent;
+import com.example.theodhor.retrofit2.Utils.Constant;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // getBranches();
-      //  communicator = new AzureCommunicator(this);
+        // getBranches();
+        //  communicator = new AzureCommunicator(this);
 
 //        usernameET = (EditText)findViewById(R.id.usernameInput);
 //        passwordET = (EditText)findViewById(R.id.passwordInput);
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                username = usernameET.getText().toString();
 //                password = passwordET.getText().toString();
-               // useGet(username, password);
+                // useGet(username, password);
                 getBranches();
             }
         });
@@ -130,13 +128,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
-            String urlBranches = "http://95.85.55.146/api/rest/latest/desk/branches";
-            String passwordDigest = "9ac47cec4801d91bdefba9ad89705d12a111d4c8";
             JSONParser jsonParser = new JSONParser(MainActivity.this);
             User user = new User();
-            user.setUsername("Harry");
-            user.setPassword("jnv@4710");
-            JSONObject jsonObject = jsonParser.getJSONFromUrl(urlBranches, JSONParser.GET, null, user);
+            user.setUsername(Constant.username);
+            user.setPassword(Constant.password);
+            JSONObject jsonObject = jsonParser.getJSONFromUrl(Constant.url, JSONParser.GET, null, user);
 
             if (null != jsonObject) {
                 return jsonObject.toString();

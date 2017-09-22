@@ -31,7 +31,7 @@ public class WsseToken {
     public WsseToken(User user) {
         //we need the user object because we need his username
         this.user = user;
-        this.createdAt = generateTimestamp()+"+7:00";
+        this.createdAt = generateTimestamp();
         this.nonceBytes = generateNonce();
        /* try {
 
@@ -82,7 +82,9 @@ public class WsseToken {
     }
 
     private String generateTimestamp() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+       /* Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();*/
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdf.format(new Date());
     }
@@ -128,8 +130,8 @@ public class WsseToken {
         header.append("\", Created=\"");
         header.append(this.createdAt);
         header.append("\"");
-        return  "UsernameToken Username=\"admin\", PasswordDigest=\"Aywa/w6Ew8bf/MKifJiUPpMxjM8=\", Nonce=\"ODZlYzg4YjRhMzMwNDM2MA==\", Created=\"2017-09-22T17:52:24+07:00\"" ;
-       // return header.toString();
+        //return  "UsernameToken Username=\"admin\", PasswordDigest=\"Aywa/w6Ew8bf/MKifJiUPpMxjM8=\", Nonce=\"ODZlYzg4YjRhMzMwNDM2MA==\", Created=\"2017-09-22T17:52:24+07:00\"" ;
+       return header.toString();
     }
 
     public String getAuthorizationHeader() {
