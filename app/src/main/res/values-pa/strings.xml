@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">ਟਿਕਟ ਕਲਾਇੰਟ</string>
-    <string name="choose_from">ਹੇਠ ਭਾਸ਼ਾ ਦੀ ਚੋਣ ਕਰੋ: -</string>
-    <string name="english">ਅੰਗਰੇਜ਼ੀ</string>
-    <string name="hindi">ਹਿੰਦੀ</string>
+    <string name="choose_from">ਹਭਾਸ਼ਾ ਚੁਣੋ</string>
+    <string name="english">English</string>
+    <string name="hindi">हिंदी</string>
     <string name="punjabi">ਪੰਜਾਬੀ</string>
     <string name="continue_text">ਜਾਰੀ ਰੱਖੋ</string>
     <string name="enter_username">ਨਾਮ</string>

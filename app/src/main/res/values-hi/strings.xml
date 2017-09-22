@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">टिकटिंग क्लाइंट</string>
-    <string name="choose_from">नीचे भाषा चुनें: -</string>
-    <string name="english">अंग्रेज़ी</string>
+    <string name="choose_from">नाषा चुनें</string>
+    <string name="english">English</string>
     <string name="hindi">हिंदी</string>
-    <string name="punjabi">पंजाबी</string>
+    <string name="punjabi">ਪੰਜਾਬੀ</string>
     <string name="continue_text">जारी रहना</string>
     <string name="enter_username">नाम</string>
     <string name="your_email_address">आपका ईमेल पता</string>

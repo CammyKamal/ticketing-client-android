@@ -66,7 +66,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         setContentView(R.layout.activity_confirm_otp);
         ButterKnife.bind(this);
         submitBtn.setEnabled(false);
-//        etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         sessionManager = new SessionManager(this);
         progressDialog = Constant.createDialog(this, null);
         if (getIntent().hasExtra("phone")) {
@@ -142,7 +141,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         return code;
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -209,7 +207,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             progressDialog.show();
             ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
             task.setRequestParams(null, JSONParser.GET);
-            task.execute(Constant.BASE + "users" + "/" + email+"@gmail.com");
+            task.execute(Constant.BASE + "users" + "/" + email+"@gmail.com/");
         } else {
             Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
         }
