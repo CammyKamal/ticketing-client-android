@@ -1,6 +1,5 @@
 package com.example.theodhor.retrofit2;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 
@@ -9,15 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 /**
  * Created by kamal on 21/09/17.
@@ -57,7 +55,7 @@ public class JSONParser {
      * @return
      */
     public String getResponseString(String url, int method,
-                                    ContentValues params, String basicAuth,User user) {
+                                    JSONObject params, String basicAuth,User user) {
         return makeServiceCall(url, method, params, basicAuth,user);
     }
 
@@ -80,7 +78,7 @@ public class JSONParser {
      * @return
      */
     public JSONObject getJSONFromUrl(String url, int method,
-                                     ContentValues params, String basicAuth,User user) {
+                                     JSONObject params, String basicAuth,User user) {
 
         JSONObject json = null;
         // try parse the string to a JSON object
@@ -117,7 +115,7 @@ public class JSONParser {
      * @return
      */
     public JSONArray getJSONArrayFromUrl(String url, int method,
-                                         ContentValues params, String basicAuth) {
+                                         JSONObject params, String basicAuth) {
 
         JSONArray jsonArray = null;
         // try parse the string to a JSON object
@@ -142,7 +140,7 @@ public class JSONParser {
      * @method - http request method
      * @params - http request params
      * */
-    private String makeServiceCall(String address, int method,ContentValues params, String
+    private String makeServiceCall(String address, int method,JSONObject params, String
             basicAuth,User user) {
 
         String result = null;
@@ -151,19 +149,12 @@ public class JSONParser {
         // http client
 
         URL url = null;
-
         HttpURLConnection urlConnection = null;
-
-        // String userCredentials = "USERNAME:PASSWORD";
-        // String basicAuth = "Basic " + new String(new
-        // Base64().encode(userCredentials.getBytes()));
-
         OutputStream out;
         InputStream in;
         try {
 
             url = new URL(address);
-
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(15000);
             urlConnection.setReadTimeout(15000);
@@ -196,17 +187,33 @@ public class JSONParser {
 
             urlConnection.setRequestProperty( "Content-Type", "application/json");
             //urlConnection.setRequestProperty( "Content-Type", "x-www-form-urlencoded");
-           // urlConnection.setRequestProperty( "charset", "utf-8");
+            urlConnection.setRequestProperty( "charset", "utf-8");
             //urlConnection.setRequestProperty("Content-Type","application/json");
             if (params != null) {
-                byte[] outData = params.toString().getBytes(Charset.forName("UTF-8"));
-                urlConnection.setRequestProperty( "Content-Length", Integer.toString( outData.length ));
-
-
+               /* Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("branch", params.get("branch").toString())
+                        .appendQueryParameter("subject",params.get("subject").toString())
+                        .appendQueryParameter("description", params.get("description").toString())
+                        .appendQueryParameter("status", params.get("status").toString())
+                        .appendQueryParameter("priority", params.get("priority").toString())
+                        .appendQueryParameter("source", params.get("source").toString())
+                        .appendQueryParameter("reporter", params.get("reporter").toString());
+                String query = builder.build().getEncodedQuery();
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();*/
+                OutputStreamWriter os = new   OutputStreamWriter(urlConnection.getOutputStream());
+                os.write(params.toString());
+                os.close();
+               /* byte[] outData = params.toString().getBytes(Charset.forName("UTF-8"));
+                urlConnection.setRequestProperty( "Content-Length", Integer.toString( outData.length));
                 out = new BufferedOutputStream(
                         urlConnection.getOutputStream());
                 out.write(outData);
-                out.close();
+                out.close();*/
 
             }
             StringBuilder builder = new StringBuilder();

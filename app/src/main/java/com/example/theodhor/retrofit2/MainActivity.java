@@ -1,10 +1,8 @@
 package com.example.theodhor.retrofit2;
 
-import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,12 +12,10 @@ import android.widget.Toast;
 import com.example.theodhor.retrofit2.Events.ErrorEvent;
 import com.example.theodhor.retrofit2.Events.ServerEvent;
 import com.example.theodhor.retrofit2.Utils.Constant;
-import com.example.theodhor.retrofit2.model.TicketRequest;
 import com.squareup.otto.Subscribe;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
 //                USERNAME = usernameET.getText().toString();
 //                PASSWORD = passwordET.getText().toString();
                 // useGet(USERNAME, PASSWORD);
-                getBranches();
+               // getBranches();
+                createTicket();
             }
         });
 
@@ -102,27 +99,16 @@ public class MainActivity extends AppCompatActivity {
         BusProvider.getInstance().unregister(this);
     }
 
-    private String generateNonce() {
-        java.security.SecureRandom random = null;
-        try {
-            random = java.security.SecureRandom.getInstance("SHA1PRNG");
-            random.setSeed(System.currentTimeMillis());
-            byte[] nonceBytes = new byte[16];
-            random.nextBytes(nonceBytes);
-            String nonce = new String(Base64.encodeToString(nonceBytes, Base64.NO_WRAP));
-            System.out.print("NONCE= " + nonce);
-            return nonce;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
 
-    }
 
     private void getBranches() {
 
         new LongOperation().execute(Constant.BASE +"branches");
 
+    }
+private void createTicket() {
+
+        new CreateTicketAsync().execute(Constant.BASE +"tickets");
 
     }
 
@@ -133,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             JSONParser jsonParser = new JSONParser(MainActivity.this);
             User user = new User();
             user.setUsername(Constant.USERNAME);
-            user.setPassword(Constant.PASSWORD);
+            user.setPassword(Constant.PASSWORDH);
             JSONObject jsonObject = jsonParser.getJSONFromUrl(params[0], JSONParser.GET, null, user);
 
             if (null != jsonObject) {
@@ -158,16 +144,54 @@ public class MainActivity extends AppCompatActivity {
         protected void onProgressUpdate(Void... values) {
         }
     }
-    private  void createTicket(){
-        ContentValues values=new ContentValues();
-        TicketRequest ticketRequest=new TicketRequest();
-        values.put("branch",5);
-        values.put("subject","Android Test");
-        values.put("description","Please generate a ticket from android app");
-        values.put("status","New");
-        values.put("priority","High");
-        values.put("source","Email");
-        values.put("reporter","Harry");
+    private  JSONObject createTicketParams(){
+        JSONObject values=new JSONObject();
+       // TicketRequest ticketRequest=new TicketRequest();
+        try {
+            values.put("branch",7);
+            values.put("subject","Android Test");
+            values.put("description","Please generate a ticket from android app");
+            values.put("status","open");
+            values.put("priority","medium");
+            values.put("source","phone");
+            values.put("reporter","oro_3");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return values;
+    }
+    private class CreateTicketAsync extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            JSONParser jsonParser = new JSONParser(MainActivity.this);
+            User user = new User();
+            user.setUsername(Constant.USERNAME);
+            user.setPassword(Constant.PASSWORDH);
+            JSONObject jsonObject = jsonParser.getJSONFromUrl(params[0], JSONParser.POST, createTicketParams(),null, user);
+
+            if (null != jsonObject) {
+                return jsonObject.toString();
+            }
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            System.out.println("RESPONSE TICKET CREATE=" + result);
+            // txt.setText(result);
+            // might want to change "executed" for the returned string passed
+            // into onPostExecute() but that is upto you
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
     }
 
 
