@@ -25,6 +25,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.ChatAdapter;
