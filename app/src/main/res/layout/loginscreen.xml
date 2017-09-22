@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Enter Your Details"
+        android:text="@string/enter_your_details"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -44,16 +44,11 @@
                    android:textSize="20sp"
                    android:textStyle="bold" />-->
 
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                float:fletTextAppearance="@style/floatlabelededittext">
-
                 <EditText
                     android:id="@+id/etusername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Username"
+                    android:hint="@string/enter_username"
                     android:inputType="text"
                     android:maxLength="30"
                     android:padding="10dp"
@@ -62,7 +57,6 @@
                     android:textColorHint="@android:color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
         </LinearLayout>
 
 
@@ -74,29 +68,11 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <!--   <TextView
-                   android:id="@+id/tvcountrycode"
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:layout_gravity="center|bottom"
-                   android:layout_weight=".2"
-                   android:text="email"
-                   android:textColor="@android:color/white"
-                   android:textSize="20sp"
-                   android:textStyle="bold" />-->
-
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                float:fletPadding="10dp"
-                float:fletTextAppearance="@style/floatlabelededittext">
-
                 <EditText
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="your email address"
+                    android:hint="@string/your_email_address"
                     android:inputType="textEmailAddress"
                     android:maxLength="30"
                     android:visibility="gone"
@@ -105,7 +81,6 @@
                     android:textColorHint="@android:color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
         </LinearLayout>
     </RelativeLayout>
@@ -116,7 +91,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
-        android:text="Proceed"
+        android:text="@string/proceed"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:textStyle="bold" />

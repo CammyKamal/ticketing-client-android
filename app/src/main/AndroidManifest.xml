@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,15 @@
         <activity
             android:screenOrientation="portrait"
             android:name="com.chandigarhadmin.ui.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.AdminAgentActivity" />
+        <activity
+            android:name=".ui.OTPActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.LanguageSelectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,13 +51,13 @@
             android:screenOrientation="portrait"
             android:name=".ui.ViewTicketActivity" />
 
-        <receiver
-
-            android:name=".receviers.OtpReader">
+        <receiver android:name=".receviers.OtpReader">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".ui.ConfirmOtpActivity"></activity>
     </application>
 
 </manifest>

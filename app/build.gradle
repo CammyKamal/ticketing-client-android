@@ -9,7 +9,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-     }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -32,17 +32,18 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26.+'
     compile project(':splasher')
-    compile 'com.wrapp.floatlabelededittext:library:0.0.6'
+
+    compile 'com.android.support:appcompat-v7:26.+'
     compile 'ai.api:sdk:2.0.6@aar'
     compile 'ai.api:libai:1.4.8'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'commons-io:commons-io:2.4'
     compile 'com.google.code.gson:gson:2.4'
+    compile 'commons-io:commons-io:2.4'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
     compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.zagum:SpeechRecognitionView:1.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
