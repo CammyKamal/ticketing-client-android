@@ -422,7 +422,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     private void showResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
+      //  Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
         setChatInputs(matches.get(0), true);
         sendRequest(matches.get(0));
         recognitionProgressView.stop();
