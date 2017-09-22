@@ -156,7 +156,6 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         etInputBox = (EditText) findViewById(R.id.querystringet);
         sendicon = (ImageView) findViewById(R.id.btn_chat_search);
-        ;
         keyboardicon = (ImageView) findViewById(R.id.keyboardicon);
         micicon = (ImageView) findViewById(R.id.micicon);
         recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
