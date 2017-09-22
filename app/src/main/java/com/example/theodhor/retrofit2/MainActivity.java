@@ -148,13 +148,14 @@ private void createTicket() {
         JSONObject values=new JSONObject();
        // TicketRequest ticketRequest=new TicketRequest();
         try {
-            values.put("branch",7);
-            values.put("subject","Android Test");
-            values.put("description","Please generate a ticket from android app");
-            values.put("status","open");
-            values.put("priority","medium");
-            values.put("source","phone");
-            values.put("reporter","oro_3");
+            // TODO: 22/09/17 values to be dynamic 
+            values.put("branch",3);
+            values.put("subject"," Ticket for police");
+            values.put("description","Harendra Create ticket from android");
+            values.put("status","new");
+            values.put("priority","high");
+            values.put("source","email");
+            values.put("reporter","oro_2");
         } catch (JSONException e) {
             e.printStackTrace();
         }
