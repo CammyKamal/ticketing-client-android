@@ -2,6 +2,7 @@ package com.chandigarhadmin.ui;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,10 +20,16 @@ import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.BranchesModel;
 import com.chandigarhadmin.models.ChatPojoModel;
+import com.chandigarhadmin.models.CreateTicketResponse;
+import com.chandigarhadmin.models.RequestParams;
 import com.chandigarhadmin.service.ApiServiceTask;
+import com.chandigarhadmin.service.JSONParser;
 import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +44,9 @@ import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
 
+import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
+import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
+
 public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
     private AIService aiService;
 
@@ -48,11 +58,13 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private EditText etInputBox;
     private Button btnSearch;
     private String ticketSubject, ticketDesc, ticketid;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
+        progressDialog = Constant.createDialog(this, null);
         initializeAI();
         initializeViews();
         setChatInputs("Hi, How are you?<br/>How may i help you?", false);
@@ -119,7 +131,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         if (result.getAction().equalsIgnoreCase("createticket")) {
 
             if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("callDepartmentApi")) {
-                new ApiServiceTask(AdminAgentActivity.this, this, "branches").execute(Constant.BASE + "branches");
+                new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
             } else if ((response).getResult().getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
             } else if ((response).getResult().getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
@@ -127,7 +139,8 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
             } else if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
                 ticketDesc = response.getResult().getParameters().get("ticketdesc").toString().replace("[", "").replace("]", "");
-                setChatInputs("Save ticket", false);
+                setChatInputs("Creating ticket...", false);
+                createTicket();
                 Log.e("result", "Saved");
             }
         } else {
@@ -167,9 +180,13 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         Gson gson = gsonBuilder.create();
 
-        if (type.equalsIgnoreCase("branches")) {
+        if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
             setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
             parseBranches(result, gson);
+        } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
+            CreateTicketResponse createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
+            Log.d("TICKET CREATED", createTicketResponse.getCreatedAt());
+            setChatInputs("Ticket created \n" + " Refrence ID: " + createTicketResponse.getId(), false);
         }
 
     }
@@ -213,5 +230,27 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         Log.e("id<><><>", id);
         ticketid = id;
         sendRequest(branchName);
+    }
+
+    /**
+     * saving ticket
+     */
+    private void createTicket() {
+        // progressDialog.show();
+        JSONObject ticketObject = new JSONObject();
+        try {
+            ticketObject.put(RequestParams.BRANCH, ticketid);
+            ticketObject.put(RequestParams.SUBJECT, ticketSubject.replaceAll("\"",""));
+            ticketObject.put(RequestParams.DESCRIPTION, ticketDesc);
+            ticketObject.put(RequestParams.STATUS, "new");
+            ticketObject.put(RequestParams.PRIORITY, "high");
+            ticketObject.put(RequestParams.SOURCE, "email");
+            ticketObject.put(RequestParams.REPORTER, "oro_2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
+        apiServiceTask.setRequestParams(ticketObject, JSONParser.POST);
+        apiServiceTask.execute(Constant.BASE + "tickets");
     }
 }
