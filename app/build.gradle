@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.chandigarhadmin"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -44,4 +44,5 @@ dependencies {
     compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.zagum:SpeechRecognitionView:1.1'
 }

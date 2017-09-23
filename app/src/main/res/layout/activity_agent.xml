@@ -36,27 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Listen" />
+        android:text="Listen"
+        android:visibility="gone" />
 
-    <ScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/querybox"
-        android:layout_below="@+id/listenButton"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/chatviewll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
-    </ScrollView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
