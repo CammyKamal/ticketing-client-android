@@ -252,8 +252,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 JSONObject response = new JSONObject(result);
 
                 if (response.has("error") && response.getString("error").equalsIgnoreCase("User not found.")) {
-                    //send otp on mobile number
-                   // progressDialog.show();
                     isOtpReceived=true;
                     llOtp.setVisibility(View.VISIBLE);
                     startTimer();
