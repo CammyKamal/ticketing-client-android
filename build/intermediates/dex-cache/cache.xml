@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\kamal\.android\build-cache\35b248aae948a83c082cfdd09e2f92812e1a79a6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="b4c808fc63023da9e556df8762bc1a35585bbedb">
+        <dex dex="E:\ticketinghackapp\ticketing-client-android\app\build\intermediates\pre-dexed\debug\classes_305df64485483bd0cd47054a97926c1edb0c4af0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\ticketinghackapp\ticketing-client-android\app\libs\universal-image-loader-1.9.5 (2).jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="442dbfb517b9ab5cb5c6da7ebf8cc28ec5bd0375">
+        <dex dex="E:\ticketinghackapp\ticketing-client-android\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.5 (2)_0ae43c959f5e55afba1bdd52ea76e4a8708f87b6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\ticketinghackapp\ticketing-client-android\splasher\build\intermediates\bundles\default\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="068ac05462b81ed03a79ed5f416953e7009fdc43">
+        <dex dex="E:\ticketinghackapp\ticketing-client-android\app\build\intermediates\pre-dexed\debug\classes_5c82f0b16e165d1c16c960ae46b4e529ef569959.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\kamal\.android\build-cache\0d390f5d7b27872cb28e75a5e1be01bd31bb80cf\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e71f4488284e77185a0a713cebe7b0c1ccbe274b">
+        <dex dex="E:\ticketinghackapp\ticketing-client-android\app\build\intermediates\pre-dexed\debug\classes_4ed0c13cec4fb5b170f7e98a2d16de0d10de9d82.jar" />
+    </item>
+
+</items>
