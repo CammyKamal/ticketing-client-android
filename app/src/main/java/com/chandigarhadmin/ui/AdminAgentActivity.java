@@ -48,7 +48,6 @@ import ai.api.model.Result;
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
-import static com.chandigarhadmin.models.RequestParams.TYPE_GET_TICKET_BY;
 import static com.chandigarhadmin.service.JSONParser.GET;
 
 public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
@@ -149,6 +148,8 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
                 createTicket(result);
                 Log.e("result", "Saved");
             }
+        } else if (result.getAction().equalsIgnoreCase("fetchalltickets")) {
+            getTickets();
         } else {
             setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
         }
@@ -192,7 +193,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
             } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
                 CreateTicketResponse createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
                 setChatInputs("Ticket created \n" + " Refrence ID: " + createTicketResponse.getId(), false);
-            } else if (type.contains(TYPE_GET_TICKET_BY)) {
+            } else if (type.contains(TYPE_GET_ALL_TICKET)) {
                 Log.d("TICKETS OF YOURS", result);
                 parseTickets(result, gson);
             }
@@ -220,7 +221,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     }
 
     private void parseTickets(String result, Gson gson) {
-         List<GetTicketResponse> ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
+        List<GetTicketResponse> ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
         ChatPojoModel chatPojoModel = new ChatPojoModel();
         chatPojoModel.setAlignRight(false);
         chatPojoModel.setGetTicketResponse(ticketResponseList);
@@ -261,7 +262,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
             ticketObject.put(RequestParams.STATUS, "new");
             ticketObject.put(RequestParams.PRIORITY, "high");
             ticketObject.put(RequestParams.SOURCE, "email");
-            ticketObject.put(RequestParams.REPORTER, "oro_2");
+            ticketObject.put(RequestParams.REPORTER, "diamante_"+sessionManager.getKeyUserId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

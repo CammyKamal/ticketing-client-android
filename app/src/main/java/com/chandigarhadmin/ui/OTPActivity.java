@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -50,11 +51,12 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     private SessionManager sessionManager;
     private SmsVerifyCatcher smsVerifyCatcher;
     private ProgressDialog progressDialog;
-    private int time=0;
+    private int time = 0;
     private LinearLayout llOtp;
     Timer t = new Timer();
+    private MyCountDownTimer myCountDownTimer;
 
-    TimerTask task,timerTask;
+    TimerTask task, timerTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,9 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 String code = parseCode(message);//Parse verification code
                 etOptRecevier.setText(code);//set code in edit text
                 //then you can send verification code to server
+                if(myCountDownTimer!=null) {
+                    myCountDownTimer.onFinish();
+                }
                 saveLoginDetail();
             }
         });
@@ -101,9 +106,13 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 4) {
+                    // TODO: 23/09/17 need to change this otp receive boolean 
+                    isOtpReceived=true;
                     submitBtn.setText("Submit");
                     //create user api call;
-
+                }
+                else{
+                    isOtpReceived=false;
                 }
             }
 
@@ -126,7 +135,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         ((TextView) findViewById(R.id.titletv)).setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         etPhoneNumber.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-         llOtp=(LinearLayout)findViewById(R.id.ll_otp);
+        llOtp = (LinearLayout) findViewById(R.id.ll_otp);
         llOtp.setVisibility(View.GONE);
     }
 
@@ -192,7 +201,12 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     private void checkClickAction() {
         if (!isOtpReceived) {
             // submitBtn.setText("Resend OTP");
-            getUserByEmail(etPhoneNumber.getText().toString());
+            if(!etPhoneNumber.getText().toString().trim().equalsIgnoreCase("Resend Otp")) {
+                getUserByEmail(etPhoneNumber.getText().toString());
+            }
+            else{
+                myCountDownTimer.start();
+            }
         } else if (isOtpReceived) {
             if (!TextUtils.isEmpty(etOptRecevier.getText())) {
                 saveLoginDetail();
@@ -229,8 +243,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
         task.setRequestParams(null, JSONParser.GET);
         task.execute(Constant.BASE + "users" + "/" + email);
-
-
     }
 
     @Override
@@ -252,13 +264,14 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 JSONObject response = new JSONObject(result);
 
                 if (response.has("error") && response.getString("error").equalsIgnoreCase("User not found.")) {
-                    isOtpReceived=true;
+                   // isOtpReceived = true;
                     llOtp.setVisibility(View.VISIBLE);
-                    startTimer();
+                    myCountDownTimer = new MyCountDownTimer(20000, 1000);
+                    myCountDownTimer.start();
 
                 } else if (response.has(RequestParams.EMAIL) && !result.equals("Failed")) {
                     sessionManager.createLoginSession(response.getString("first_name"), response.getString("last_name"), response.getString("email"));
-                   sessionManager.setKeyUserId(response.getString("id"));
+                    sessionManager.setKeyUserId(response.getString("id"));
                     navigateToDashBoard();
                 }
             } catch (JSONException e) {
@@ -275,70 +288,32 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         finish();
     }
 
-    public void startTimer() {
-        t = new Timer();
-        task = new TimerTask() {
+    public class MyCountDownTimer extends CountDownTimer {
 
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
 
-                    @Override
-                    public void run() {
-                        TextView tv1 = (TextView) findViewById(timer);
-                        tv1.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-                        tv1.setText("waiting " + time + "sec");
-                        if (time > 0)
-                            time -= 1;
-                        else if (time == 0) {
+        @Override
+        public void onTick(long millisUntilFinished) {
 
-                            //llOtp.setVisibility(View.GONE);
-                            //progressDialog.hide();
-                        }
-                    }
-                });
+            int progress = (int) (millisUntilFinished / 1000);
+
+            // progressBar.setProgress(progressBar.getMax()-progress);
+            TextView tv1 = (TextView) findViewById(timer);
+            tv1.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+            tv1.setText("waiting " + progress + "sec");
+            if (progress == 0) {
+                llOtp.setVisibility(View.GONE);
+                submitBtn.setText("Resend OTP");
             }
-        };
-        t.scheduleAtFixedRate(task, 0, 60 * 1000);
+        }
+
+        @Override
+        public void onFinish() {
+            llOtp.setVisibility(View.GONE);
+            submitBtn.setText("Resend OTP");
+        }
     }
-
-
-    /*public void initializeTimerTask() {
-
-            timerTask = new TimerTask() {
-
-                public void run() {
-
-                    //use a handler to run a toast that shows the current timestamp
-
-                    handler.post(new Runnable() {
-
-                        public void run() {
-
-                            //get the current timeStamp
-
-                            Calendar calendar = Calendar.getInstance();
-
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
-
-                            final String strDate = simpleDateFormat.format(calendar.getTime());
-
-
-
-                            int duration = Toast.LENGTH_SHORT;
-
-                            Toast toast = Toast.makeText(getApplicationContext(), strDate, duration);
-
-                            toast.show();
-
-                        }
-
-                    });
-
-                }
-
-            };
-
-        }*/
 
 }
