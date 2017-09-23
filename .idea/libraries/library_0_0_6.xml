@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-0.0.6">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/833fab56e5a3b238f6ac5b14ad60fd788dd43e37/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/833fab56e5a3b238f6ac5b14ad60fd788dd43e37/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.wrapp.floatlabelededittext/library/0.0.6/2675b62172b45e1eac933b82b892e1db8361bb4d/library-0.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
