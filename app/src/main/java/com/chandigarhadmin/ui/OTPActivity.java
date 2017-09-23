@@ -243,6 +243,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 Gson gson = new Gson();
                 CreateUserResponse createUserResponse = gson.fromJson(result, CreateUserResponse.class);
                 sessionManager.createLoginSession(createUserResponse.getFirstName(), createUserResponse.getLastName(), createUserResponse.getEmail());
+                sessionManager.setKeyUserId(createUserResponse.getId());
                 navigateToDashBoard();
             }
         } else if (type.equalsIgnoreCase(RequestParams.TYPE_GET_USER_BY)) {
@@ -259,6 +260,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
                 } else if (response.has(RequestParams.EMAIL) && !result.equals("Failed")) {
                     sessionManager.createLoginSession(response.getString("first_name"), response.getString("last_name"), response.getString("email"));
+                   sessionManager.setKeyUserId(response.getString("id"));
                     navigateToDashBoard();
                 }
             } catch (JSONException e) {

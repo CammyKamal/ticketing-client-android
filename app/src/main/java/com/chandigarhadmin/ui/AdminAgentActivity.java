@@ -2,7 +2,6 @@ package com.chandigarhadmin.ui;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -58,13 +57,11 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private EditText etInputBox;
     private Button btnSearch;
     private String ticketSubject, ticketDesc, ticketid;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
-        progressDialog = Constant.createDialog(this, null);
         initializeAI();
         initializeViews();
         setChatInputs("Hi, How are you?<br/>How may i help you?", false);
@@ -136,6 +133,9 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
             } else if ((response).getResult().getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
                 ticketSubject = response.getResult().getParameters().get("ticketsubject").toString().replace("[", "").replace("]", "");
+                if (ticketSubject.contains("\"")) {
+                    ticketSubject = ticketSubject.replaceAll("\"", "");
+                }
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
             } else if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
                 ticketDesc = response.getResult().getParameters().get("ticketdesc").toString().replace("[", "").replace("]", "");
@@ -236,11 +236,10 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
      * saving ticket
      */
     private void createTicket() {
-        // progressDialog.show();
         JSONObject ticketObject = new JSONObject();
         try {
             ticketObject.put(RequestParams.BRANCH, ticketid);
-            ticketObject.put(RequestParams.SUBJECT, ticketSubject.replaceAll("\"",""));
+            ticketObject.put(RequestParams.SUBJECT, ticketSubject);
             ticketObject.put(RequestParams.DESCRIPTION, ticketDesc);
             ticketObject.put(RequestParams.STATUS, "new");
             ticketObject.put(RequestParams.PRIORITY, "high");
@@ -251,6 +250,15 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         }
         ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
         apiServiceTask.setRequestParams(ticketObject, JSONParser.POST);
+        apiServiceTask.execute(Constant.BASE + "tickets");
+    }
+
+    /**
+     * getting all tickets
+     */
+    private void getTickets() {
+        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
+        apiServiceTask.setRequestParams(null, JSONParser.GET);
         apiServiceTask.execute(Constant.BASE + "tickets");
     }
 }
