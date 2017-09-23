@@ -10,52 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfc1989d-abd2-4a3a-b81a-78ba20dd8114" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/android_android_26.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/android-profile/profile-2017-09-23-16-18-11-623.rawproto" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/android-profile/profile-2017-09-23-16-27-57-937.rawproto" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/android-profile/profile-2017-09-23-16-28-00-786.rawproto" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ticketing-client-android.iml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_splasher_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_splasher_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_splasher_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_splasher_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/tasks/_splasher_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/tasks/_splasher_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/generated/mockable-android-26.jar" afterPath="$PROJECT_DIR$/build/generated/mockable-android-26.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/CircularReveal_1_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/CircularReveal_1_1_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/SpeechRecognitionView_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/SpeechRecognitionView_1_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/animated_vector_drawable_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/animated_vector_drawable_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/cardview_v7_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/cardview_v7_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/circleimageview_2_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/circleimageview_2_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/library_0_0_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/library_0_0_6.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/library_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/library_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/library_2_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/library_2_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/sdk_2_0_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sdk_2_0_6.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/smsverifycatcher_0_3_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/smsverifycatcher_0_3_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_compat_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_compat_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_core_ui_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_core_ui_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_core_utils_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_core_utils_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_fragment_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_fragment_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_media_compat_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_media_compat_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_vector_drawable_26_0_0_alpha1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_vector_drawable_26_0_0_alpha1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/chandigarhadmin/adapter/TicketPagerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/chandigarhadmin/adapter/TicketPagerAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/chandigarhadmin/ui/AdminAgentActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/chandigarhadmin/ui/AdminAgentActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/chandigarhadmin/ui/OTPActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/chandigarhadmin/ui/OTPActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_otp.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_otp.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/splasher/splasher.iml" afterPath="$PROJECT_DIR$/splasher/splasher.iml" />
     </list>
     <list id="fd69862b-ae23-4d00-8bf7-5ba7a8897ddb" name="New changelist" comment="" />
     <ignored path="grievance-android.iws" />
@@ -3048,6 +3003,7 @@
     <property name="SearchEverywhereHistoryKey" value="A&#9;FILE&#9;file:///Users/harendrasinghbisht/Desktop/grievance-android/app/src/main/java/com/chandigarhadmin/ui/AdminAgentActivity.java&#10;otp&#9;FILE&#9;file:///Users/harendrasinghbisht/Desktop/grievance-android/app/src/main/java/com/chandigarhadmin/ui/OTPActivity.java&#10;Log&#9;FILE&#9;file:///Users/harendrasinghbisht/Desktop/grievance-android/app/src/main/java/com/chandigarhadmin/ui/LoginActivity.java" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -3490,7 +3446,14 @@
       <option name="project" value="LOCAL" />
       <updated>1506175076040</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="get tickets done">
+      <created>1506179217568</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1506179217568</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -3575,7 +3538,8 @@
     <MESSAGE value="new set up" />
     <MESSAGE value="inital set up done with ticket." />
     <MESSAGE value="ticket creation done" />
-    <option name="LAST_COMMIT_MESSAGE" value="ticket creation done" />
+    <MESSAGE value="get tickets done" />
+    <option name="LAST_COMMIT_MESSAGE" value="get tickets done" />
     <option name="PRESELECT_EXISTING_CHANGELIST" value="false" />
   </component>
   <component name="XDebuggerManager">
