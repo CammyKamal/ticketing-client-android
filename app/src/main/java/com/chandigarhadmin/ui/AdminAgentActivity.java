@@ -63,7 +63,7 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private Button btnSearch;
     private String ticketSubject, ticketDesc, ticketid;
     private SessionManager sessionManager;
-    private List<GetTicketResponse> ticketResponseList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,7 +221,12 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     }
 
     private void parseTickets(String result, Gson gson) {
-        ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
+         List<GetTicketResponse> ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
+        ChatPojoModel chatPojoModel = new ChatPojoModel();
+        chatPojoModel.setAlignRight(false);
+        chatPojoModel.setGetTicketResponse(ticketResponseList);
+        chatBotResponseList.add(chatPojoModel);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

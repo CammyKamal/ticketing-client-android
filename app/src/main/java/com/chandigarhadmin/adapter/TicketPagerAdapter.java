@@ -1,6 +1,7 @@
 package com.chandigarhadmin.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +35,13 @@ public class TicketPagerAdapter extends PagerAdapter {
 
     }
     @Override
+    public float getPageWidth(final int position) {
+        return 0.70f;
+    }
+
+    @Override
     public int getCount() {
-        return 0;
+        return getTicketResponseList.size();
     }
 
     @Override
@@ -47,15 +53,16 @@ public class TicketPagerAdapter extends PagerAdapter {
         View view = this.layoutInflater.inflate(R.layout.row_departments, container, false);
         TextView tvBranchName = (TextView) view.findViewById(R.id.branchnametv);
         CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.departmentiv);
-        /*tvBranchName.setText(dataObjectList.get(position).getName());
-        if (dataObjectList.get(position).getLogo() != null && dataObjectList.get(position).getLogo().getPathname() != null)
-            imageLoader.displayImage("http://95.85.55.146" + dataObjectList.get(position).getLogo().getPathname(), circleImageView);
+        tvBranchName.setText(getTicketResponseList.get(position).getSubject());
+        //if (dataObjectList.get(position).getLogo() != null && dataObjectList.get(position).getLogo().getPathname() != null)
+           // imageLoader.displayImage("http://95.85.55.146" + dataObjectList.get(position).getLogo().getPathname(), circleImageView);
+        circleImageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ticket_img));
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectionCallbacks.onResultSelection(dataObjectList.get(position).getId(),dataObjectList.get(position).getName());
+               // selectionCallbacks.onResultSelection(dataObjectList.get(position).getId(),dataObjectList.get(position).getName());
             }
-        });*/
+        });
         container.addView(view);
         return view;
     }

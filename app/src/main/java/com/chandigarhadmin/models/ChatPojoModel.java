@@ -1,12 +1,12 @@
 package com.chandigarhadmin.models;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class ChatPojoModel {
     private List<BranchesModel> departmentModelResponse;
+    private List<GetTicketResponse> getTicketResponse;
 
     public boolean isAlignRight() {
         return alignRight;
@@ -27,6 +27,14 @@ public class ChatPojoModel {
 
     public void setDepartmentResponse(List<BranchesModel> departmentModelResponse) {
         this.departmentModelResponse = departmentModelResponse;
+    }
+
+    public List<GetTicketResponse> getGetTicketResponse() {
+        return getTicketResponse;
+    }
+
+    public void setGetTicketResponse(List<GetTicketResponse> getTicketResponse) {
+        this.getTicketResponse = getTicketResponse;
     }
 
     public String getType() {

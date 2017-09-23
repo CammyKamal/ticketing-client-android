@@ -22,7 +22,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     private List<ChatPojoModel> chatPojoModelList;
     private Context context;
     private LayoutInflater layoutInflater;
-private SelectionCallbacks selectionCallbacks;
+    private SelectionCallbacks selectionCallbacks;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView inMessageTv, outMessageTv;
         private RelativeLayout llInputLayout, llOutputLayout;
@@ -42,7 +43,7 @@ private SelectionCallbacks selectionCallbacks;
     public ChatAdapter(Context context, List<ChatPojoModel> chatPojoModelList, SelectionCallbacks selectionCallbacks) {
         this.chatPojoModelList = chatPojoModelList;
         this.context = context;
-        this.selectionCallbacks=selectionCallbacks;
+        this.selectionCallbacks = selectionCallbacks;
     }
 
     @Override
@@ -64,7 +65,13 @@ private SelectionCallbacks selectionCallbacks;
         } else {
             if (chatPojoModel.getDepartmentResponse() != null) {
                 holder.branchesViewPager.setVisibility(View.VISIBLE);
-                holder.branchesViewPager.setAdapter(new CustomPagerAdapter(context, chatPojoModel.getDepartmentResponse(),selectionCallbacks));
+                holder.branchesViewPager.setAdapter(new CustomPagerAdapter(context, chatPojoModel.getDepartmentResponse(), selectionCallbacks));
+                holder.llOutputLayout.setVisibility(View.GONE);
+                holder.llInputLayout.setVisibility(View.GONE);
+
+            } else if (chatPojoModel.getGetTicketResponse() != null) {
+                holder.branchesViewPager.setVisibility(View.VISIBLE);
+                holder.branchesViewPager.setAdapter(new TicketPagerAdapter(context, chatPojoModel.getGetTicketResponse(), selectionCallbacks));
                 holder.llOutputLayout.setVisibility(View.GONE);
                 holder.llInputLayout.setVisibility(View.GONE);
 
