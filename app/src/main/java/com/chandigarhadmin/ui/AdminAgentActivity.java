@@ -4,11 +4,27 @@ package com.chandigarhadmin.ui;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.chandigarhadmin.R;
+import com.chandigarhadmin.adapter.ChatAdapter;
+import com.chandigarhadmin.interfaces.ResponseCallback;
+import com.chandigarhadmin.interfaces.SelectionCallbacks;
+import com.chandigarhadmin.models.BranchesModel;
+import com.chandigarhadmin.models.ChatPojoModel;
+import com.chandigarhadmin.service.ApiServiceTask;
+import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,30 +36,54 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
-import com.chandigarhadmin.service.ApiServiceTask;
-import com.chandigarhadmin.models.BranchesModel;
-import com.chandigarhadmin.utils.Constant;
-import com.chandigarhadmin.interfaces.ResponseCallback;
 
-public class AdminAgentActivity extends Activity implements AIListener,ResponseCallback {
+public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
     private AIService aiService;
-    final AIConfiguration config = new AIConfiguration("0882e9aa21ef450694115050513f3822",
-            AIConfiguration.SupportedLanguages.English,
-            AIConfiguration.RecognitionEngine.System);
+
+    private AIConfiguration aiConfiguration;
+    private ArrayList<ChatPojoModel> chatBotResponseList;
+
+    private RecyclerView recyclerView;
+    private ChatAdapter mAdapter;
+    private EditText etInputBox;
+    private Button btnSearch;
+    private String ticketSubject, ticketDesc, ticketid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        aiService = AIService.getService(this, config);
-        aiService.setListener(this);
-        sendRequest("ticket");
+        setContentView(R.layout.activity_agent);
+        initializeAI();
+        initializeViews();
+        setChatInputs("Hi, How are you?<br/>How may i help you?", false);
     }
 
-    /*
-* AIRequest should have query OR event
-*/
-    private void sendRequest(String queryString) {
 
+    //Method to initialize AI
+    private void initializeAI() {
+        aiConfiguration = new AIConfiguration(Constant.AI_CONFIGURATION_TOKEN,
+                AIConfiguration.SupportedLanguages.English,
+                AIConfiguration.RecognitionEngine.System);
+        aiService = AIService.getService(this, aiConfiguration);
+        aiService.setListener(this);
+    }
+
+    //Method to initialize recyclerview
+    private void initializeViews() {
+        chatBotResponseList = new ArrayList<>();
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        etInputBox = (EditText) findViewById(R.id.querystringet);
+        btnSearch = (Button) findViewById(R.id.searchbtn);
+        btnSearch.setOnClickListener(this);
+        mAdapter = new ChatAdapter(this, chatBotResponseList, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    //AIRequest should have query OR event
+    private void sendRequest(String queryString) {
         final AsyncTask<String, Void, AIResponse> task = new AsyncTask<String, Void, AIResponse>() {
             private AIError aiError;
 
@@ -76,11 +116,22 @@ public class AdminAgentActivity extends Activity implements AIListener,ResponseC
     @Override
     public void onResult(AIResponse response) {
         Result result = response.getResult();
-        if(result.getAction().equalsIgnoreCase("createticket")){
+        if (result.getAction().equalsIgnoreCase("createticket")) {
 
-            if(response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("callDepartmentApi")){
-                new ApiServiceTask(AdminAgentActivity.this,this,"branches").execute(Constant.BASE + "branches");
+            if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("callDepartmentApi")) {
+                new ApiServiceTask(AdminAgentActivity.this, this, "branches").execute(Constant.BASE + "branches");
+            } else if ((response).getResult().getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
+                setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
+            } else if ((response).getResult().getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
+                ticketSubject = response.getResult().getParameters().get("ticketsubject").toString().replace("[", "").replace("]", "");
+                setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
+            } else if (response.getResult().getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
+                ticketDesc = response.getResult().getParameters().get("ticketdesc").toString().replace("[", "").replace("]", "");
+                setChatInputs("Save ticket", false);
+                Log.e("result", "Saved");
             }
+        } else {
+            setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
         }
     }
 
@@ -114,17 +165,53 @@ public class AdminAgentActivity extends Activity implements AIListener,ResponseC
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-        Gson  gson = gsonBuilder.create();
+        Gson gson = gsonBuilder.create();
 
-        if(type.equalsIgnoreCase("branches")){
-            parseBranches(result,gson);
+        if (type.equalsIgnoreCase("branches")) {
+            setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
+            parseBranches(result, gson);
         }
 
     }
 
-    private void parseBranches(String result, Gson  gson ) {
-        List<BranchesModel> posts = Arrays.asList(gson.fromJson(result, BranchesModel[].class));
+    private void setChatInputs(String input, boolean align) {
+        ChatPojoModel chatPojoModel = new ChatPojoModel();
+        chatPojoModel.setAlignRight(align);
+        chatPojoModel.setInput(input);
+        chatPojoModel.setDepartmentResponse(null);
+        chatBotResponseList.add(chatPojoModel);
+        mAdapter.notifyDataSetChanged();
+    }
 
+    private void parseBranches(String result, Gson gson) {
+        List<BranchesModel> branchesModels = Arrays.asList(gson.fromJson(result, BranchesModel[].class));
+        ChatPojoModel chatPojoModel = new ChatPojoModel();
+        chatPojoModel.setAlignRight(false);
+        chatPojoModel.setDepartmentResponse(branchesModels);
+        chatBotResponseList.add(chatPojoModel);
+        mAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.searchbtn:
+                if (!etInputBox.getText().toString().equalsIgnoreCase("")) {
+                    String input = etInputBox.getText().toString();
+                    setChatInputs(input, true);
+                    etInputBox.setText("");
+                    sendRequest(input);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResultSelection(String id, String branchName) {
+        Log.e("id<><><>", id);
+        ticketid = id;
+        sendRequest(branchName);
     }
 }

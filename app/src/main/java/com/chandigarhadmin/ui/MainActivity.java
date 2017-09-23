@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.Html;
 
 import com.chandigarhadmin.R;
+import com.chandigarhadmin.session.SessionManager;
 import com.daimajia.androidanimations.library.Techniques;
 
 import wail.splacher.com.splasher.lib.SplasherActivity;
@@ -13,6 +14,7 @@ import wail.splacher.com.splasher.models.SplasherConfig;
 import wail.splacher.com.splasher.utils.Const;
 
 public class MainActivity extends SplasherActivity {
+    private SessionManager sessionManager;
 
     @Override
     public void initSplasher(SplasherConfig config) {
@@ -35,10 +37,10 @@ public class MainActivity extends SplasherActivity {
                 .setSubtitleAnimation(Techniques.FadeIn)
                 .setSubtitleSize(16)
                 //---------------
-                .setSubtitleTypeFace(Typeface.createFromAsset(getAssets(),"diana.otf"))
-                .setTitleTypeFace(Typeface.createFromAsset(getAssets(),"stc.otf"));
+                .setSubtitleTypeFace(Typeface.createFromAsset(getAssets(), "diana.otf"))
+                .setTitleTypeFace(Typeface.createFromAsset(getAssets(), "stc.otf"));
 
-       //Example of custom view ..
+        //Example of custom view ..
        /* config.setCustomView(R.layout.custom_view)
                 .setReveal_start(Const.START_CENTER)
                 .setAnimationDuration(5000);
@@ -48,8 +50,14 @@ public class MainActivity extends SplasherActivity {
 
     @Override
     public void onSplasherFinished() {
-       // Toast.makeText(this, "Go to the next activity", Toast.LENGTH_SHORT).show();
-       startActivity(new Intent(MainActivity.this,LoginActivity.class));
+        sessionManager = new SessionManager(this);
+        Intent it;
+        if (!sessionManager.isLoggedIn()) {
+            it = new Intent(MainActivity.this, LoginActivity.class);
+        } else {
+            it = new Intent(MainActivity.this, AdminAgentActivity.class);
+        }
+        startActivity(it);
         finish();
     }
 }

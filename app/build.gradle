@@ -41,4 +41,7 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
+    compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

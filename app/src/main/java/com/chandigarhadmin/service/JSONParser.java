@@ -3,6 +3,9 @@ package com.chandigarhadmin.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.chandigarhadmin.utils.User;
+import com.chandigarhadmin.utils.WsseToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,9 +19,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import com.chandigarhadmin.utils.User;
-import com.chandigarhadmin.utils.WsseToken;
 
 public class JSONParser {
     // Method type
@@ -189,30 +189,9 @@ public class JSONParser {
             urlConnection.setRequestProperty( "charset", "utf-8");
             //urlConnection.setRequestProperty("Content-Type","application/json");
             if (params != null) {
-               /* Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("SUBJECT", params.get("SUBJECT").toString())
-                        .appendQueryParameter("subject",params.get("subject").toString())
-                        .appendQueryParameter("description", params.get("description").toString())
-                        .appendQueryParameter("status", params.get("status").toString())
-                        .appendQueryParameter("priority", params.get("priority").toString())
-                        .appendQueryParameter("source", params.get("source").toString())
-                        .appendQueryParameter("reporter", params.get("reporter").toString());
-                String query = builder.build().getEncodedQuery();
-                OutputStream os = urlConnection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();*/
                 OutputStreamWriter os = new   OutputStreamWriter(urlConnection.getOutputStream());
                 os.write(params.toString());
                 os.close();
-               /* byte[] outData = params.toString().getBytes(Charset.forName("UTF-8"));
-                urlConnection.setRequestProperty( "Content-Length", Integer.toString( outData.length));
-                out = new BufferedOutputStream(
-                        urlConnection.getOutputStream());
-                out.write(outData);
-                out.close();*/
 
             }
             StringBuilder builder = new StringBuilder();
@@ -222,7 +201,10 @@ public class JSONParser {
                 while ((line = in1.readLine()) != null) {
                     builder.append(line); // + "\r\n"(no need, json has no line breaks!)
                 }
+                result=builder.toString();
                 in1.close();
+                //this will return error
+                return  result;
             } catch(Exception e) {
 
             }

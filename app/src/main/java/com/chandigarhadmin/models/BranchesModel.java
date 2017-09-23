@@ -16,7 +16,7 @@ public class BranchesModel implements Serializable {
     private String createdAt;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
     @SerializedName("key")
     @Expose
     private String key;
@@ -47,11 +47,11 @@ public class BranchesModel implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

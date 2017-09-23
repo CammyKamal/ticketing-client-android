@@ -28,7 +28,7 @@ public class ApiServiceTask extends AsyncTask<String, Void, String> {
         this.responseCallback = responseCallback;
     }
 
-    private void setRequestParams(final JSONObject jsonObject, final int methodCallType) {
+    public void setRequestParams(final JSONObject jsonObject, final int methodCallType) {
         this.requestParams = jsonObject;
         this.methodCallType = methodCallType;
     }
