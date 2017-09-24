@@ -20,15 +20,17 @@ import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.ChatPojoModel;
 import com.chandigarhadmin.ui.ViewTicketActivity;
 
-import java.io.Serializable;
 import java.util.List;
+
+import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
 
     private List<ChatPojoModel> chatPojoModelList;
     private Context context;
     private LayoutInflater layoutInflater;
-private SelectionCallbacks selectionCallbacks;
+    private SelectionCallbacks selectionCallbacks;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView inMessageTv, outMessageTv, tvTicketMessage;
         private RelativeLayout llInputLayout, llOutputLayout;
@@ -53,7 +55,7 @@ private SelectionCallbacks selectionCallbacks;
     public ChatAdapter(Context context, List<ChatPojoModel> chatPojoModelList, SelectionCallbacks selectionCallbacks) {
         this.chatPojoModelList = chatPojoModelList;
         this.context = context;
-        this.selectionCallbacks=selectionCallbacks;
+        this.selectionCallbacks = selectionCallbacks;
     }
 
     @Override
@@ -65,7 +67,7 @@ private SelectionCallbacks selectionCallbacks;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         final ChatPojoModel chatPojoModel = chatPojoModelList.get(position);
         if (chatPojoModel.isAlignRight()) {
             holder.inMessageTv.setText(Html.fromHtml(chatPojoModel.getInput()));
@@ -76,7 +78,7 @@ private SelectionCallbacks selectionCallbacks;
         } else {
             if (chatPojoModel.getDepartmentResponse() != null) {
                 holder.branchesViewPager.setVisibility(View.VISIBLE);
-                holder.branchesViewPager.setAdapter(new CustomPagerAdapter(context, chatPojoModel.getDepartmentResponse(),selectionCallbacks));
+                holder.branchesViewPager.setAdapter(new CustomPagerAdapter(context, chatPojoModel.getDepartmentResponse(), selectionCallbacks));
                 holder.llOutputLayout.setVisibility(View.GONE);
                 holder.llInputLayout.setVisibility(View.GONE);
                 holder.ticketCreatedCardview.setVisibility(View.GONE);
@@ -91,20 +93,22 @@ private SelectionCallbacks selectionCallbacks;
                 holder.viewTicketll.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(context, ViewTicketActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("createTicketResponse", chatPojoModel);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
+                        if (null != chatPojoModel.getGetTicketResponse().get(position)) {
+                            Intent intent = new Intent(context, ViewTicketActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(INPUT_TICKET_DATA, chatPojoModel.getGetTicketResponse().get(position));
+                            intent.putExtras(bundle);
+                            context.startActivity(intent);
+                        }
                     }
                 });
-            }else if (chatPojoModel.getGetTicketResponse() != null) {
+            } else if (chatPojoModel.getGetTicketResponse() != null) {
                 holder.branchesViewPager.setVisibility(View.VISIBLE);
                 holder.branchesViewPager.setAdapter(new TicketPagerAdapter(context, chatPojoModel.getGetTicketResponse(), selectionCallbacks));
                 holder.llOutputLayout.setVisibility(View.GONE);
                 holder.llInputLayout.setVisibility(View.GONE);
 
-            }else {
+            } else {
                 holder.llOutputLayout.setVisibility(View.VISIBLE);
                 holder.llInputLayout.setVisibility(View.GONE);
                 holder.outMessageTv.setText(Html.fromHtml(chatPojoModel.getInput()));

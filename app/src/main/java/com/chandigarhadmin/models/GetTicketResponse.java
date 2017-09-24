@@ -3,13 +3,14 @@ package com.chandigarhadmin.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by harendrasinghbisht on 23/09/17.
  */
 
-public class GetTicketResponse {
+public class GetTicketResponse implements Serializable {
     @SerializedName("assigned_since")
     @Expose
     private String assignedSince;
