@@ -61,25 +61,25 @@ import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
 import static com.chandigarhadmin.service.JSONParser.GET;
 
-public class AdminAgentActivity extends Activity implements AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
+public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
+    //Create placeholder for user's consent to record_audio permission.
+    //This will be used in handling callback
+    private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.querystringet)
+    EditText etInputBox;
+    @BindView(R.id.searchbtn)
+    Button btnSearch;
     private AIService aiService;
     private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
     private ArrayList<ChatPojoModel> chatBotResponseList;
     private SessionManager sessionManager;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
     private ChatAdapter mAdapter;
-    @BindView(R.id.querystringet)
-    EditText etInputBox;
-    @BindView(R.id.searchbtn)
-    Button btnSearch;
     private List<GetTicketResponse> ticketResponseList;
     private ImageView keyboardicon, sendicon, micicon;
     private RecognitionProgressView recognitionProgressView;
-    //Create placeholder for user's consent to record_audio permission.
-    //This will be used in handling callback
-    private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

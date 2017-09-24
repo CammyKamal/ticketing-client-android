@@ -34,5 +34,6 @@
     <string name="send_feedback">Send Feedback</string>
     <string name="enter_your_otp">Enter your OTP</string>
     <string name="verify">Verify</string>
+    <string name="resend_otp">Resend OTP</string>
 
 </resources>

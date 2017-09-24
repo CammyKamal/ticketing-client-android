@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -48,15 +49,15 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
     LinearLayout llOtp;
     @BindView(R.id.btn_confirm_otp)
     Button submitBtn;
+    Timer t = new Timer();
+    TimerTask task, timerTask;
     private boolean isOtpReceived;
     private SmsVerifyCatcher smsVerifyCatcher;
     private ProgressDialog progressDialog;
     private SessionManager sessionManager;
-
     private int time=0;
-    Timer t = new Timer();
+    private MyCountDownTimer myCountDownTimer;
 
-    TimerTask task,timerTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,20 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
                 saveLoginDetail();
             }
         });
+        smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+            @Override
+            public void onSmsCatch(String message) {
+                isOtpReceived = true;
+                progressDialog.hide();
+                String code = parseCode(message);//Parse verification code
+                etOptRecevier.setText(code);//set code in edit text
+                //then you can send verification code to server
+                if (myCountDownTimer != null) {
+                    myCountDownTimer.onFinish();
+                }
+                saveLoginDetail();
+            }
+        });
 
         etOptRecevier.addTextChangedListener(new TextWatcher() {
             @Override
@@ -90,6 +105,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 4) {
+                    isOtpReceived = true;
                     submitBtn.setEnabled(true);
                 }
             }
@@ -143,7 +159,11 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
     private void checkClickAction() {
         if (!isOtpReceived) {
             // submitBtn.setText("Resend OTP");
-            getUserByEmail(getIntent().getStringExtra("phone"));
+            if (!getIntent().getStringExtra("phone").trim().equalsIgnoreCase("Resend Otp")) {
+                getUserByEmail(getIntent().getStringExtra("phone"));
+            } else {
+                myCountDownTimer.start();
+            }
         } else if (isOtpReceived) {
             if (!TextUtils.isEmpty(etOptRecevier.getText())) {
                 saveLoginDetail();
@@ -175,8 +195,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         } else {
             Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
         }
-        //  }
-
     }
 
     private void getUserByEmail(String email) {
@@ -201,6 +219,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
                 Gson gson = new Gson();
                 CreateUserResponse createUserResponse = gson.fromJson(result, CreateUserResponse.class);
                 sessionManager.createLoginSession(createUserResponse.getFirstName(), createUserResponse.getLastName(), createUserResponse.getEmail());
+                sessionManager.setKeyUserId(createUserResponse.getId());
                 navigateToDashBoard();
             }
         } else if (type.equalsIgnoreCase(RequestParams.TYPE_GET_USER_BY)) {
@@ -211,12 +230,14 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
                 if (response.has("error") && response.getString("error").equalsIgnoreCase("User not found.")) {
                     //send otp on mobile number
                     // progressDialog.show();
-                    isOtpReceived=true;
+//                    isOtpReceived=true;
                     llOtp.setVisibility(View.VISIBLE);
-                    startTimer();
+                    myCountDownTimer = new MyCountDownTimer(20000, 1000);
+                    myCountDownTimer.start();
 
                 } else if (response.has(RequestParams.EMAIL) && !result.equals("Failed")) {
                     sessionManager.createLoginSession(response.getString("first_name"), response.getString("last_name"), response.getString("email"));
+                    sessionManager.setKeyUserId(response.getString("id"));
                     navigateToDashBoard();
                 }
             } catch (JSONException e) {
@@ -259,5 +280,33 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             }
         };
         t.scheduleAtFixedRate(task, 0, 60 * 1000);
+    }
+
+    public class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+            int progress = (int) (millisUntilFinished / 1000);
+
+            // progressBar.setProgress(progressBar.getMax()-progress);
+            TextView tv1 = (TextView) findViewById(timer);
+            tv1.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+            tv1.setText("waiting " + progress + "sec");
+            if (progress == 0) {
+                llOtp.setVisibility(View.GONE);
+                submitBtn.setText(R.string.resend_otp);
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            llOtp.setVisibility(View.GONE);
+            submitBtn.setText(R.string.resend_otp);
+        }
     }
 }
