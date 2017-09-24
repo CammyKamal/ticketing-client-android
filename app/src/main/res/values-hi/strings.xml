@@ -35,5 +35,6 @@
     <string name="enter_your_otp">अपना ओटीपी दर्ज करें</string>
     <string name="verify">सत्यापित करें</string>
     <string name="resend_otp">ओटीपी पुनः भेजें</string>
+    <string name="out_of_scope">Out of scope for Hackathon 2017</string>
 
 </resources>

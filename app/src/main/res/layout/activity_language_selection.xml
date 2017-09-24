@@ -7,12 +7,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_continue"
         android:layout_centerInParent="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".3" />
 
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/choose_from"
@@ -63,6 +75,7 @@
                 android:textSize="@dimen/text_size" />
 
         </RadioGroup>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -71,7 +84,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/fifty"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/five"
+        android:layout_marginBottom="@dimen/five"
+        android:layout_marginEnd="@dimen/fifteen"
+        android:layout_marginLeft="@dimen/fifteen"
+        android:layout_marginRight="@dimen/fifteen"
+        android:layout_marginStart="@dimen/fifteen"
         android:background="@drawable/rounded_button_background"
         android:text="@string/continue_text"
         android:textColor="@color/colorPrimary"
