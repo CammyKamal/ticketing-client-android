@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -67,7 +66,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         ButterKnife.bind(this);
         navigateToDashBoard();
         submitBtn.setEnabled(false);
-//        etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         sessionManager = new SessionManager(this);
         progressDialog = Constant.createDialog(this, null);
         checkClickAction();
