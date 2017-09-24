@@ -13,6 +13,7 @@ import com.chandigarhadmin.models.BranchesModel;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -29,7 +30,13 @@ public class CustomPagerAdapter extends PagerAdapter {
         this.context = context;
         this.selectionCallbacks = selectionCallbacks;
         this.layoutInflater = (LayoutInflater) this.context.getSystemService(this.context.LAYOUT_INFLATER_SERVICE);
-        this.dataObjectList = dataObjectList;
+        //creating new arraylist from available list of departments
+        ArrayList<BranchesModel> branchesModelArrayList = new ArrayList<>();
+        branchesModelArrayList.addAll(dataObjectList);
+        //removing default branch from list of departments
+        branchesModelArrayList.remove(0);
+        this.dataObjectList = branchesModelArrayList;
+        ;
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 
