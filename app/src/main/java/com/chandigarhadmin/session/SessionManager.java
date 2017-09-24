@@ -110,4 +110,21 @@ public class SessionManager {
         editor.apply();
     }
 
+    //getting the value based on provided key
+    public boolean getBooleanKey(String key) {
+        return pref.getBoolean(key, false);
+    }
+
+    //filling boolean value in shared prefrence in provided key
+    public void saveBooleanValue(String key, boolean value) {
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    //clearing all data saved in sharedpreference
+    public void clearAllData() {
+        editor.clear();
+        editor.apply();
+    }
+
 }

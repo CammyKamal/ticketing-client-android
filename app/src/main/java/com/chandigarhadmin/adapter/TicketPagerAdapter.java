@@ -38,7 +38,7 @@ public class TicketPagerAdapter extends PagerAdapter {
 
     @Override
     public float getPageWidth(final int position) {
-        return 0.70f;
+        return 0.50f;
     }
 
     @Override

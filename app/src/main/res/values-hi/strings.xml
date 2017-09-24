@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Ticketing Client</string>
+    <string name="choose_from">नीचे भाषा चुनें: -</string>
+    <string name="english">अंग्रेज़ी</string>
+    <string name="hindi">हिंदी</string>
+    <string name="punjabi">पंजाबी</string>
+    <string name="continue_text">जारी रहना</string>
+    <string name="enter_username">उपयोगकर्ता नाम दर्ज करें</string>
+    <string name="your_email_address">आपका ईमेल पता</string>
+    <string name="proceed">बढ़ना</string>
+    <string name="enter_your_details">आपके विवरण दर्ज करें</string>
+    <string name="username_error">उपयोगकर्ता नाम तीन से अधिक वर्ण होना चाहिए</string>
+    <string name="email_error">एक वैध ईमेल प्रविष्ट करें</string>
+    <string name="submit">जमा करें</string>
+    <string name="waiting">इंतज़ार कर रही</string>
+    <string name="second">सेकंड</string>
+    <string name="phone_error">सही फ़ोन नंबर दर्ज करें</string>
+    <string name="enter_your_phone_number">अपना दूरभाष क्रमांक दर्ज करें</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="enter_otp_here">ओटीपी यहां दर्ज करें</string>
+    <string name="waiting_1_sec">1 सेकंड प्रतीक्षा कर रहा है</string>
+    <string name="chandigarh_smart">चंडीगढ़ स्मार्ट ऐप</string>
+    <string name="city_beautiful">शहर सुंदर</string>
+    <string name="enter_query">क्वेरी दर्ज करें</string>
+    <string name="search">खोज</string>
+    <string name="listen">बात सुनो</string>
+    <string name="no_internet">इंटरनेट कनेक्शन उपलब्ध नहीं है</string>
+    <string name="logout">लोग आउट</string>
+    <string name="grant_audio">कृपया ऑडियो रिकॉर्ड करने की अनुमति दें</string>
+    <string name="account">Account</string>
+    <string name="settings">Settings</string>
+    <string name="what_you_do">What can you do</string>
+    <string name="help">Help</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="enter_your_otp">Enter your OTP</string>
+    <string name="verify">Verify</string>
+    <string name="resend_otp">Resend OTP</string>
+
+</resources>

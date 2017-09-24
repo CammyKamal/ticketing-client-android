@@ -2,19 +2,25 @@ package com.chandigarhadmin.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.ChatPojoModel;
+import com.chandigarhadmin.ui.ViewTicketActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
@@ -22,12 +28,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     private List<ChatPojoModel> chatPojoModelList;
     private Context context;
     private LayoutInflater layoutInflater;
-    private SelectionCallbacks selectionCallbacks;
-
+private SelectionCallbacks selectionCallbacks;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView inMessageTv, outMessageTv;
+        private TextView inMessageTv, outMessageTv, tvTicketMessage;
         private RelativeLayout llInputLayout, llOutputLayout;
         private ViewPager branchesViewPager;
+        private LinearLayout viewTicketll;
+        private CardView ticketCreatedCardview;
 
         public MyViewHolder(View view) {
             super(view);
@@ -36,6 +43,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             llInputLayout = (RelativeLayout) view.findViewById(R.id.inputlayoutll);
             llOutputLayout = (RelativeLayout) view.findViewById(R.id.outputlayoutll);
             branchesViewPager = (ViewPager) view.findViewById(R.id.branchesviewpager);
+            ticketCreatedCardview = (CardView) view.findViewById(R.id.card_view);
+            tvTicketMessage = (TextView) view.findViewById(R.id.tvticketcreated);
+            viewTicketll = (LinearLayout) view.findViewById(R.id.viewll);
         }
     }
 
@@ -43,7 +53,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public ChatAdapter(Context context, List<ChatPojoModel> chatPojoModelList, SelectionCallbacks selectionCallbacks) {
         this.chatPojoModelList = chatPojoModelList;
         this.context = context;
-        this.selectionCallbacks = selectionCallbacks;
+        this.selectionCallbacks=selectionCallbacks;
     }
 
     @Override
@@ -56,32 +66,53 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        ChatPojoModel chatPojoModel = chatPojoModelList.get(position);
+        final ChatPojoModel chatPojoModel = chatPojoModelList.get(position);
         if (chatPojoModel.isAlignRight()) {
             holder.inMessageTv.setText(Html.fromHtml(chatPojoModel.getInput()));
             holder.llOutputLayout.setVisibility(View.GONE);
             holder.llInputLayout.setVisibility(View.VISIBLE);
             holder.branchesViewPager.setVisibility(View.GONE);
+            holder.ticketCreatedCardview.setVisibility(View.GONE);
         } else {
             if (chatPojoModel.getDepartmentResponse() != null) {
                 holder.branchesViewPager.setVisibility(View.VISIBLE);
-                holder.branchesViewPager.setAdapter(new CustomPagerAdapter(context, chatPojoModel.getDepartmentResponse(), selectionCallbacks));
+                holder.branchesViewPager.setAdapter(new CustomPagerAdapter(context, chatPojoModel.getDepartmentResponse(),selectionCallbacks));
                 holder.llOutputLayout.setVisibility(View.GONE);
                 holder.llInputLayout.setVisibility(View.GONE);
+                holder.ticketCreatedCardview.setVisibility(View.GONE);
 
-            } else if (chatPojoModel.getGetTicketResponse() != null) {
+            } else if (chatPojoModel.getInput().contains("Reference")) {
+                holder.llOutputLayout.setVisibility(View.GONE);
+                holder.llInputLayout.setVisibility(View.GONE);
+                holder.branchesViewPager.setVisibility(View.GONE);
+
+                holder.ticketCreatedCardview.setVisibility(View.VISIBLE);
+                holder.tvTicketMessage.setText(chatPojoModel.getInput());
+                holder.viewTicketll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, ViewTicketActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("createTicketResponse", chatPojoModel);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                });
+            }else if (chatPojoModel.getGetTicketResponse() != null) {
                 holder.branchesViewPager.setVisibility(View.VISIBLE);
                 holder.branchesViewPager.setAdapter(new TicketPagerAdapter(context, chatPojoModel.getGetTicketResponse(), selectionCallbacks));
                 holder.llOutputLayout.setVisibility(View.GONE);
                 holder.llInputLayout.setVisibility(View.GONE);
 
-            } else {
+            }else {
                 holder.llOutputLayout.setVisibility(View.VISIBLE);
                 holder.llInputLayout.setVisibility(View.GONE);
                 holder.outMessageTv.setText(Html.fromHtml(chatPojoModel.getInput()));
                 holder.branchesViewPager.setVisibility(View.GONE);
+                holder.ticketCreatedCardview.setVisibility(View.GONE);
             }
         }
+
     }
 
     @Override
