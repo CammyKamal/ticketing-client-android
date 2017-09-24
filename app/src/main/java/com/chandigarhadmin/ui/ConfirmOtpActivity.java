@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -132,7 +133,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         }
         return code;
     }
-
 
     @Override
     protected void onStart() {
