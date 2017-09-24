@@ -75,15 +75,18 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
             public void onSmsCatch(String message) {
-                isOtpReceived = true;
-                progressDialog.hide();
+
                 String code = parseCode(message);//Parse verification code
-                etOptRecevier.setText(code);//set code in edit text
-                //then you can send verification code to server
-                if (myCountDownTimer != null) {
-                    myCountDownTimer.onFinish();
+                if(null!=code&&!code.isEmpty()) {
+                    isOtpReceived = true;
+                    progressDialog.hide();
+                    etOptRecevier.setText(code);//set code in edit text
+                    //then you can send verification code to server
+                    if (myCountDownTimer != null) {
+                        myCountDownTimer.onFinish();
+                    }
+                    saveLoginDetail();
                 }
-                saveLoginDetail();
             }
         });
 

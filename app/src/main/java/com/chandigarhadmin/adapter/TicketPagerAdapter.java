@@ -1,6 +1,7 @@
 package com.chandigarhadmin.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -11,10 +12,13 @@ import android.widget.TextView;
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.GetTicketResponse;
+import com.chandigarhadmin.ui.ViewTicketActivity;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
 
 /**
  * Created by harendrasinghbisht on 23/09/17.
@@ -63,7 +67,11 @@ public class TicketPagerAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // selectionCallbacks.onResultSelection(dataObjectList.get(position).getId(),dataObjectList.get(position).getName());
+                Intent intent = new Intent(context, ViewTicketActivity.class);
+                if (null != getTicketResponseList && null != getTicketResponseList.get(position)) {
+                    intent.putExtra(INPUT_TICKET_DATA, getTicketResponseList.get(position));
+                }
+                context.startActivity(intent);
             }
         });
         container.addView(view);
