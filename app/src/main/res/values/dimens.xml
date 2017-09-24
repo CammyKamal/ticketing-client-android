@@ -6,6 +6,7 @@
     <dimen name="bold_size">24sp</dimen>
     <dimen name="text_size">20sp</dimen>
     <dimen name="fifty">50dp</dimen>
+    <dimen name="one_fifty">150dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="five">5dp</dimen>
