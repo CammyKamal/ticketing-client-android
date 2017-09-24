@@ -29,10 +29,12 @@ public class MyAccountActivity extends AppCompatActivity {
         String lang = "";
         if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("en")) {
             lang = "English";
-        } else if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("pb")) {
+        } else if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("pa")) {
             lang = "Punjabi";
         } else if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("hi")) {
             lang = "Hindi";
+        } else {
+            lang = "English";
         }
         tvLang.setText(lang);
         ((ImageView) findViewById(R.id.crossicon)).setOnClickListener(new View.OnClickListener() {
