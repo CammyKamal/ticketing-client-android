@@ -1,16 +1,18 @@
 package com.chandigarhadmin.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by harendrasinghbisht on 23/09/17.
  */
 
-public class CreateTicketResponse implements Serializable{
+public class CreateTicketResponse implements Parcelable{
     @SerializedName("attachments")
     @Expose
     private List<Object> attachments = null;
@@ -62,6 +64,58 @@ public class CreateTicketResponse implements Serializable{
     @SerializedName("watcher_list")
     @Expose
     private List<Object> watcherList = null;
+
+    protected CreateTicketResponse(Parcel in) {
+        branch = in.readString();
+        createdAt = in.readString();
+        description = in.readString();
+        id = in.readString();
+        key = in.readString();
+        priority = in.readString();
+        reporter = in.readString();
+        asignee = in.readString();
+        source = in.readString();
+        status = in.readString();
+        subject = in.readString();
+        tags = in.createStringArrayList();
+        uniqueId = in.readParcelable(UniqueId.class.getClassLoader());
+        updatedAt = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(branch);
+        dest.writeString(createdAt);
+        dest.writeString(description);
+        dest.writeString(id);
+        dest.writeString(key);
+        dest.writeString(priority);
+        dest.writeString(reporter);
+        dest.writeString(asignee);
+        dest.writeString(source);
+        dest.writeString(status);
+        dest.writeString(subject);
+        dest.writeStringList(tags);
+        dest.writeParcelable(uniqueId, flags);
+        dest.writeString(updatedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<CreateTicketResponse> CREATOR = new Creator<CreateTicketResponse>() {
+        @Override
+        public CreateTicketResponse createFromParcel(Parcel in) {
+            return new CreateTicketResponse(in);
+        }
+
+        @Override
+        public CreateTicketResponse[] newArray(int size) {
+            return new CreateTicketResponse[size];
+        }
+    };
 
     public List<Object> getAttachments() {
         return attachments;

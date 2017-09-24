@@ -60,16 +60,16 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
         ButterKnife.bind(this);
         progressDialog = Constant.createDialog(this, null);
         if (getIntent().hasExtra(INPUT_TICKET_DATA)) {
-            getTicketResponse = (GetTicketResponse) getIntent().getExtras().getSerializable(INPUT_TICKET_DATA);
+            getTicketResponse = getIntent().getExtras().getParcelable(INPUT_TICKET_DATA);
             ticketAssignee = getTicketResponse.getAssignee();
             ticketId = getTicketResponse.getId();
         } else if (getIntent().hasExtra(INPUT_CTICKET_DATA)) {
-            createTicketResponse = (CreateTicketResponse) getIntent().getExtras().getSerializable(INPUT_CTICKET_DATA);
+            createTicketResponse = getIntent().getExtras().getParcelable(INPUT_CTICKET_DATA);
             ticketAssignee = createTicketResponse.getAsignee();
             ticketId = createTicketResponse.getId();
         }
         getTicketById(ticketId);
-       // Log.e("Response", getTicketResponse.toString());
+
     }
 
 
@@ -91,7 +91,7 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
             getTicketResponse.setStatus("NA");
         }
 
-        textViewStatus.setText(getTicketResponse.getStatus());
+        textViewStatus.setText(" Ticket Status :" + getTicketResponse.getStatus());
         if (null == getTicketResponse.getId()) {
             textViewTicketId.setText("Ticket Refrence: NA");
         } else {
@@ -107,9 +107,9 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
         }
         textViewSubject.setText(getTicketResponse.getSubject());
         if (null == getTicketResponse.getDescription()) {
-            getTicketResponse.setSubject("NA");
+            getTicketResponse.setDescription("NA");
         }
-        textViewSubject.setText(getTicketResponse.getSubject());
+        textViewDescription.setText(getTicketResponse.getDescription());
     }
 
     @OnClick(R.id.crossicon)
