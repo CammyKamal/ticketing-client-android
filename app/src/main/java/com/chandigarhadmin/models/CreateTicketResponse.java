@@ -3,19 +3,20 @@ package com.chandigarhadmin.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by harendrasinghbisht on 23/09/17.
  */
 
-public class CreateTicketResponse {
+public class CreateTicketResponse implements Serializable{
     @SerializedName("attachments")
     @Expose
     private List<Object> attachments = null;
     @SerializedName("branch")
     @Expose
-    private Integer branch;
+    private String branch;
     @SerializedName("comments")
     @Expose
     private List<Object> comments = null;
@@ -27,7 +28,7 @@ public class CreateTicketResponse {
     private String description;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
     @SerializedName("key")
     @Expose
     private String key;
@@ -39,7 +40,7 @@ public class CreateTicketResponse {
     private String reporter;
     @SerializedName("asignee")
     @Expose
-    private Integer asignee;
+    private String asignee;
     @SerializedName("source")
     @Expose
     private String source;
@@ -70,11 +71,11 @@ public class CreateTicketResponse {
         this.attachments = attachments;
     }
 
-    public Integer getBranch() {
+    public String getBranch() {
         return branch;
     }
 
-    public void setBranch(Integer branch) {
+    public void setBranch(String branch) {
         this.branch = branch;
     }
 
@@ -102,11 +103,11 @@ public class CreateTicketResponse {
         this.description = description;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -134,11 +135,11 @@ public class CreateTicketResponse {
         this.reporter = reporter;
     }
 
-    public Integer getAsignee() {
+    public String getAsignee() {
         return asignee;
     }
 
-    public void setAsignee(Integer asignee) {
+    public void setAsignee(String asignee) {
         this.asignee = asignee;
     }
 

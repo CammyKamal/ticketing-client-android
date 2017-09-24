@@ -3,11 +3,13 @@ package com.chandigarhadmin.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by harendrasinghbisht on 23/09/17.
  */
 
-public class UniqueId {
+public class UniqueId  implements Serializable{
     @SerializedName("id")
     @Expose
     private String id;

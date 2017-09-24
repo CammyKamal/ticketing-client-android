@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.interfaces.ResponseCallback;
+import com.chandigarhadmin.models.CreateTicketResponse;
 import com.chandigarhadmin.models.GetTicketResponse;
 import com.chandigarhadmin.models.RequestParams;
 import com.chandigarhadmin.models.SingleTicketResponse;
@@ -28,6 +28,9 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.chandigarhadmin.utils.Constant.INPUT_CTICKET_DATA;
+import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
 
 public class ViewTicketActivity extends AppCompatActivity implements ResponseCallback {
     @BindView(R.id.tvcreated_value)
@@ -46,6 +49,8 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
     TextView textViewDescription;
     private ProgressDialog progressDialog;
     private GetTicketResponse getTicketResponse;
+    private CreateTicketResponse createTicketResponse;
+    private String ticketId, ticketAssignee;
 
 
     @Override
@@ -54,12 +59,21 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
         setContentView(R.layout.activity_view_ticket);
         ButterKnife.bind(this);
         progressDialog = Constant.createDialog(this, null);
-        getTicketResponse = (GetTicketResponse) getIntent().getExtras().getSerializable(Constant.INPUT_TICKET_DATA);
-        Log.e("Response", getTicketResponse.toString());
+        if (getIntent().hasExtra(INPUT_TICKET_DATA)) {
+            getTicketResponse = (GetTicketResponse) getIntent().getExtras().getSerializable(INPUT_TICKET_DATA);
+            ticketAssignee = getTicketResponse.getAssignee();
+            ticketId = getTicketResponse.getId();
+        } else if (getIntent().hasExtra(INPUT_CTICKET_DATA)) {
+            createTicketResponse = (CreateTicketResponse) getIntent().getExtras().getSerializable(INPUT_CTICKET_DATA);
+            ticketAssignee = createTicketResponse.getAsignee();
+            ticketId = createTicketResponse.getId();
+        }
+        getTicketById(ticketId);
+       // Log.e("Response", getTicketResponse.toString());
     }
 
 
-    private void setValues(SingleTicketResponse getTicketResponse, GetTicketResponse previous) {
+    private void setValues(SingleTicketResponse getTicketResponse, String ticketAssignee) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (null != getTicketResponse.getCreatedAt() && getTicketResponse.getCreatedAt().contains("T")) {
             String[] date_split = getTicketResponse.getCreatedAt().split("T");
@@ -84,10 +98,10 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
             textViewTicketId.setText("Ticket Refrence: " + getTicketResponse.getId());
         }
 
-        if (null == previous.getAssignee()) {
-            previous.setAssignee("NA");
+        if (null == ticketAssignee) {
+            ticketAssignee = "NA";
         }
-        textViewAssignee.setText(previous.getAssignee());
+        textViewAssignee.setText(ticketAssignee);
         if (null == getTicketResponse.getSubject()) {
             getTicketResponse.setSubject("NA");
         }
@@ -108,13 +122,13 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
     /**
      * getting ticket by Id
      *
-     * @param getTicketResponse
+     * @param ticketId
      */
-    private void getTicketById(GetTicketResponse getTicketResponse) {
+    private void getTicketById(String ticketId) {
         progressDialog.show();
         ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, RequestParams.TYPE_GET_TICKET_BY);
         apiServiceTask.setRequestParams(null, JSONParser.GET);
-        apiServiceTask.execute(Constant.BASE + "tickets/" + getTicketResponse.getId());
+        apiServiceTask.execute(Constant.BASE + "tickets/" + ticketId);
 
     }
 
@@ -124,7 +138,7 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
         if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
             Gson gson = new Gson();
             SingleTicketResponse singleTicketResponse = gson.fromJson(result, SingleTicketResponse.class);
-            setValues(singleTicketResponse, getTicketResponse);
+            setValues(singleTicketResponse, ticketAssignee);
         }
     }
 }
