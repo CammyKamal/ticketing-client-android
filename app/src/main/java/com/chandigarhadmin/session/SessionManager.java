@@ -15,7 +15,6 @@ public class SessionManager {
     public static final String KEY_USER_NAME = "userNAME";
     public static final String KEY_PHONE_NUMBER = "phone_no";
     public static final String KEY_USER_EMAIL = "email";
-    public static final String KEY_FIRST_LOGIN = "is_first_login";
     // Sharedpref file name
     private static final String PREF_NAME = "chdadmin";
     // All Shared Preferences Keys
