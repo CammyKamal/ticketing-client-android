@@ -209,7 +209,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             progressDialog.show();
             ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
             task.setRequestParams(null, JSONParser.GET);
-            task.execute(Constant.BASE + "users" + "/" + email+"@gmail.com");
+            task.execute(Constant.BASE + "users" + "/" + email+"@gmail.com/");
         } else {
             Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
         }
