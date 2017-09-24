@@ -66,7 +66,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         setContentView(R.layout.activity_confirm_otp);
         ButterKnife.bind(this);
         submitBtn.setEnabled(false);
-//        etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         sessionManager = new SessionManager(this);
         progressDialog = Constant.createDialog(this, null);
         if (getIntent().hasExtra("phone")) {
@@ -141,7 +140,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         }
         return code;
     }
-
 
     @Override
     protected void onStart() {
