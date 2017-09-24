@@ -115,16 +115,16 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 // Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
                 return true;
             case R.id.settings:
-                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
                 return true;
             case R.id.what_you_do:
-                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
                 return true;
             case R.id.help:
-                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
                 return true;
             case R.id.send_feedback:
-                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
                 return true;
             case R.id.logout_menu:
                 sessionManager.clearAllData();

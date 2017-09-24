@@ -9,4 +9,5 @@
     <dimen name="thirty">30dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="five">5dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
 </resources>
