@@ -53,7 +53,7 @@ public class LanguageSelectionActivity extends AppCompatActivity {
                 getBaseContext().getResources().getDisplayMetrics());
 
         sessionManager.saveBooleanValue(Constant.SELECTED_LOCALE, true);
-        sessionManager.saveLanguage(Constant.SELECTED_LOCALE, loc);
+        sessionManager.saveLanguage(Constant.SELECTED_LOCALE_LANGUAGE, loc);
         moveToNextScreen();
     }
 
