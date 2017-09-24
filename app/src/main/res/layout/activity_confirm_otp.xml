@@ -63,10 +63,9 @@
     <Button
         android:id="@+id/btn_confirm_otp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fifty"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
-        android:padding="@dimen/activity_horizontal_margin"
         android:text="@string/verify"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/bold_size" />
