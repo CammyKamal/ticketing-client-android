@@ -1,13 +1,16 @@
 package com.chandigarhadmin.ui;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,8 +62,6 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
@@ -71,18 +72,12 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     //Create placeholder for user's consent to record_audio permission.
     //This will be used in handling callback
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.querystringet)
-    EditText etInputBox;
-    @BindView(R.id.btn_chat_search)
-    ImageView sendicon;
-    @BindView(R.id.keyboardicon)
-    ImageView keyboardicon;
-    @BindView(R.id.micicon)
-    ImageView micicon;
-    @BindView(R.id.recognition_view)
-    RecognitionProgressView recognitionProgressView;
+    private RecyclerView recyclerView;
+    private EditText etInputBox;
+    private ImageView sendicon;
+    private ImageView keyboardicon;
+    private ImageView micicon;
+    private RecognitionProgressView recognitionProgressView;
     private AIService aiService;
     private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
@@ -97,7 +92,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
-        ButterKnife.bind(this);
+        requestAudioPermissions();
         sessionManager = new SessionManager(this);
         initializeAI();
         initializeViews();
@@ -158,6 +153,13 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     //Method to initialize recyclerview
     private void initializeViews() {
         chatBotResponseList = new ArrayList<>();
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        etInputBox = (EditText) findViewById(R.id.querystringet);
+        sendicon = (ImageView) findViewById(R.id.btn_chat_search);
+        ;
+        keyboardicon = (ImageView) findViewById(R.id.keyboardicon);
+        micicon = (ImageView) findViewById(R.id.micicon);
+        recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
 
         recognitionProgressView.setOnClickListener(this);
         micicon.setOnClickListener(this);
@@ -471,5 +473,54 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizer.startListening(intent);
+    }
+
+    private void requestAudioPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            //When permission is not granted by user, show them message why this permission is needed.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                Constant.showToastMessage(this, getString(R.string.grant_audio));
+
+                //Give user option to still opt-in the permissions
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+
+            } else {
+                // Show user dialog to grant permission to record audio
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+            }
+        }
+        //If permission is granted, then go ahead recording audio
+        else if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            //Go ahead with recording audio now
+        }
+    }
+
+    //Handling callback
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_RECORD_AUDIO: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
     }
 }

@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Ticketing Client</string>
-    <string name="choose_from">Choose language below :-</string>
+    <string name="choose_from">Choose language</string>
     <string name="english">English</string>
-    <string name="hindi">Hindi</string>
-    <string name="punjabi">Punjabi</string>
+    <string name="hindi">हिंदी</string>
+    <string name="punjabi">ਪੰਜਾਬੀ</string>
     <string name="continue_text">Continue</string>
     <string name="enter_username">Name</string>
     <string name="your_email_address">your email address</string>
