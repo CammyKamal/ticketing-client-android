@@ -1,3 +1,38 @@
 <resources>
-    <string name="app_name">SplasherExample</string>
+    <string name="app_name">Ticketing Client</string>
+    <string name="choose_from">Choose language below :-</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="punjabi">Punjabi</string>
+    <string name="continue_text">Continue</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="your_email_address">your email address</string>
+    <string name="proceed">Proceed</string>
+    <string name="enter_your_details">Enter Your Details</string>
+    <string name="username_error">Username should be more three characters</string>
+    <string name="email_error">Enter a valid email</string>
+    <string name="submit">Submit</string>
+    <string name="phone_error">Enter correct phone number</string>
+    <string name="waiting">waiting</string>
+    <string name="second">sec</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="phone_number">phone number</string>
+    <string name="enter_otp_here">Enter otp here</string>
+    <string name="waiting_1_sec">waiting 1 sec</string>
+    <string name="chandigarh_smart">Chandigarh Smart App</string>
+    <string name="city_beautiful">The City Beautiful</string>
+    <string name="enter_query">enter query</string>
+    <string name="search">Search</string>
+    <string name="listen">Listen</string>
+    <string name="no_internet">Internet connection not available</string>
+    <string name="logout">Logout</string>
+    <string name="grant_audio">Please grant permissions to record audio</string>
+    <string name="account">Account</string>
+    <string name="settings">Settings</string>
+    <string name="what_you_do">What can you do</string>
+    <string name="help">Help</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="enter_your_otp">Enter your OTP</string>
+    <string name="verify">Verify</string>
+
 </resources>

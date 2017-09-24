@@ -10,14 +10,15 @@ import android.speech.SpeechRecognizer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.ChatAdapter;
@@ -52,6 +53,8 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
@@ -63,25 +66,69 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
     private ArrayList<ChatPojoModel> chatBotResponseList;
-
-    private RecyclerView recyclerView;
-    private ChatAdapter mAdapter;
-    private EditText etInputBox;
     private SessionManager sessionManager;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    private ChatAdapter mAdapter;
+    @BindView(R.id.querystringet)
+    EditText etInputBox;
+    @BindView(R.id.searchbtn)
+    Button btnSearch;
     private List<GetTicketResponse> ticketResponseList;
     private ImageView keyboardicon, sendicon, micicon;
     private RecognitionProgressView recognitionProgressView;
+    //Create placeholder for user's consent to record_audio permission.
+    //This will be used in handling callback
+    private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
+        ButterKnife.bind(this);
         sessionManager = new SessionManager(this);
         initializeAI();
         initializeViews();
         setChatInputs("Hi, How are you?<br/>How may i help you?", false);
     }
 
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.actions, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.account:
+                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                return true;
+            case R.id.settings:
+                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                return true;
+            case R.id.what_you_do:
+                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                return true;
+            case R.id.help:
+                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                return true;
+            case R.id.send_feedback:
+                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                return true;
+            case R.id.logout_menu:
+                sessionManager.clearAllData();
+                Intent intent = new Intent(AdminAgentActivity.this, LanguageSelectionActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return false;
+        }
+    }
 
     //Method to initialize AI
     private void initializeAI() {
@@ -98,21 +145,18 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     //Method to initialize recyclerview
     private void initializeViews() {
         chatBotResponseList = new ArrayList<>();
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        etInputBox = (EditText) findViewById(R.id.querystringet);
-        sendicon = (ImageView) findViewById(R.id.searchbtn);
-        keyboardicon = (ImageView) findViewById(R.id.keyboardicon);
-        micicon = (ImageView) findViewById(R.id.micicon);
         recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
         recognitionProgressView.setOnClickListener(this);
         micicon.setOnClickListener(this);
         keyboardicon.setOnClickListener(this);
         sendicon.setOnClickListener(this);
         mAdapter = new ChatAdapter(this, chatBotResponseList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(AdminAgentActivity.this);
         int[] colors = {
                 ContextCompat.getColor(this, R.color.colorAccent),
@@ -130,6 +174,22 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         int[] heights = {20, 24, 18, 23, 16};
         recognitionProgressView.setBarMaxHeightsInDp(heights);
         recognitionProgressView.play();
+
+        //making code to autoscroll when layout changes
+        recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v,
+                                       int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.scrollToPosition(
+                                    recyclerView.getAdapter().getItemCount() - 1);
+                        }
+                    }, 1);
+            }
+        });
     }
 
     //AIRequest should have query OR event
@@ -166,23 +226,27 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
     @Override
     public void onResult(AIResponse response) {
         Result result = response.getResult();
-        if (result.getAction().equalsIgnoreCase("createticket")) {
+        if(Constant.isNetworkAvailable(AdminAgentActivity.this)) {
+            if (result.getAction().equalsIgnoreCase("createticket")) {
 
-            if (result.getParameters().get("department").toString().equalsIgnoreCase("[]")) {
-                new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
-            } else if (result.getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
+                if (result.getParameters().get("department").toString().equalsIgnoreCase("[]")) {
+                    new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
+                } else if (result.getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
+                    setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
+                } else if (result.getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
+                    setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
+                } else if (result.getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
+                    setChatInputs("Creating ticket...", false);
+                    createTicket(result);
+                    Log.e("result", "Saved");
+                }
+            } else if (result.getAction().equalsIgnoreCase("fetchalltickets")) {
+                getTickets();
+            } else {
                 setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
-            } else if (result.getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
-                setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
-            } else if (result.getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
-                setChatInputs("Creating ticket...", false);
-                createTicket(result);
-                Log.e("result", "Saved");
             }
-        } else if (result.getAction().equalsIgnoreCase("fetchalltickets")) {
-            getTickets();
         } else {
-            setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
+            Constant.showToastMessage(AdminAgentActivity.this, getString(R.string.no_internet));
         }
     }
 
@@ -248,7 +312,6 @@ public class AdminAgentActivity extends Activity implements AIListener, Response
         chatPojoModel.setDepartmentResponse(branchesModels);
         chatBotResponseList.add(chatPojoModel);
         mAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(chatBotResponseList.size() - 1);
     }
 
     private void parseTickets(String result, Gson gson) {

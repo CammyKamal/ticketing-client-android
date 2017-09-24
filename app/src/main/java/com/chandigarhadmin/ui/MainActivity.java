@@ -27,12 +27,12 @@ public class MainActivity extends SplasherActivity {
                 .setAnimationLogoDuration(2000)
                 .setLogoWidth(500)
                 //---------------
-                .setTitle(Html.fromHtml("Chandigarh Smart App").toString())
+                .setTitle(Html.fromHtml(getString(R.string.chandigarh_smart)).toString())
                 .setTitleColor(Color.parseColor("#ffffff"))
                 .setTitleAnimation(Techniques.Bounce)
                 .setTitleSize(20)
                 //---------------
-                .setSubtitle("The City Beautiful")
+                .setSubtitle(getString(R.string.city_beautiful))
                 .setSubtitleColor(Color.parseColor("#ffffff"))
                 .setSubtitleAnimation(Techniques.FadeIn)
                 .setSubtitleSize(16)

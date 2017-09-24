@@ -1,8 +1,6 @@
 package com.chandigarhadmin.ui;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -11,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chandigarhadmin.R;
@@ -29,7 +25,6 @@ import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,33 +32,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-import static com.chandigarhadmin.R.id.timer;
+public class OTPActivity extends AppCompatActivity implements View.OnClickListener {
+    @BindView(R.id.etphonenumber)
+    EditText etPhoneNumber;
+    @BindView(R.id.submitbtn)
+    Button submitBtn;
 
-/**
- * Created by harendrasinghbisht on 23/09/17.
- */
-
-public class OTPActivity extends AppCompatActivity implements View.OnClickListener, ResponseCallback {
-    private EditText etPhoneNumber, etOptRecevier;
-    private Button submitBtn;
-    private boolean isOtpReceived = false;
-    private SessionManager sessionManager;
-    private SmsVerifyCatcher smsVerifyCatcher;
-    private ProgressDialog progressDialog;
-    private int time = 0;
-    private LinearLayout llOtp;
-    Timer t = new Timer();
     private MyCountDownTimer myCountDownTimer;
-
-    TimerTask task, timerTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
-        sessionManager = new SessionManager(this);
-        progressDialog = Constant.createDialog(this, null);
+        ButterKnife.bind(this);
+        submitBtn.setEnabled(false);
         init();
         smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
@@ -106,7 +91,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 4) {
-                    // TODO: 23/09/17 need to change this otp receive boolean 
+                    // TODO: 23/09/17 need to change this otp receive boolean
                     isOtpReceived=true;
                     submitBtn.setText("Submit");
                     //create user api call;
@@ -124,65 +109,29 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private void init() {
-        etPhoneNumber = (EditText) findViewById(R.id.etphonenumber);
-        etOptRecevier = (EditText) findViewById(R.id.et_readotp);
-        submitBtn = (Button) findViewById(R.id.submitbtn);
         submitBtn.setOnClickListener(this);
         TextView tvCountryCode = (TextView) findViewById(R.id.tvcountrycode);
-        submitBtn.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        tvCountryCode.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        submitBtn.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        tvCountryCode.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         //  tvCountryCode.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        ((TextView) findViewById(R.id.titletv)).setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        etPhoneNumber.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        llOtp = (LinearLayout) findViewById(R.id.ll_otp);
-        llOtp.setVisibility(View.GONE);
+//        ((TextView) findViewById(R.id.titletv)).setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+//        etPhoneNumber.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
+
     }
 
-
-    /**
-     * Parse verification code
-     *
-     * @param message sms message
-     * @return only four numbers from massage string
-     */
-    private String parseCode(String message) {
-        Pattern p = Pattern.compile("\\b\\d{4}\\b");
-        Matcher m = p.matcher(message);
-        String code = "";
-        while (m.find()) {
-            code = m.group(0);
-        }
-        return code;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        smsVerifyCatcher.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        smsVerifyCatcher.onStop();
-    }
-
-    /**
-     * need for Android 6 real time permissions
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.submitbtn:
                 if (validatePhoneNumber()) {
-                    checkClickAction();
+                    Intent confirmOtp = new Intent(OTPActivity.this, ConfirmOtpActivity.class);
+                    confirmOtp.putExtra("phone", etPhoneNumber.getText().toString());
+                    confirmOtp.putExtra(Constant.INPUT_USER, getIntent().getStringExtra(Constant.INPUT_USER));
+                    if (null != getIntent() && getIntent().hasExtra(Constant.INPUT_EMAIL)) {
+                        confirmOtp.putExtra(Constant.INPUT_EMAIL, getIntent().getStringExtra(Constant.INPUT_EMAIL));
+                    }
+                    startActivity(confirmOtp);
                 }
                 break;
 
@@ -193,7 +142,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         if (!TextUtils.isEmpty(etPhoneNumber.getText()) & etPhoneNumber.getText().length() == 10) {
             return true;
         } else {
-            etPhoneNumber.setError("Enter correct phone number");
+            etPhoneNumber.setError(getString(R.string.phone_error));
         }
         return false;
     }
@@ -282,11 +231,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
     }
 
-    private void navigateToDashBoard() {
-        Intent it = new Intent(OTPActivity.this, AdminAgentActivity.class);
-        startActivity(it);
-        finish();
-    }
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
 
     public class MyCountDownTimer extends CountDownTimer {
 

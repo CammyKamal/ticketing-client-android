@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Ticketing Client</string>
+    <string name="choose_from">ਹੇਠ ਭਾਸ਼ਾ ਦੀ ਚੋਣ ਕਰੋ: -</string>
+    <string name="english">ਅੰਗਰੇਜ਼ੀ</string>
+    <string name="hindi">ਹਿੰਦੀ</string>
+    <string name="punjabi">ਪੰਜਾਬੀ</string>
+    <string name="continue_text">ਜਾਰੀ ਰੱਖੋ</string>
+    <string name="enter_username">ਯੂਜ਼ਰਨਾਮ ਦਾਖਲ ਕਰੋ</string>
+    <string name="your_email_address">ਤੁਹਾਡਾ ਈਮੇਲ ਪਤਾ</string>
+    <string name="proceed">ਅੱਗੇ ਵਧੋ</string>
+    <string name="enter_your_details">ਤੁਹਾਡੇ ਵੇਰਵੇ ਦਰਜ ਕਰੋ</string>
+    <string name="username_error">ਉਪਭੋਗਤਾ ਨਾਂ ਹੋਰ ਤਿੰਨ ਅੱਖਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ</string>
+    <string name="email_error">ਇੱਕ ਵੈਧ ਈਮੇਲ ਦਰਜ ਕਰੋ</string>
+    <string name="submit">ਜਮ੍ਹਾਂ ਕਰੋ</string>
+    <string name="waiting">ਉਡੀਕ</string>
+    <string name="phone_error">ਸਹੀ ਫੋਨ ਨੰਬਰ ਦਾਖਲ ਕਰੋ</string>
+    <string name="second">ਸਕਿੰਟ</string>
+    <string name="enter_your_phone_number">ਆਪਣਾ ਫੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
+    <string name="phone_number">ਫੋਨ ਨੰਬਰ</string>
+    <string name="enter_otp_here">ਇੱਥੇ ਓ ਟੀ ਪੀ ਐਂਟਰ ਕਰੋ</string>
+    <string name="waiting_1_sec">1 ਸਕਿੰਟ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ</string>
+    <string name="chandigarh_smart">ਚੰਡੀਗੜ੍ਹ ਸਮਾਰਟ ਐਪ</string>
+    <string name="city_beautiful">ਸਿਟੀ ਬਿੱਲੀ</string>
+    <string name="enter_query">ਪੁੱਛਗਿੱਛ ਦਰਜ ਕਰੋ</string>
+    <string name="search">ਖੋਜ</string>
+    <string name="listen">ਸੁਣੋ</string>
+    <string name="no_internet">ਇੰਟਰਨੈਟ ਕਨੈਕਸ਼ਨ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</string>
+    <string name="logout">ਲਾੱਗ ਆਊਟ</string>
+    <string name="grant_audio">ਕਿਰਪਾ ਕਰਕੇ ਔਡੀਓ ਰਿਕਾਰਡ ਕਰਨ ਦੀ ਅਨੁਮਤੀ ਦੇ ਦਿਓ</string>
+    <string name="account">Account</string>
+    <string name="settings">Settings</string>
+    <string name="what_you_do">What can you do</string>
+    <string name="help">Help</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="enter_your_otp">Enter your OTP</string>
+    <string name="verify">Verify</string>
+
+</resources>

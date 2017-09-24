@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/account"
+        android:title="@string/account" />
+    <item android:id="@+id/settings"
+        android:title="@string/settings" />
+    <item android:id="@+id/what_you_do"
+        android:title="@string/what_you_do" />
+    <item android:id="@+id/help"
+        android:title="@string/help" />
+    <item android:id="@+id/send_feedback"
+        android:title="@string/send_feedback" />
+    <item android:id="@+id/logout_menu"
+        android:title="@string/logout" />
+</menu>
