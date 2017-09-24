@@ -65,7 +65,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_otp);
         ButterKnife.bind(this);
-
+        navigateToDashBoard();
         submitBtn.setEnabled(false);
 //        etOptRecevier.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
         sessionManager = new SessionManager(this);

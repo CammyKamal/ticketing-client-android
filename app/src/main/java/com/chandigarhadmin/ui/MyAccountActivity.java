@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.session.SessionManager;
+import com.chandigarhadmin.utils.Constant;
 
 public class MyAccountActivity extends AppCompatActivity {
 
 
     private SessionManager sessionManager;
 
+    
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +26,16 @@ public class MyAccountActivity extends AppCompatActivity {
         TextView tvUserName = (TextView) findViewById(R.id.usernametv);
         tvUserName.setText(sessionManager.getUsername());
         TextView tvLang = (TextView) findViewById(R.id.langtv);
-       // tvLang.setText(sessionManager.getLanguage());
-        ((ImageView)findViewById(R.id.crossicon)).setOnClickListener(new View.OnClickListener() {
+        String lang = "";
+        if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("en")) {
+            lang = "English";
+        } else if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("pb")) {
+            lang = "Punjabi";
+        } else if (sessionManager.getLanguage(Constant.SELECTED_LOCALE_LANGUAGE).equalsIgnoreCase("hi")) {
+            lang = "Hindi";
+        }
+        tvLang.setText(lang);
+        ((ImageView) findViewById(R.id.crossicon)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
