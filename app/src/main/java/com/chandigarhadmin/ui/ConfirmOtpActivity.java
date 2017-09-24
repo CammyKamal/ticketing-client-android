@@ -41,6 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.chandigarhadmin.R.id.timer;
+import static com.chandigarhadmin.R.string.resend_otp;
 
 public class ConfirmOtpActivity extends Activity implements ResponseCallback {
     @BindView(R.id.et_readotp)
@@ -158,8 +159,7 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
 
     private void checkClickAction() {
         if (!isOtpReceived) {
-            // submitBtn.setText("Resend OTP");
-            if (!getIntent().getStringExtra("phone").trim().equalsIgnoreCase("Resend Otp")) {
+            if (!getIntent().getStringExtra("phone").trim().equalsIgnoreCase(getResources().getString(R.string.resend_otp))) {
                 getUserByEmail(getIntent().getStringExtra("phone"));
             } else {
                 myCountDownTimer.start();
@@ -299,14 +299,14 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             tv1.setText("waiting " + progress + "sec");
             if (progress == 0) {
                 llOtp.setVisibility(View.GONE);
-                submitBtn.setText(R.string.resend_otp);
+                submitBtn.setText(resend_otp);
             }
         }
 
         @Override
         public void onFinish() {
             llOtp.setVisibility(View.GONE);
-            submitBtn.setText(R.string.resend_otp);
+            submitBtn.setText(resend_otp);
         }
     }
 }
