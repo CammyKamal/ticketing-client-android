@@ -19,9 +19,9 @@ import butterknife.OnClick;
 
 public class LanguageSelectionActivity extends AppCompatActivity {
 
-    private SessionManager sessionManager;
     @BindView(R.id.radio_group_languages)
     RadioGroup languageRadioGroup;
+    private SessionManager sessionManager;
 
     @OnClick({ R.id.btn_continue})
     public void continueNextScreen() {
@@ -53,6 +53,7 @@ public class LanguageSelectionActivity extends AppCompatActivity {
                 getBaseContext().getResources().getDisplayMetrics());
 
         sessionManager.saveBooleanValue(Constant.SELECTED_LOCALE, true);
+        sessionManager.saveLanguage(Constant.SELECTED_LOCALE_LANGUAGE, loc);
         moveToNextScreen();
     }
 

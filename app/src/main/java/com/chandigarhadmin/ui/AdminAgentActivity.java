@@ -116,7 +116,8 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.account:
-                Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
+                startActivity(new Intent(this, MyAccountActivity.class));
+                // Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
                 return true;
             case R.id.settings:
                 Constant.showToastMessage(AdminAgentActivity.this, item.getTitle().toString());
@@ -216,13 +217,13 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             public void onLayoutChange(View v,
                                        int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    recyclerView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            recyclerView.scrollToPosition(
-                                    recyclerView.getAdapter().getItemCount() - 1);
-                        }
-                    }, 1);
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.scrollToPosition(
+                                recyclerView.getAdapter().getItemCount() - 1);
+                    }
+                }, 1);
             }
         });
     }
@@ -262,7 +263,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     @Override
     public void onResult(AIResponse response) {
         Result result = response.getResult();
-        if(Constant.isNetworkAvailable(AdminAgentActivity.this)) {
+        if (Constant.isNetworkAvailable(AdminAgentActivity.this)) {
             if (result.getAction().equalsIgnoreCase("createticket")) {
 
                 if (result.getParameters().get("department").toString().equalsIgnoreCase("[]")) {
@@ -324,8 +325,9 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
                 createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
                 setChatInputs("Ticket created " + "with a Reference ID: " + createTicketResponse.getId(), false);
-            }  else if (type.contains(TYPE_GET_ALL_TICKET)) {
+            } else if (type.contains(TYPE_GET_ALL_TICKET)) {
                 Log.d("TICKETS OF YOURS", result);
+                setChatInputs("Here you go...", false);
                 parseTickets(result, gson);
             }
         }
@@ -438,7 +440,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             ticketObject.put(RequestParams.STATUS, "new");
             ticketObject.put(RequestParams.PRIORITY, "high");
             ticketObject.put(RequestParams.SOURCE, "email");
-            ticketObject.put(RequestParams.REPORTER, "diamante_"+sessionManager.getKeyUserId());
+            ticketObject.put(RequestParams.REPORTER, "diamante_" + sessionManager.getKeyUserId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

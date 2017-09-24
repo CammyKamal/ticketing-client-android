@@ -11,28 +11,23 @@ import com.chandigarhadmin.ui.LoginActivity;
  */
 
 public class SessionManager {
-    // Shared Preferences
-    SharedPreferences pref;
-
-    // Editor for Shared preferences
-    SharedPreferences.Editor editor;
-
-    // Context
-    Context _context;
-
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
-
-    // Sharedpref file name
-    private static final String PREF_NAME = "chdadmin";
-
-    // All Shared Preferences Keys
-    private static final String IS_LOGIN = "IsLoggedIn";
     public static final String KEY_USER_ID = "userid";
     public static final String KEY_USER_NAME = "userNAME";
     public static final String KEY_PHONE_NUMBER = "phone_no";
     public static final String KEY_USER_EMAIL = "email";
     public static final String KEY_FIRST_LOGIN = "is_first_login";
+    // Sharedpref file name
+    private static final String PREF_NAME = "chdadmin";
+    // All Shared Preferences Keys
+    private static final String IS_LOGIN = "IsLoggedIn";
+    // Shared Preferences
+    SharedPreferences pref;
+    // Editor for Shared preferences
+    SharedPreferences.Editor editor;
+    // Context
+    Context _context;
+    // Shared pref mode
+    int PRIVATE_MODE = 0;
 
     // Constructor
     public SessionManager(Context context) {
@@ -44,12 +39,15 @@ public class SessionManager {
     /**
      * Create login session
      */
-    public void createLoginSession(String username, String phone,String email ) {
+    public void createLoginSession(String username, String phone, String email) {
         // Storing login value as TRUE
-        editor.putBoolean(IS_LOGIN, true);;
+        editor.putBoolean(IS_LOGIN, true);
+        ;
         editor.putString(KEY_USER_EMAIL, email);
-       // editor.putString(KEY_USER_ID, userDetail.getId());
+        // editor.putString(KEY_USER_ID, userDetail.getId());
         editor.putString(KEY_PHONE_NUMBER, phone);
+
+        editor.putString(KEY_USER_NAME, username);
 
         // commit changes
         editor.apply();
@@ -98,7 +96,6 @@ public class SessionManager {
     }
 
 
-
     public String getKeyUserId() {
         return pref.getString(KEY_USER_ID, null);
     }
@@ -110,7 +107,13 @@ public class SessionManager {
         editor.apply();
     }
 
+    public String getUsername() {
+        return pref.getString(KEY_USER_NAME, null);
+    }
+
+
     //getting the value based on provided key
+
     public boolean getBooleanKey(String key) {
         return pref.getBoolean(key, false);
     }
@@ -118,6 +121,17 @@ public class SessionManager {
     //filling boolean value in shared prefrence in provided key
     public void saveBooleanValue(String key, boolean value) {
         editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    //getting the value based on provided key
+    public String getLanguage(String key) {
+        return pref.getString(key, "en");
+    }
+
+    //filling boolean value in shared prefrence in provided key
+    public void saveLanguage(String key, String value) {
+        editor.putString(key, value);
         editor.apply();
     }
 

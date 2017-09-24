@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Ticketing Client</string>
+    <string name="app_name">ਟਿਕਟ ਕਲਾਇੰਟ</string>
     <string name="choose_from">ਹੇਠ ਭਾਸ਼ਾ ਦੀ ਚੋਣ ਕਰੋ: -</string>
     <string name="english">ਅੰਗਰੇਜ਼ੀ</string>
     <string name="hindi">ਹਿੰਦੀ</string>
     <string name="punjabi">ਪੰਜਾਬੀ</string>
     <string name="continue_text">ਜਾਰੀ ਰੱਖੋ</string>
-    <string name="enter_username">ਯੂਜ਼ਰਨਾਮ ਦਾਖਲ ਕਰੋ</string>
+    <string name="enter_username">ਨਾਮ</string>
     <string name="your_email_address">ਤੁਹਾਡਾ ਈਮੇਲ ਪਤਾ</string>
     <string name="proceed">ਅੱਗੇ ਵਧੋ</string>
     <string name="enter_your_details">ਤੁਹਾਡੇ ਵੇਰਵੇ ਦਰਜ ਕਰੋ</string>

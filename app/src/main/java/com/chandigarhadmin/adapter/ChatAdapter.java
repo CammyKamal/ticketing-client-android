@@ -83,11 +83,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                 holder.llInputLayout.setVisibility(View.GONE);
                 holder.ticketCreatedCardview.setVisibility(View.GONE);
 
-            } else if (chatPojoModel.getInput().contains("Reference")) {
+            } else if (chatPojoModel.getGetTicketResponse() != null) {
+                holder.branchesViewPager.setVisibility(View.VISIBLE);
+                holder.branchesViewPager.setAdapter(new TicketPagerAdapter(context, chatPojoModel.getGetTicketResponse(), selectionCallbacks));
+                holder.llOutputLayout.setVisibility(View.GONE);
+                holder.llInputLayout.setVisibility(View.GONE);
+                holder.ticketCreatedCardview.setVisibility(View.GONE);
+            }else if (chatPojoModel.getInput()!=null &&chatPojoModel.getInput().contains("Reference")) {
                 holder.llOutputLayout.setVisibility(View.GONE);
                 holder.llInputLayout.setVisibility(View.GONE);
                 holder.branchesViewPager.setVisibility(View.GONE);
-
                 holder.ticketCreatedCardview.setVisibility(View.VISIBLE);
                 holder.tvTicketMessage.setText(chatPojoModel.getInput());
                 holder.viewTicketll.setOnClickListener(new View.OnClickListener() {
@@ -102,13 +107,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                         }
                     }
                 });
-            } else if (chatPojoModel.getGetTicketResponse() != null) {
-                holder.branchesViewPager.setVisibility(View.VISIBLE);
-                holder.branchesViewPager.setAdapter(new TicketPagerAdapter(context, chatPojoModel.getGetTicketResponse(), selectionCallbacks));
-                holder.llOutputLayout.setVisibility(View.GONE);
-                holder.llInputLayout.setVisibility(View.GONE);
-
-            } else {
+            }else {
                 holder.llOutputLayout.setVisibility(View.VISIBLE);
                 holder.llInputLayout.setVisibility(View.GONE);
                 holder.outMessageTv.setText(Html.fromHtml(chatPojoModel.getInput()));
