@@ -96,7 +96,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         sessionManager = new SessionManager(this);
         initializeAI();
         initializeViews();
-        setChatInputs("Hi, How are you?<br/>How may i help you?", false);
+        setChatInputs("Hi, How may i Assist you ?", false);
     }
 
     public void showPopup(View v) {
@@ -145,9 +145,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         aiConfiguration = new AIConfiguration(Constant.AI_CONFIGURATION_TOKEN,
                 AIConfiguration.SupportedLanguages.English,
                 AIConfiguration.RecognitionEngine.System);
-        if (aiService != null) {
-            aiService.resetContexts();
-        }
+
         aiService = AIService.getService(this, aiConfiguration);
         aiService.setListener(this);
     }
@@ -322,6 +320,10 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         Gson gson = gsonBuilder.create();
         if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
+
+            /* if(result.){
+
+           }*/
             if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
                 setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
                 parseBranches(result, gson);
@@ -419,7 +421,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     private void showResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
+      //  Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
         setChatInputs(matches.get(0), true);
         sendRequest(matches.get(0));
         recognitionProgressView.stop();
