@@ -26,7 +26,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.ChatAdapter;
@@ -62,22 +61,31 @@ import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
 import static com.chandigarhadmin.service.JSONParser.GET;
 
-public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, ResponseCallback, View.OnClickListener, SelectionCallbacks {
+public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, ResponseCallback, SelectionCallbacks {
     //Create placeholder for user's consent to record_audio permission.
     //This will be used in handling callback
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
-    private RecyclerView recyclerView;
-    private EditText etInputBox;
-    private ImageView sendicon;
-    private ImageView keyboardicon;
-    private ImageView micicon;
-    private RecognitionProgressView recognitionProgressView;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.querystringet)
+    EditText etInputBox;
+    @BindView(R.id.btn_chat_search)
+    ImageView sendicon;
+    @BindView(R.id.keyboardicon)
+    ImageView keyboardicon;
+    @BindView(R.id.micicon)
+    ImageView micicon;
+    @BindView(R.id.recognition_view)
+    RecognitionProgressView recognitionProgressView;
     private AIService aiService;
     private SpeechRecognizer speechRecognizer;
     private AIConfiguration aiConfiguration;
@@ -85,13 +93,58 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     private SessionManager sessionManager;
     private ChatAdapter mAdapter;
     private TextToSpeech textToSpeech;
-    private List<GetTicketResponse> ticketResponseList;
     private CreateTicketResponse createTicketResponse;
+
+    @OnClick(R.id.btn_chat_search)
+    public void sendClick() {
+        if (!etInputBox.getText().toString().equalsIgnoreCase("")) {
+            String input = etInputBox.getText().toString();
+            setChatInputs(input, true);
+            etInputBox.setText("");
+            sendRequest(input);
+        }
+    }
+
+    @OnClick(R.id.keyboardicon)
+    public void keyboardClick() {
+        keyboardicon.setVisibility(View.GONE);
+        micicon.setVisibility(View.VISIBLE);
+        recognitionProgressView.setVisibility(View.GONE);
+        etInputBox.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.micicon)
+    public void micClick() {
+        keyboardicon.setVisibility(View.VISIBLE);
+        sendicon.setVisibility(View.GONE);
+        recognitionProgressView.setVisibility(View.VISIBLE);
+        micicon.setVisibility(View.GONE);
+        etInputBox.setVisibility(View.GONE);
+        startRecognition();
+        recognitionProgressView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startRecognition();
+            }
+        }, 50);
+    }
+
+    @OnClick(R.id.recognition_view)
+    public void recognitionClick() {
+        startRecognition();
+        recognitionProgressView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startRecognition();
+            }
+        }, 50);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent);
+        ButterKnife.bind(this);
         requestAudioPermissions();
         sessionManager = new SessionManager(this);
         initializeAI();
@@ -114,17 +167,10 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(this, MyAccountActivity.class));
                 return true;
             case R.id.view_tickets:
-                //TODO
                 return true;
             case R.id.settings:
-                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
-                return true;
             case R.id.what_you_do:
-                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
-                return true;
             case R.id.help:
-                Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
-                return true;
             case R.id.send_feedback:
                 Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
                 return true;
@@ -153,17 +199,6 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     //Method to initialize recyclerview
     private void initializeViews() {
         chatBotResponseList = new ArrayList<>();
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        etInputBox = (EditText) findViewById(R.id.querystringet);
-        sendicon = (ImageView) findViewById(R.id.btn_chat_search);
-        keyboardicon = (ImageView) findViewById(R.id.keyboardicon);
-        micicon = (ImageView) findViewById(R.id.micicon);
-        recognitionProgressView = (RecognitionProgressView) findViewById(R.id.recognition_view);
-
-        recognitionProgressView.setOnClickListener(this);
-        micicon.setOnClickListener(this);
-        keyboardicon.setOnClickListener(this);
-        sendicon.setOnClickListener(this);
         mAdapter = new ChatAdapter(this, chatBotResponseList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setStackFromEnd(true);
@@ -321,9 +356,6 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         Gson gson = gsonBuilder.create();
         if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
 
-            /* if(result.){
-
-           }*/
             if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
                 setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
                 parseBranches(result, gson);
@@ -370,60 +402,13 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_chat_search:
-                if (!etInputBox.getText().toString().equalsIgnoreCase("")) {
-                    String input = etInputBox.getText().toString();
-                    setChatInputs(input, true);
-                    etInputBox.setText("");
-                    sendRequest(input);
-                }
-                break;
-            case R.id.keyboardicon:
-                keyboardicon.setVisibility(View.GONE);
-                // sendicon.setVisibility(View.VISIBLE);
-                micicon.setVisibility(View.VISIBLE);
-                recognitionProgressView.setVisibility(View.GONE);
-                etInputBox.setVisibility(View.VISIBLE);
-                break;
-            case R.id.micicon:
-                keyboardicon.setVisibility(View.VISIBLE);
-                sendicon.setVisibility(View.GONE);
-                recognitionProgressView.setVisibility(View.VISIBLE);
-                micicon.setVisibility(View.GONE);
-                etInputBox.setVisibility(View.GONE);
-                startRecognition();
-                recognitionProgressView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startRecognition();
-                    }
-                }, 50);
-                break;
-            case R.id.recognition_view:
-
-                //aiService.startListening();
-                startRecognition();
-                recognitionProgressView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startRecognition();
-                    }
-                }, 50);
-                break;
-            default:
-                break;
-        }
-    }
-
     private void showResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-      //  Toast.makeText(this, matches.get(0), Toast.LENGTH_LONG).show();
-        setChatInputs(matches.get(0), true);
-        sendRequest(matches.get(0));
+        if (!matches.isEmpty()) {
+            setChatInputs(matches.get(0), true);
+            sendRequest(matches.get(0));
+        }
         recognitionProgressView.stop();
         recognitionProgressView.play();
     }
@@ -466,9 +451,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (AIService.getService(this, aiConfiguration) != null) {
             AIService.getService(this, aiConfiguration).cancel();
-        }
     }
 
     private void startRecognition() {
@@ -513,8 +496,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_RECORD_AUDIO: {
+        if (requestCode == MY_PERMISSIONS_RECORD_AUDIO) {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay!
@@ -522,8 +504,6 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             }
-        }
     }
 }
