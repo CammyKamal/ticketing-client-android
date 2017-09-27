@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grievance-android.iml" filepath="$PROJECT_DIR$/grievance-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/splasher/splasher.iml" filepath="$PROJECT_DIR$/splasher/splasher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ticketing-client-android.iml" filepath="$PROJECT_DIR$/ticketing-client-android.iml" />
     </modules>
   </component>
 </project>
