@@ -9,9 +9,8 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfc1989d-abd2-4a3a-b81a-78ba20dd8114" name="Default" comment="ticket detail completed&#10;">
+    <list default="true" id="dfc1989d-abd2-4a3a-b81a-78ba20dd8114" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/splasher/splasher.iml" afterPath="$PROJECT_DIR$/splasher/splasher.iml" />
     </list>
     <list id="fd69862b-ae23-4d00-8bf7-5ba7a8897ddb" name="New changelist" comment="" />
     <ignored path="grievance-android.iws" />
@@ -3752,7 +3751,14 @@
       <option name="project" value="LOCAL" />
       <updated>1506532566256</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="ticket detail completed&#10;">
+      <created>1506532589540</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1506532589540</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="ToolWindowManager">
