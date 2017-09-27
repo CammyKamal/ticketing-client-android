@@ -6,28 +6,33 @@
     android:background="#F5F5F5"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/crossicon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_margin="15dp"
-            android:src="@drawable/closeicon" />
-
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:padding="10dp"
             android:text="Ticket Details"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/crossicon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="15dp"
+            android:padding="5dp"
+            android:src="@drawable/closeicon" />
+
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -67,13 +72,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Created time:"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvcreated_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/text_status"
@@ -114,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:text="Ticket Id"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvticket_assigne"
@@ -123,7 +128,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:text="Assigned to: Birender Singh"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvticket_assigne_value"

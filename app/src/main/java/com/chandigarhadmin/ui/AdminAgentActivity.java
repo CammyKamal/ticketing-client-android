@@ -167,6 +167,11 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(this, MyAccountActivity.class));
                 return true;
             case R.id.view_tickets:
+                //TODO
+                Intent intent1 = new Intent(AdminAgentActivity.this, AllTicketsActivity.class);
+                // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent1);
+
                 return true;
             case R.id.settings:
             case R.id.what_you_do:

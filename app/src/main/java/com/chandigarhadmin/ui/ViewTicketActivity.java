@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -101,7 +102,7 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
         if (null == ticketAssignee) {
             ticketAssignee = "NA";
         }
-        textViewAssignee.setText(ticketAssignee);
+        //  textViewAssignee.setText(ticketAssignee);
         if (null == getTicketResponse.getSubject()) {
             getTicketResponse.setSubject("NA");
         }
@@ -109,7 +110,7 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
         if (null == getTicketResponse.getDescription()) {
             getTicketResponse.setDescription("NA");
         }
-        textViewDescription.setText(getTicketResponse.getDescription());
+        textViewDescription.setText(Html.fromHtml(getTicketResponse.getDescription()));
     }
 
     @OnClick(R.id.crossicon)

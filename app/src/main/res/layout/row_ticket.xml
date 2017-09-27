@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_mainrow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@android:color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="2sp"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/tag_ticket">
+
+                <TextView
+                    android:id="@+id/tvticketId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="35"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/departmentiv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ticket_img"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/tvbranchname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/departmentiv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Subject"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/branchnametv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvbranchname"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Subject"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

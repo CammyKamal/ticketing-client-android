@@ -45,6 +45,9 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".ui.ViewTicketActivity" />
+        <activity
+            android:name=".ui.AllTicketsActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".receviers.OtpReader">
             <intent-filter>
