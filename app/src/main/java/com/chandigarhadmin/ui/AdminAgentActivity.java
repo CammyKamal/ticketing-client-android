@@ -450,7 +450,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     private void getTickets() {
         ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
         apiServiceTask.setRequestParams(null, GET);
-        apiServiceTask.execute(Constant.BASE + "tickets");
+        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_"+ sessionManager.getKeyUserId());
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.models.GetTicketResponse;
 import com.chandigarhadmin.service.ApiServiceTask;
 import com.chandigarhadmin.service.JSONParser;
+import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,12 +41,14 @@ public class AllTicketsActivity extends AppCompatActivity implements ResponseCal
     ImageView closeBtn;
     private ProgressDialog progressDialog;
     private AllTicketAdapter allTicketAdapter;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alltickets);
         ButterKnife.bind(this);
+        sessionManager=new SessionManager(this);
         progressDialog = Constant.createDialog(this, null);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         //mLayoutManager.setStackFromEnd(true);
@@ -75,7 +78,8 @@ public class AllTicketsActivity extends AppCompatActivity implements ResponseCal
         progressDialog.show();
         ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
         apiServiceTask.setRequestParams(null, JSONParser.GET);
-        apiServiceTask.execute(Constant.BASE + "tickets");
+        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_"+ sessionManager.getKeyUserId());
+
     }
 
     @Override
