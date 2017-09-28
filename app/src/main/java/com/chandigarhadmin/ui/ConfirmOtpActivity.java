@@ -40,9 +40,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.chandigarhadmin.R.id.timer;
-import static com.chandigarhadmin.R.string.resend_otp;
-
 public class ConfirmOtpActivity extends Activity implements ResponseCallback {
     @BindView(R.id.et_readotp)
     EditText etOptRecevier;
@@ -50,6 +47,8 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
     LinearLayout llOtp;
     @BindView(R.id.btn_confirm_otp)
     Button submitBtn;
+    @BindView(R.id.timer)
+    TextView timerText;
     Timer t = new Timer();
     TimerTask task, timerTask;
     private boolean isOtpReceived;
@@ -59,6 +58,16 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
     private int time=0;
     private MyCountDownTimer myCountDownTimer;
 
+    @OnClick(R.id.btn_confirm_otp)
+    public void submitButton() {
+        if (submitBtn.getText().toString().trim().equalsIgnoreCase("resend_otp")) {
+            myCountDownTimer.start();
+        } else {
+            if (!TextUtils.isEmpty(etOptRecevier.getText())) {
+                saveLoginDetail();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,21 +121,6 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
             }
         });
     }
-    @OnClick(R.id.btn_confirm_otp)
-    void submitButton(View view) {
-        if (view.getId() == R.id.btn_confirm_otp) {
-           if(submitBtn.getText().toString().trim().equalsIgnoreCase("resend_otp")){
-               myCountDownTimer.start();
-
-           }
-           else{
-               if (!TextUtils.isEmpty(etOptRecevier.getText())) {
-                   saveLoginDetail();
-               }
-           }
-        }
-    }
-
 
     /**
      * Parse verification code
@@ -262,6 +256,16 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         finish();
     }
 
+    private void getallUsers() {
+        if (Constant.isNetworkAvailable(ConfirmOtpActivity.this)) {
+            progressDialog.show();
+            ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
+            task.setRequestParams(null, JSONParser.GET);
+            task.execute(Constant.BASE + "users");
+        } else {
+            Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
+        }
+    }
 
     public class MyCountDownTimer extends CountDownTimer {
 
@@ -272,28 +276,17 @@ public class ConfirmOtpActivity extends Activity implements ResponseCallback {
         @Override
         public void onTick(long millisUntilFinished) {
             int progress = (int) (millisUntilFinished / 1000);
-            TextView tv1 = (TextView) findViewById(timer);
-            tv1.setText("waiting " + progress + "sec");
+            timerText.setText("waiting " + progress + "sec");
             if (progress == 0) {
                 llOtp.setVisibility(View.GONE);
-                submitBtn.setText(resend_otp);
+                submitBtn.setText(getResources().getString(R.string.resend_otp));
             }
         }
 
         @Override
         public void onFinish() {
             llOtp.setVisibility(View.GONE);
-            submitBtn.setText(resend_otp);
-        }
-    }
-    private void getallUsers(){
-        if(Constant.isNetworkAvailable(ConfirmOtpActivity.this)) {
-            progressDialog.show();
-            ApiServiceTask task = new ApiServiceTask(this, this, RequestParams.TYPE_GET_USER_BY);
-            task.setRequestParams(null, JSONParser.GET);
-            task.execute(Constant.BASE + "users");
-        } else {
-            Constant.showToastMessage(ConfirmOtpActivity.this, getString(R.string.no_internet));
+            submitBtn.setText(getResources().getString(R.string.resend_otp));
         }
     }
 }

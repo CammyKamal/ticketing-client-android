@@ -21,6 +21,9 @@ import com.chandigarhadmin.ui.ViewTicketActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.chandigarhadmin.utils.Constant.INPUT_CTICKET_DATA;
 import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
 
@@ -30,27 +33,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     private Context context;
     private LayoutInflater layoutInflater;
     private SelectionCallbacks selectionCallbacks;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView inMessageTv, outMessageTv, tvTicketMessage;
-        private RelativeLayout llInputLayout, llOutputLayout;
-        private ViewPager branchesViewPager;
-        private LinearLayout viewTicketll;
-        private CardView ticketCreatedCardview;
-
-        public MyViewHolder(View view) {
-            super(view);
-            inMessageTv = (TextView) view.findViewById(R.id.tvuserinput);
-            outMessageTv = (TextView) view.findViewById(R.id.tvresponse);
-            llInputLayout = (RelativeLayout) view.findViewById(R.id.inputlayoutll);
-            llOutputLayout = (RelativeLayout) view.findViewById(R.id.outputlayoutll);
-            branchesViewPager = (ViewPager) view.findViewById(R.id.branchesviewpager);
-            ticketCreatedCardview = (CardView) view.findViewById(R.id.card_view);
-            tvTicketMessage = (TextView) view.findViewById(R.id.tvticketcreated);
-            viewTicketll = (LinearLayout) view.findViewById(R.id.viewll);
-        }
-    }
-
 
     public ChatAdapter(Context context, List<ChatPojoModel> chatPojoModelList, SelectionCallbacks selectionCallbacks) {
         this.chatPojoModelList = chatPojoModelList;
@@ -99,17 +81,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(context, ViewTicketActivity.class);
-                       // Bundle bundle = new Bundle();
                         if (null!=chatPojoModel.getGetTicketResponse()&&null != chatPojoModel.getGetTicketResponse().get(position)) {
-
                             intent.putExtra(INPUT_TICKET_DATA, chatPojoModel.getGetTicketResponse().get(position));
-
                         }
                         else if(null!=chatPojoModel.getCreateTicketResponse()){
                             intent.putExtra(INPUT_CTICKET_DATA, chatPojoModel.getCreateTicketResponse());
-
                         }
-                        //intent.putExtras(bundle);
                         context.startActivity(intent);
                     }
                 });
@@ -121,11 +98,34 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                 holder.ticketCreatedCardview.setVisibility(View.GONE);
             }
         }
-
     }
 
     @Override
     public int getItemCount() {
         return chatPojoModelList.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tvuserinput)
+        TextView inMessageTv;
+        @BindView(R.id.tvresponse)
+        TextView outMessageTv;
+        @BindView(R.id.tvticketcreated)
+        TextView tvTicketMessage;
+        @BindView(R.id.inputlayoutll)
+        RelativeLayout llInputLayout;
+        @BindView(R.id.outputlayoutll)
+        RelativeLayout llOutputLayout;
+        @BindView(R.id.branchesviewpager)
+        ViewPager branchesViewPager;
+        @BindView(R.id.viewll)
+        LinearLayout viewTicketll;
+        @BindView(R.id.card_view)
+        CardView ticketCreatedCardview;
+
+        public MyViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
     }
 }
