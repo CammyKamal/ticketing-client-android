@@ -134,10 +134,4 @@ public class SessionManager {
         editor.apply();
     }
 
-    //clearing all data saved in sharedpreference
-    public void clearAllData() {
-        editor.clear();
-        editor.apply();
-    }
-
 }

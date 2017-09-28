@@ -3,9 +3,8 @@ package com.chandigarhadmin.service;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.chandigarhadmin.utils.Constant;
-
 import com.chandigarhadmin.interfaces.ResponseCallback;
+import com.chandigarhadmin.utils.Constant;
 import com.chandigarhadmin.utils.User;
 
 import org.json.JSONObject;
@@ -56,10 +55,7 @@ public class ApiServiceTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         System.out.println("RESPONSE" + result);
         responseCallback.onResponse(result, type);
-
-
     }
-
 
     @Override
     protected void onProgressUpdate(Void... values) {
