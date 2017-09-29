@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.utils.Constant;
@@ -54,13 +53,6 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
     private void init() {
         submitBtn.setOnClickListener(this);
-        TextView tvCountryCode = (TextView) findViewById(R.id.tvcountrycode);
-//        submitBtn.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-//        tvCountryCode.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-        //  tvCountryCode.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-//        ((TextView) findViewById(R.id.titletv)).setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-//        etPhoneNumber.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-
     }
 
 

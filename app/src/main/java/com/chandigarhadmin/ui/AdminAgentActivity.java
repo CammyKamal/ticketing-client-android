@@ -183,7 +183,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 Constant.showToastMessage(AdminAgentActivity.this, getResources().getString(R.string.out_of_scope));
                 return true;
             case R.id.logout_menu:
-                sessionManager.clearAllData();
+                sessionManager.logoutUser();
                 Intent intent = new Intent(AdminAgentActivity.this, LanguageSelectionActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);

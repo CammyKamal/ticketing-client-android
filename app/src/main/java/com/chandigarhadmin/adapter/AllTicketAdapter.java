@@ -10,12 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chandigarhadmin.R;
-import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.GetTicketResponse;
 import com.chandigarhadmin.ui.ViewTicketActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
@@ -28,26 +29,8 @@ public class AllTicketAdapter extends RecyclerView.Adapter<AllTicketAdapter.MyVi
 
     private Context context;
     private List<GetTicketResponse> getTicketResponseList;
-    private LayoutInflater layoutInflater;
-    private SelectionCallbacks selectionCallbacks;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvBranchName, tvTicketId;
-        CircleImageView circleImageView;
-        LinearLayout linearLayoutMainRow;
-
-        public MyViewHolder(View view) {
-            super(view);
-            tvBranchName = (TextView) view.findViewById(R.id.branchnametv);
-            circleImageView = (CircleImageView) view.findViewById(R.id.departmentiv);
-            tvTicketId = (TextView) view.findViewById(R.id.tvticketId);
-            linearLayoutMainRow = (LinearLayout) view.findViewById(R.id.ll_mainrow);
-        }
-    }
-
 
     public AllTicketAdapter(Context context) {
-
         this.context = context;
     }
 
@@ -74,9 +57,7 @@ public class AllTicketAdapter extends RecyclerView.Adapter<AllTicketAdapter.MyVi
             public void onClick(View view) {
                 Intent intent = new Intent(context, ViewTicketActivity.class);
                 if (null != getTicketResponse) {
-
                     intent.putExtra(INPUT_TICKET_DATA, getTicketResponse);
-
                 }
                 context.startActivity(intent);
             }
@@ -90,5 +71,21 @@ public class AllTicketAdapter extends RecyclerView.Adapter<AllTicketAdapter.MyVi
             return getTicketResponseList.size();
         }
         return 0;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.branchnametv)
+        TextView tvBranchName;
+        @BindView(R.id.tvticketId)
+        TextView tvTicketId;
+        @BindView(R.id.departmentiv)
+        CircleImageView circleImageView;
+        @BindView(R.id.ll_mainrow)
+        LinearLayout linearLayoutMainRow;
+
+        public MyViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
     }
 }

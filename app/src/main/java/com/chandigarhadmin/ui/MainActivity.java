@@ -40,12 +40,6 @@ public class MainActivity extends SplasherActivity {
                 .setSubtitleTypeFace(Typeface.createFromAsset(getAssets(), "diana.otf"))
                 .setTitleTypeFace(Typeface.createFromAsset(getAssets(), "stc.otf"));
 
-        //Example of custom view ..
-       /* config.setCustomView(R.layout.custom_view)
-                .setReveal_start(Const.START_CENTER)
-                .setAnimationDuration(5000);
-        getCustomView().findViewById(R.id.textView)*/
-
     }
 
     @Override
