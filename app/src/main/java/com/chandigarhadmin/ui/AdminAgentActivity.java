@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
@@ -97,6 +98,8 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     private ChatAdapter mAdapter;
     private TextToSpeech textToSpeech;
     private CreateTicketResponse createTicketResponse;
+    private String branchName;
+
 
     @OnClick(R.id.btn_chat_search)
     public void sendClick() {
@@ -318,9 +321,8 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                     setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
                 } else if (result.getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
                     // TODO: 29/09/17 need to show the preview
-                    setChatInputs("Creating ticket...", false);
-                    createTicket(result);
-                    Log.e("result", "Saved");
+                    previewTicket(result);
+
                 }
             } else if (result.getAction().equalsIgnoreCase("fetchalltickets")) {
                 getTickets();
@@ -424,6 +426,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
 
     @Override
     public void onResultSelection(String id, String branchName) {
+        this.branchName = branchName;
         sendRequest(branchName);
     }
 
@@ -520,23 +523,39 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.activity_view_ticket);
-
+        dialog.setContentView(R.layout.ticket_preview);
+        DisplayMetrics metrics = new DisplayMetrics(); //get metrics of screen
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int height = (int) (metrics.heightPixels * 0.9); //set height to 90% of total
+        int width = (int) (metrics.widthPixels * 0.9); //set width to 90% of total
+        dialog.getWindow().setLayout(width, height);
+        TextView textViewDepartment = (TextView) dialog.findViewById(R.id.tvdepartment_value);
+       // textViewDepartment.setText(result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        textViewDepartment.setText(branchName);
+        TextView textViewSubject = (TextView) dialog.findViewById(R.id.tvsubject_value);
+        textViewSubject.setText(result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        TextView textViewDescription = (TextView) dialog.findViewById(R.id.tvdescription_value);
+        textViewDescription.setText(result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        //result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", "");
+        //result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        // result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        // "new");
+        //"high");
+        // "email");
+        // "diamante_" + sessionManager.getKeyUserId());
         // TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
         //  text.setText(msg);
 
-        Button okButton = (Button) dialog.findViewById(R.id.okbtn);
-        Button cancelButton = (Button) dialog.findViewById(R.id.okbtn);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        Button okButton = (Button) dialog.findViewById(R.id.createbtn);
+
+
+        okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                setChatInputs("Creating ticket...", false);
                 createTicket(result);
+                Log.e("result", "Saved");
             }
         });
 
