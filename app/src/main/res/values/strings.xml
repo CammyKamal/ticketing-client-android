@@ -37,5 +37,7 @@
     <string name="resend_otp">Resend OTP</string>
     <string name="out_of_scope">Out of scope for Hackathon 2017</string>
     <string name="view_tickets">View Tickets</string>
+    <string name="ok_btn">Ok</string>
+    <string name="cancel_btn">Cancel</string>
 
 </resources>

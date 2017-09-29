@@ -3,6 +3,7 @@ package com.chandigarhadmin.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -22,7 +23,9 @@ import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -314,6 +317,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 } else if (result.getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
                     setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
                 } else if (result.getFulfillment().getSpeech().equalsIgnoreCase("save ticket")) {
+                    // TODO: 29/09/17 need to show the preview
                     setChatInputs("Creating ticket...", false);
                     createTicket(result);
                     Log.e("result", "Saved");
@@ -450,13 +454,13 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     private void getTickets() {
         ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
         apiServiceTask.setRequestParams(null, GET);
-        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_"+ sessionManager.getKeyUserId());
+        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_" + sessionManager.getKeyUserId());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-            AIService.getService(this, aiConfiguration).cancel();
+        AIService.getService(this, aiConfiguration).cancel();
     }
 
     private void startRecognition() {
@@ -502,13 +506,41 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_RECORD_AUDIO) {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay!
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay!
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
             }
+        }
+    }
+
+    private void previewTicket(final Result result) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.activity_view_ticket);
+
+        // TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
+        //  text.setText(msg);
+
+        Button okButton = (Button) dialog.findViewById(R.id.okbtn);
+        Button cancelButton = (Button) dialog.findViewById(R.id.okbtn);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createTicket(result);
+            }
+        });
+
+        dialog.show();
+
     }
 }
