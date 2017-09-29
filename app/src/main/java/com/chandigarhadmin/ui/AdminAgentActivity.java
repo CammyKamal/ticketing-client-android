@@ -526,8 +526,8 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         dialog.setContentView(R.layout.ticket_preview);
         DisplayMetrics metrics = new DisplayMetrics(); //get metrics of screen
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int height = (int) (metrics.heightPixels * 0.9); //set height to 90% of total
-        int width = (int) (metrics.widthPixels * 0.9); //set width to 90% of total
+        int height = (int) (metrics.heightPixels * 0.7); //set height to 80% of total
+        int width = (int) (metrics.widthPixels * 0.8); //set width to 90% of total
         dialog.getWindow().setLayout(width, height);
         TextView textViewDepartment = (TextView) dialog.findViewById(R.id.tvdepartment_value);
         if (null != branchName) {
