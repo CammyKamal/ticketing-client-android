@@ -530,25 +530,18 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         int width = (int) (metrics.widthPixels * 0.9); //set width to 90% of total
         dialog.getWindow().setLayout(width, height);
         TextView textViewDepartment = (TextView) dialog.findViewById(R.id.tvdepartment_value);
-       // textViewDepartment.setText(result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-        textViewDepartment.setText(branchName);
+        if (null != branchName) {
+            textViewDepartment.setText(branchName);
+        } else {
+            textViewDepartment.setText(result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        }
         TextView textViewSubject = (TextView) dialog.findViewById(R.id.tvsubject_value);
         textViewSubject.setText(result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
         TextView textViewDescription = (TextView) dialog.findViewById(R.id.tvdescription_value);
         textViewDescription.setText(result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-        //result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", "");
-        //result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-        // result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-        // "new");
-        //"high");
-        // "email");
-        // "diamante_" + sessionManager.getKeyUserId());
-        // TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
-        //  text.setText(msg);
 
         Button okButton = (Button) dialog.findViewById(R.id.createbtn);
-
-
+        ImageView crossImg = (ImageView) dialog.findViewById(R.id.crossicon);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -556,6 +549,12 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 setChatInputs("Creating ticket...", false);
                 createTicket(result);
                 Log.e("result", "Saved");
+            }
+        });
+        crossImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
 
