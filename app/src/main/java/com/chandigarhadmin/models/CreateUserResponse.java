@@ -1,6 +1,5 @@
 package com.chandigarhadmin.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,29 +8,23 @@ import com.google.gson.annotations.SerializedName;
 
 public class CreateUserResponse {
     @SerializedName("id")
-    @Expose
     private String id;
     @SerializedName("email")
-    @Expose
     private String email;
     @SerializedName("first_name")
-    @Expose
     private String firstName;
     @SerializedName("last_name")
-    @Expose
     private String lastName;
     @SerializedName("api_user")
-    @Expose
     private ApiUser apiUser;
     @SerializedName("created_at")
-    @Expose
     private String createdAt;
     @SerializedName("updated_at")
-    @Expose
     private String updatedAt;
     @SerializedName("is_deleted")
-    @Expose
     private Boolean isDeleted;
+    @SerializedName("error")
+    private String error;
 
     public String getId() {
         return id;
@@ -97,4 +90,11 @@ public class CreateUserResponse {
         this.isDeleted = isDeleted;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 }
