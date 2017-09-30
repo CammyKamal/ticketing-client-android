@@ -29,15 +29,12 @@ import android.widget.TextView;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.ChatAdapter;
-import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.BranchesModel;
 import com.chandigarhadmin.models.ChatPojoModel;
 import com.chandigarhadmin.models.CreateTicketResponse;
 import com.chandigarhadmin.models.GetTicketResponse;
 import com.chandigarhadmin.models.RequestParams;
-import com.chandigarhadmin.service.ApiServiceTask;
-import com.chandigarhadmin.service.JSONParser;
 import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
@@ -68,9 +65,8 @@ import butterknife.OnClick;
 import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
 import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
-import static com.chandigarhadmin.service.JSONParser.GET;
 
-public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, ResponseCallback, SelectionCallbacks {
+public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, SelectionCallbacks {
     //Create placeholder for user's consent to record_audio permission.
     //This will be used in handling callback
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
@@ -303,7 +299,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             if (result.getAction().equalsIgnoreCase("createticket")) {
 
                 if (result.getParameters().get("department").toString().equalsIgnoreCase("[]")) {
-                    new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
+//                    new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
                 } else if (result.getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
                     setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
                 } else if (result.getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
@@ -348,7 +344,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
 
     }
 
-    @Override
+    //    @Override
     public void onResponse(String result, String type) {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -434,18 +430,18 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
-        apiServiceTask.setRequestParams(ticketObject, JSONParser.POST);
-        apiServiceTask.execute(Constant.BASE + "tickets");
+//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
+//        apiServiceTask.setRequestParams(ticketObject, JSONParser.POST);
+//        apiServiceTask.execute(Constant.BASE + "tickets");
     }
 
     /**
      * getting all tickets
      */
     private void getTickets() {
-        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
-        apiServiceTask.setRequestParams(null, GET);
-        apiServiceTask.execute(Constant.BASE + "tickets");
+//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
+//        apiServiceTask.setRequestParams(null, GET);
+//        apiServiceTask.execute(Constant.BASE + "tickets");
     }
 
     @Override

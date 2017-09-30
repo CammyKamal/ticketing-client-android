@@ -11,13 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chandigarhadmin.R;
-import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.models.CreateTicketResponse;
 import com.chandigarhadmin.models.GetTicketResponse;
-import com.chandigarhadmin.models.RequestParams;
 import com.chandigarhadmin.models.SingleTicketResponse;
-import com.chandigarhadmin.service.ApiServiceTask;
-import com.chandigarhadmin.service.JSONParser;
 import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
 
@@ -32,7 +28,8 @@ import butterknife.OnClick;
 import static com.chandigarhadmin.utils.Constant.INPUT_CTICKET_DATA;
 import static com.chandigarhadmin.utils.Constant.INPUT_TICKET_DATA;
 
-public class ViewTicketActivity extends AppCompatActivity implements ResponseCallback {
+public class ViewTicketActivity extends AppCompatActivity {
+    //        implements ResponseCallback {
     @BindView(R.id.tvcreated_value)
     TextView textViewCreatedTime;
     @BindView(R.id.text_status)
@@ -126,13 +123,13 @@ public class ViewTicketActivity extends AppCompatActivity implements ResponseCal
      */
     private void getTicketById(String ticketId) {
         progressDialog.show();
-        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, RequestParams.TYPE_GET_TICKET_BY);
-        apiServiceTask.setRequestParams(null, JSONParser.GET);
-        apiServiceTask.execute(Constant.BASE + "tickets/" + ticketId);
+//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, RequestParams.TYPE_GET_TICKET_BY);
+//        apiServiceTask.setRequestParams(null, JSONParser.GET);
+//        apiServiceTask.execute(Constant.BASE + "tickets/" + ticketId);
 
     }
 
-    @Override
+    //    @Override
     public void onResponse(String result, String type) {
         progressDialog.hide();
         if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {

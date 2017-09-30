@@ -34,6 +34,31 @@ public class JSONParser {
         this.context = context;
     }
 
+    private static String inputStreamToString(InputStream in) {
+        String result = "";
+        if (in == null) {
+            return result;
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            StringBuilder out = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                out.append(line);
+            }
+            result = out.toString();
+            reader.close();
+
+            return result;
+        } catch (Exception e) {
+            // TODO: handle exception
+            Log.e("InputStream", "Error : " + e.toString());
+            return result;
+        }
+
+    }
+
     /**
      * Get response string
      *
@@ -188,11 +213,12 @@ public class JSONParser {
             //urlConnection.setRequestProperty( "Content-Type", "x-www-form-urlencoded");
             urlConnection.setRequestProperty( "charset", "utf-8");
             //urlConnection.setRequestProperty("Content-Type","application/json");
+            System.out.println("JSON: " + urlConnection.getRequestProperties().toString());
             if (params != null) {
                 OutputStreamWriter os = new   OutputStreamWriter(urlConnection.getOutputStream());
                 os.write(params.toString());
                 os.close();
-
+                System.out.println("JSON: " + params.toString());
             }
             StringBuilder builder = new StringBuilder();
             try {
@@ -208,7 +234,7 @@ public class JSONParser {
             } catch(Exception e) {
 
             }
-            System.out.println("JSON: " + builder.toString());
+
 
             in = new BufferedInputStream(urlConnection.getInputStream());
             result = inputStreamToString(in);
@@ -220,30 +246,5 @@ public class JSONParser {
         }
 
         return result;
-    }
-
-    private static String inputStreamToString(InputStream in) {
-        String result = "";
-        if (in == null) {
-            return result;
-        }
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
-            StringBuilder out = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
-            }
-            result = out.toString();
-            reader.close();
-
-            return result;
-        } catch (Exception e) {
-            // TODO: handle exception
-            Log.e("InputStream", "Error : " + e.toString());
-            return result;
-        }
-
     }
 }

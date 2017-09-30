@@ -40,5 +40,15 @@ public class Constant {
     public static void showToastMessage(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
+
+    //checking whether is null or valid
+    public static boolean checkString(String st) {
+        if (st == null || st.equals(null)
+                || st.equalsIgnoreCase("null") || st.trim().length() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
