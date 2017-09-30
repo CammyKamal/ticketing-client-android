@@ -46,10 +46,6 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.loginscreen);
 
         ButterKnife.bind(this);
-//        btnProceed.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-//        tvTitle.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-//        etEmailInput.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
-//        etUserName.setTypeface(Typeface.createFromAsset(getAssets(), "stc.otf"));
     }
 
     private boolean validateInputs() {

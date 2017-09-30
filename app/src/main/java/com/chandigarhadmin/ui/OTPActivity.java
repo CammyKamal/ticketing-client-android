@@ -17,6 +17,7 @@ import com.chandigarhadmin.R;
 import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.models.CreateUserResponse;
 import com.chandigarhadmin.models.RequestParams;
+import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
 
 import org.json.JSONObject;
@@ -102,6 +103,10 @@ public class OTPActivity extends AppCompatActivity implements ResponseCallback {
             if (null != response && Constant.checkString(response.getEmail())
                     && response.getEmail().contains(etPhoneNumber.getText().toString())) {
                 Constant.showToastMessage(OTPActivity.this, getString(R.string.email_exist));
+                SessionManager sessionManager = new SessionManager(this);
+                sessionManager.createLoginSession(response.getFirstName(), response.getLastName(), response.getEmail());
+                sessionManager.setKeyUserId(response.getId());
+                navigateToDashBoard();
             }
         } else {
             try {
@@ -124,6 +129,13 @@ public class OTPActivity extends AppCompatActivity implements ResponseCallback {
             confirmOtp.putExtra(Constant.INPUT_EMAIL, getIntent().getStringExtra(Constant.INPUT_EMAIL));
         }
         startActivity(confirmOtp);
+    }
+
+    private void navigateToDashBoard() {
+        Intent it = new Intent(OTPActivity.this, AdminAgentActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(it);
+        finish();
     }
 
     @Override

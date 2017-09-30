@@ -7,33 +7,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.ImageView;
 
+import com.chandigarhadmin.App;
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.AllTicketAdapter;
+import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.models.GetTicketResponse;
+import com.chandigarhadmin.models.RequestParams;
 import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.util.Arrays;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
+import retrofit2.Response;
 
 /**
  * Created by harendrasinghbisht on 24/09/17.
  */
 
-public class AllTicketsActivity extends AppCompatActivity {
-    //    implements
-//} ResponseCallback {
+public class AllTicketsActivity extends AppCompatActivity implements ResponseCallback {
     @BindView(R.id.ticketrecyleview)
     RecyclerView recyclerView;
     @BindView(R.id.closebtn)
@@ -41,6 +39,12 @@ public class AllTicketsActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private AllTicketAdapter allTicketAdapter;
     private SessionManager sessionManager;
+
+    @OnClick(R.id.closebtn)
+    public void closeScreenClick() {
+        finish();
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,40 +67,41 @@ public class AllTicketsActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.closebtn)
-    void closeScreen(View view) {
-        if (view.getId() == R.id.closebtn) {
-            finish();
-        }
-    }
 
     /**
      * getting all tickets
      */
     private void getAlltickets() {
         progressDialog.show();
-//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
-//        apiServiceTask.setRequestParams(null, JSONParser.GET);
-//        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_"+ sessionManager.getKeyUserId());
-
+        App.getApiController().getAllTickets(this, sessionManager.getKeyUserId(), RequestParams.TYPE_GET_ALL_TICKET);
     }
 
-    //    @Override
-    public void onResponse(String result, String type) {
-        progressDialog.hide();
-        if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
-            if (type.equalsIgnoreCase(TYPE_GET_ALL_TICKET)) {
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                Gson gson = gsonBuilder.create();
-                parseTickets(result, gson);
+    @Override
+    public void onResponse(Response response, String type) {
+        progressDialog.dismiss();
+        if (response.isSuccessful()) {
+            if (type.equalsIgnoreCase(RequestParams.TYPE_GET_ALL_TICKET)) {
+                List<GetTicketResponse> tickets = (List<GetTicketResponse>) response.body();
+                parseTickets(tickets);
+            }
+        } else {
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                if (jObjError.has("error")) {
+                    Constant.showToastMessage(AllTicketsActivity.this, jObjError.getString("error"));
+                }
+            } catch (Exception e) {
+                Constant.showToastMessage(AllTicketsActivity.this, "Something went wrong");
             }
         }
-
     }
 
-    private void parseTickets(String result, Gson gson) {
-        List<GetTicketResponse> ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
+    @Override
+    public void onFailure(String message) {
+        Constant.showToastMessage(AllTicketsActivity.this, message);
+    }
+
+    private void parseTickets(List<GetTicketResponse> ticketResponseList) {
         allTicketAdapter.setData(ticketResponseList);
         allTicketAdapter.notifyDataSetChanged();
     }

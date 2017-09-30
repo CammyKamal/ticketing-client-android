@@ -55,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:indeterminateTint="@android:color/white"
             />
     </LinearLayout>
 
@@ -70,7 +71,7 @@
         android:layout_marginLeft="@dimen/fifteen"
         android:layout_marginRight="@dimen/fifteen"
         android:layout_marginStart="@dimen/fifteen"
-        android:background="@android:color/white"
+        android:background="@drawable/rounded_button_background"
         android:text="@string/verify"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/bold_size" />

@@ -31,11 +31,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chandigarhadmin.App;
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.ChatAdapter;
+import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.interfaces.SelectionCallbacks;
 import com.chandigarhadmin.models.BranchesModel;
 import com.chandigarhadmin.models.ChatPojoModel;
+import com.chandigarhadmin.models.CreateTicketModel;
 import com.chandigarhadmin.models.CreateTicketResponse;
 import com.chandigarhadmin.models.GetTicketResponse;
 import com.chandigarhadmin.models.RequestParams;
@@ -43,14 +46,10 @@ import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,12 +64,9 @@ import ai.api.model.Result;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Response;
 
-import static com.chandigarhadmin.models.RequestParams.TYPE_CREATE_TICKET;
-import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
-import static com.chandigarhadmin.models.RequestParams.TYPE_GET_BRANCHES;
-
-public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, SelectionCallbacks {
+public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItemClickListener, AIListener, SelectionCallbacks, ResponseCallback {
     //Create placeholder for user's consent to record_audio permission.
     //This will be used in handling callback
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
@@ -169,11 +165,8 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
                 startActivity(new Intent(this, MyAccountActivity.class));
                 return true;
             case R.id.view_tickets:
-                //TODO
                 Intent intent1 = new Intent(AdminAgentActivity.this, AllTicketsActivity.class);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent1);
-
                 return true;
             case R.id.settings:
             case R.id.what_you_do:
@@ -310,7 +303,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             if (result.getAction().equalsIgnoreCase("createticket")) {
 
                 if (result.getParameters().get("department").toString().equalsIgnoreCase("[]")) {
-//                    new ApiServiceTask(AdminAgentActivity.this, this, TYPE_GET_BRANCHES).execute(Constant.BASE + "branches");
+                    App.getApiController().getBranches(this, RequestParams.TYPE_GET_BRANCHES);
                 } else if (result.getParameters().get("ticketsubject").toString().equalsIgnoreCase("[]")) {
                     setChatInputs(response.getResult().getFulfillment().getSpeech(), false);
                 } else if (result.getParameters().get("ticketdesc").toString().equalsIgnoreCase("[]")) {
@@ -355,28 +348,6 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
 
     }
 
-    //    @Override
-    public void onResponse(String result, String type) {
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-        Gson gson = gsonBuilder.create();
-        if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {
-
-            if (type.equalsIgnoreCase(TYPE_GET_BRANCHES)) {
-                setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
-                parseBranches(result, gson);
-            } else if (type.equalsIgnoreCase(TYPE_CREATE_TICKET)) {
-                createTicketResponse = gson.fromJson(result, CreateTicketResponse.class);
-                setChatInputs("Ticket created " + "with a Reference ID: " + createTicketResponse.getId(), false);
-            } else if (type.contains(TYPE_GET_ALL_TICKET)) {
-                Log.d("TICKETS OF YOURS", result);
-                setChatInputs("Here you go...", false);
-                parseTickets(result, gson);
-            }
-        }
-
-    }
 
     private void setChatInputs(String input, boolean align) {
         ChatPojoModel chatPojoModel = new ChatPojoModel();
@@ -390,9 +361,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
             textToSpeech.speak(input, TextToSpeech.QUEUE_FLUSH, null);
     }
 
-    private void parseBranches(String result, Gson gson) {
-        List<BranchesModel> branchesModels = Arrays.asList(gson.fromJson(result, BranchesModel[].class));
-
+    private void parseBranches(List<BranchesModel> branchesModels) {
         ChatPojoModel chatPojoModel = new ChatPojoModel();
         chatPojoModel.setAlignRight(false);
         chatPojoModel.setDepartmentResponse(branchesModels);
@@ -400,8 +369,7 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
         mAdapter.notifyDataSetChanged();
     }
 
-    private void parseTickets(String result, Gson gson) {
-        List<GetTicketResponse> ticketResponseList = Arrays.asList(gson.fromJson(result, GetTicketResponse[].class));
+    private void parseTickets(List<GetTicketResponse> ticketResponseList) {
         ChatPojoModel chatPojoModel = new ChatPojoModel();
         chatPojoModel.setAlignRight(false);
         chatPojoModel.setGetTicketResponse(ticketResponseList);
@@ -430,30 +398,22 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
      * saving ticket
      */
     private void createTicket(Result result) {
-        JSONObject ticketObject = new JSONObject();
-        try {
-            ticketObject.put(RequestParams.BRANCH, result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-            ticketObject.put(RequestParams.SUBJECT, result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-            ticketObject.put(RequestParams.DESCRIPTION, result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-            ticketObject.put(RequestParams.STATUS, "new");
-            ticketObject.put(RequestParams.PRIORITY, "high");
-            ticketObject.put(RequestParams.SOURCE, "email");
-            ticketObject.put(RequestParams.REPORTER, "diamante_" + sessionManager.getKeyUserId());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_CREATE_TICKET);
-//        apiServiceTask.setRequestParams(ticketObject, JSONParser.POST);
-//        apiServiceTask.execute(Constant.BASE + "tickets");
+        CreateTicketModel model = new CreateTicketModel();
+        model.setBranch(result.getParameters().get("department").toString().replaceAll("\"", "").replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        model.setSubject(result.getParameters().get("ticketsubject").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        model.setDescription(result.getParameters().get("ticketdesc").toString().replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+        model.setStatus("new");
+        model.setPriority("high");
+        model.setSource("email");
+        model.setReporter("diamante_" + sessionManager.getKeyUserId());
+        App.getApiController().createTicket(this, model, RequestParams.TYPE_CREATE_TICKET);
     }
 
     /**
      * getting all tickets
      */
     private void getTickets() {
-//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
-//        apiServiceTask.setRequestParams(null, GET);
-//        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_" + sessionManager.getKeyUserId());
+        App.getApiController().getAllTickets(this, sessionManager.getKeyUserId(), RequestParams.TYPE_GET_ALL_TICKET);
     }
 
     @Override
@@ -556,5 +516,38 @@ public class AdminAgentActivity extends Activity implements PopupMenu.OnMenuItem
 
         dialog.show();
 
+    }
+
+    @Override
+    public void onResponse(Response response, String type) {
+        if (response.isSuccessful()) {
+            if (type.equalsIgnoreCase(RequestParams.TYPE_GET_BRANCHES)) {
+                List<BranchesModel> branches = (List<BranchesModel>) response.body();
+                setChatInputs("Okay!! Please select a department for which you want to create a ticket.", false);
+                parseBranches(branches);
+            } else if (type.equalsIgnoreCase(RequestParams.TYPE_GET_ALL_TICKET)) {
+                List<GetTicketResponse> tickets = (List<GetTicketResponse>) response.body();
+                setChatInputs("Here you go...", false);
+                parseTickets(tickets);
+            } else if (type.equalsIgnoreCase(RequestParams.TYPE_CREATE_TICKET)) {
+                createTicketResponse = (CreateTicketResponse) response.body();
+                setChatInputs("Ticket created " + "with a Reference ID: " + createTicketResponse.getId(), false);
+            }
+        } else {
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                if (jObjError.has("error")) {
+                    Constant.showToastMessage(AdminAgentActivity.this, jObjError.getString("error"));
+                }
+            } catch (Exception e) {
+                Constant.showToastMessage(AdminAgentActivity.this, "Something went wrong");
+            }
+        }
+
+    }
+
+    @Override
+    public void onFailure(String message) {
+        Constant.showToastMessage(AdminAgentActivity.this, message);
     }
 }

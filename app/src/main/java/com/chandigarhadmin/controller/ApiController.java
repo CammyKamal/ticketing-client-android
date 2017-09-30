@@ -3,8 +3,8 @@ package com.chandigarhadmin.controller;
 import com.chandigarhadmin.App;
 import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.interfaces.RetrofitApiInterface;
-import com.chandigarhadmin.models.CreateUserResponse;
-import com.chandigarhadmin.models.LoginUser;
+import com.chandigarhadmin.models.CreateTicketModel;
+import com.chandigarhadmin.models.LoginUserModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,49 +19,58 @@ public class ApiController {
     private RetrofitApiInterface apiInterface = App.getInterface();
     private ResponseCallback responseCallback;
     private String requestType = null;
+    private Call call = null;
 
     //confirm otp call
-    public void confirmOtp(ResponseCallback responseCallback, LoginUser body, String type) {
+    public void confirmOtp(ResponseCallback responseCallback, LoginUserModel body, String type) {
         this.responseCallback = responseCallback;
-        Call<CreateUserResponse> call = apiInterface.saveLoginDetail(body);
+        call = apiInterface.saveLoginDetail(body);
         this.requestType = type;
-        userResponse(call);
+        userResponse();
     }
 
     //get user by email call
     public void getUserByEmail(ResponseCallback responseCallback, String email, String type) {
         this.responseCallback = responseCallback;
-        Call call = apiInterface.getUserByEmail(email + "@gmail.com");
+        call = apiInterface.getUserByEmail(email + "@gmail.com");
         this.requestType = type;
-        userResponse(call);
+        userResponse();
     }
 
-    //get all users
-    public void getAllUsers(ResponseCallback responseCallback, String type) {
+    //get user by email call
+    public void getBranches(ResponseCallback responseCallback, String type) {
         this.responseCallback = responseCallback;
-        Call call = apiInterface.getAllUsers();
+        call = apiInterface.getBranches();
         this.requestType = type;
-        getUserResponse(call);
+        userResponse();
+    }
+
+    //fetching all tickets by providing the user id
+    public void getAllTickets(ResponseCallback responseCallback, String id, String type) {
+        this.responseCallback = responseCallback;
+        call = apiInterface.getAllTickets("diamante_" + id);
+        this.requestType = type;
+        userResponse();
+    }
+
+    //creating new ticket
+    public void createTicket(ResponseCallback responseCallback, CreateTicketModel model, String type) {
+        this.responseCallback = responseCallback;
+        call = apiInterface.createTicket(model);
+        this.requestType = type;
+        userResponse();
+    }
+
+    //view ticket by providing the ticket id
+    public void viewTicket(ResponseCallback responseCallback, String id, String type) {
+        this.responseCallback = responseCallback;
+        call = apiInterface.viewTicket(id);
+        this.requestType = type;
+        userResponse();
     }
 
     //capturing response and make appropriate action
-    private void userResponse(Call<CreateUserResponse> call) {
-        call.enqueue(new Callback<CreateUserResponse>() {
-            @Override
-            public void onResponse(Call<CreateUserResponse> call, Response<CreateUserResponse> response) {
-                responseCallback.onResponse(response, requestType);
-            }
-
-            @Override
-            public void onFailure(Call<CreateUserResponse> call, Throwable t) {
-                call.cancel();
-                responseCallback.onFailure(t.getLocalizedMessage());
-            }
-        });
-    }
-
-    //capturing response and make appropriate action
-    private void getUserResponse(Call call) {
+    private void userResponse() {
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
@@ -75,4 +84,5 @@ public class ApiController {
             }
         });
     }
+
 }

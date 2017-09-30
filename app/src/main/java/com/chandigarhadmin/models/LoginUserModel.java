@@ -4,13 +4,13 @@ package com.chandigarhadmin.models;
  * Created by bimalchawla on 29/9/17.
  */
 
-public class LoginUser {
+public class LoginUserModel {
 
     private String email;
     private String firstName;
     private String lastName;
 
-    public LoginUser(String email, String firstName, String lastName) {
+    public LoginUserModel(String email, String firstName, String lastName) {
 
         this.email = email;
         this.firstName = firstName;

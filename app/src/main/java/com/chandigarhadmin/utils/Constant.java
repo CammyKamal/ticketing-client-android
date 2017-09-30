@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 public class Constant {
     public static final String USERNAME = "Harry";
+    public static final String WHITE_SPACE = " ";
     public static final String INPUT_USER = "username";
     public static final String INPUT_EMAIL = "email";
     public static final String INPUT_TICKET_DATA = "ticket_data";
