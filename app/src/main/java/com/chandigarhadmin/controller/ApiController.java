@@ -25,7 +25,7 @@ public class ApiController {
         this.responseCallback = responseCallback;
         Call<CreateUserResponse> call = apiInterface.saveLoginDetail(body);
         this.requestType = type;
-        confirmOtpResponse(call);
+        userResponse(call);
     }
 
     //get user by email call
@@ -33,7 +33,7 @@ public class ApiController {
         this.responseCallback = responseCallback;
         Call call = apiInterface.getUserByEmail(email + "@gmail.com");
         this.requestType = type;
-        getUserResponse(call);
+        userResponse(call);
     }
 
     //get all users
@@ -45,7 +45,7 @@ public class ApiController {
     }
 
     //capturing response and make appropriate action
-    private void confirmOtpResponse(Call<CreateUserResponse> call) {
+    private void userResponse(Call<CreateUserResponse> call) {
         call.enqueue(new Callback<CreateUserResponse>() {
             @Override
             public void onResponse(Call<CreateUserResponse> call, Response<CreateUserResponse> response) {

@@ -12,10 +12,7 @@ import android.widget.ImageView;
 
 import com.chandigarhadmin.R;
 import com.chandigarhadmin.adapter.AllTicketAdapter;
-import com.chandigarhadmin.interfaces.ResponseCallback;
 import com.chandigarhadmin.models.GetTicketResponse;
-import com.chandigarhadmin.service.ApiServiceTask;
-import com.chandigarhadmin.service.JSONParser;
 import com.chandigarhadmin.session.SessionManager;
 import com.chandigarhadmin.utils.Constant;
 import com.google.gson.Gson;
@@ -34,7 +31,9 @@ import static com.chandigarhadmin.models.RequestParams.TYPE_GET_ALL_TICKET;
  * Created by harendrasinghbisht on 24/09/17.
  */
 
-public class AllTicketsActivity extends AppCompatActivity implements ResponseCallback {
+public class AllTicketsActivity extends AppCompatActivity {
+    //    implements
+//} ResponseCallback {
     @BindView(R.id.ticketrecyleview)
     RecyclerView recyclerView;
     @BindView(R.id.closebtn)
@@ -76,13 +75,13 @@ public class AllTicketsActivity extends AppCompatActivity implements ResponseCal
      */
     private void getAlltickets() {
         progressDialog.show();
-        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
-        apiServiceTask.setRequestParams(null, JSONParser.GET);
-        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_"+ sessionManager.getKeyUserId());
+//        ApiServiceTask apiServiceTask = new ApiServiceTask(this, this, TYPE_GET_ALL_TICKET);
+//        apiServiceTask.setRequestParams(null, JSONParser.GET);
+//        apiServiceTask.execute(Constant.BASE + "tickets/search?reporter=diamante_"+ sessionManager.getKeyUserId());
 
     }
 
-    @Override
+    //    @Override
     public void onResponse(String result, String type) {
         progressDialog.hide();
         if (!result.contains("error") && !result.equalsIgnoreCase("Failed")) {

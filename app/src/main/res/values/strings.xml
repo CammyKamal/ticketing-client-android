@@ -40,5 +40,7 @@
     <string name="ok_btn"> Create Ticket</string>
     <string name="cancel_btn">Cancel</string>
     <string name="ticket_preview">Ticket Preview</string>
+    <string name="email_exist">Email already exists</string>
+    <string name="womething_wrong">Something went wrong</string>
 
 </resources>

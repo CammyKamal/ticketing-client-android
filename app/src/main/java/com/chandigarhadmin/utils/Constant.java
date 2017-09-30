@@ -4,6 +4,7 @@ package com.chandigarhadmin.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 public class Constant {
@@ -44,7 +45,7 @@ public class Constant {
     //checking whether is null or valid
     public static boolean checkString(String st) {
         if (st == null || st.equals(null)
-                || st.equalsIgnoreCase("null") || st.trim().length() == 0) {
+                || st.equalsIgnoreCase("null") || TextUtils.isEmpty(st)) {
             return false;
         } else {
             return true;

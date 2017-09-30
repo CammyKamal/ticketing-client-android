@@ -54,7 +54,7 @@ public class ApiServiceTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         System.out.println("RESPONSE" + result);
-        responseCallback.onResponse(result, type);
+//        responseCallback.onResponse(result, type);
     }
 
     @Override
