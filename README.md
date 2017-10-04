@@ -2,21 +2,21 @@
 Android Chatbot Client is a simple asistant application to help users to raise and check specific grievance tickets reported at backend supported by [Diamantedesk](https://diamantedesk.com/getting-started/).
 This uses Api.ai agent provided by google to follows from invocation to fulfillment is similar to someone answering a question.
 
-# Features
+### Features
 Take's input from user via voice as well as text to resolve user's query related to tickets.
 
-# Generating your client
-Create your own [Api.ai](https://api.ai/) client as per need from below link
-Set up your [Diamantedesk](https://diamantedesk.com/getting-started/)
-Use the Ticketing-Client-Android sample
+### Generating your client
+- Create your own [Api.ai](https://api.ai/) client as per need from below link
+- Set up your [Diamantedesk](https://diamantedesk.com/getting-started/)
+- Use the Ticketing-Client-Android sample
 
-# Contributing  
+### Contributing  
 Please raise an issue of the requirement so that a discussion can take before any code is written, 
 even if you intend to raise a pull request.
 
 Please see Sample app for full example.
 
-# MIT License
+### MIT License
 
 Copyright (c) [2017] [Birender,Kamal,Bimal,Harendra]
 
